@@ -1,8 +1,9 @@
 {
-  "sample_name": ["BR-0764","BR-0767"],
-  "library_name": "210510_BRONCO44",
-  "library_scope": "BRONCO",
+  "sample_name": ["OLP4", "OLP5", "OLP6"],
+  "library_name": "210514_OncoZoom_OLP",
+  "library_scope": "OncoZoom",
   "organism": "homsap",
-  "reference": "GRCh37-p13"
-
+  "reference": "GRCh37-p13",
+  "lib_forward_read_length": 150,
+  "lib_reverse_read_length": 150
 }

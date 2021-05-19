@@ -15,6 +15,11 @@ reference_directory = os.path.join(GLOBAL_REF_PATH,config["organism"],config["re
 #sample_tab = pd.DataFrame.from_dict(config["samples"],orient="index")
 #print(sample_tab)
 
+if config["lib_reverse_read_length"] == 0:
+    read_pair_tags = [""]
+else:
+    read_pair_tags = ["_R1","_R2"]
+
 #wildcard_constraints:
 #     sample = "|".join(sample_tab.sample_name),
 #     lib_name="[^\.\/]+"
@@ -22,11 +27,12 @@ reference_directory = os.path.join(GLOBAL_REF_PATH,config["organism"],config["re
 ##### Target rules #####
 
 rule all:
-    input:  expand("map_qc/cross_sample_correlation/{lib_name}.cross_sample_correlation.snps.html", lib_name = config["library_name"]),
-            expand("map_qc/cross_sample_correlation/{lib_name}.cross_sample_correlation.snps.tsv", lib_name= config["library_name"]),
+    input:  expand("sample_final_reports/{sample}.final_sample_report.html", sample = config["sample_name"]),
+            expand("sample_logs/{sample}.fastq2bam_DNA.log", sample = config["sample_name"]),
 
 
 ##### Modules #####
 
-include: "rules/quality_control.smk"
-include: "rules/cross_sample_correlation.smk"
+#include: "rules/quality_control.smk"
+#include: "rules/cross_sample_correlation.smk"
+include: "rules/sample_report.smk"
