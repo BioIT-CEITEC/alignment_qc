@@ -4,7 +4,7 @@
 #
 
 rule qc_picard_DNA:
-    input:  bam = expand("mapped/{sample}.bam",sample = config["sample_name"]),
+    input:  bam = expand("mapped/{sample}.bam",sample = sample_tab.sample_name),
             ref = expand("{ref_dir}/seq/{ref}.fa",ref_dir=reference_directory, ref = config["reference"])[0],
             ilist = expand("{ref_dir}/intervals/{library_scope}/{library_scope}.interval_list",ref_dir=reference_directory,library_scope=config["library_scope"])[0],
     output: table = "map_qc/picard/{sample}.picard.tsv",

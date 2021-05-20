@@ -15,7 +15,7 @@ rule all_primary:
         return list()
 
 rule merge_reports:
-    input:  html = expand("sample_final_reports/{sample}.final_sample_report.html", sample = config["sample_name"]),
+    input:  html = expand("sample_final_reports/{sample}.final_sample_report.html", sample = sample_tab.sample_name),
             cross_html = cross_html_input,
             ref_info = "genomic_reference_info.txt",
     output: html = "{lib_name}.final_report.html",
@@ -28,7 +28,7 @@ rule merge_reports:
     script: "../wrappers/merge_reports/script.py"
 '''
 rule single_sample_report_DNA:
-    input:  raw_fastqc = expand("raw_fastq_qc/{sample}{read_pair_tag}.fastqc.html",zip,sample = config["sample_name"],read_pair_tag = read_pair_tags),
+    input:  raw_fastqc = expand("raw_fastq_qc/{sample}{read_pair_tag}.fastqc.html",zip,read_pair_tag = read_pair_tags),
             picard = "map_qc/picard/{sample}.picard.tsv",
             samtools = "map_qc/samtools/{sample}.idxstats.tsv",
             qualimap = "map_qc/qualimap/{sample}/qualimapReport.pdf",

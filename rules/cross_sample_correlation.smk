@@ -14,7 +14,7 @@ rule cross_sample_correlation_viz:
     script: "../wrappers/cross_sample_correlation_viz/script.py"
 
 rule cross_sample_correlation:
-    input:  vcfs = expand("map_qc/cross_sample_correlation/{sample}.snp.vcf",sample = config["sample_name"])
+    input:  vcfs = expand("map_qc/cross_sample_correlation/{sample}.snp.vcf",sample = sample_tab.sample_name)
     output: Rdata_for_viz = "map_qc/cross_sample_correlation/{lib_name}.cross_sample_correlation.Rdata",
     log:    run = "map_qc/cross_sample_correlation/{lib_name}.cross_sample_correlation.log"
     params: output = "map_qc/cross_sample_correlation/{lib_name}.cross_sample_correlation"

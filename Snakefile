@@ -12,23 +12,23 @@ reference_directory = os.path.join(GLOBAL_REF_PATH,config["organism"],config["re
 
 ##### Config processing #####
 
-#sample_tab = pd.DataFrame.from_dict(config["samples"],orient="index")
-#print(sample_tab)
+sample_tab = pd.DataFrame.from_dict(config["samples"],orient="index")
+print(sample_tab)
 
 if config["lib_reverse_read_length"] == 0:
     read_pair_tags = [""]
 else:
     read_pair_tags = ["_R1","_R2"]
 
-#wildcard_constraints:
-#     sample = "|".join(sample_tab.sample_name),
-#     lib_name="[^\.\/]+"
+wildcard_constraints:
+     sample = "|".join(sample_tab.sample_name),
+     lib_name="[^\.\/]+"
 
 ##### Target rules #####
 
 rule all:
-    input:  expand("sample_final_reports/{sample}.final_sample_report.html", sample = config["sample_name"]),
-            expand("sample_logs/{sample}.fastq2bam_DNA.log", sample = config["sample_name"]),
+    input:  expand("sample_final_reports/{sample}.final_sample_report.html", sample = sample_tab.sample_name),
+            expand("sample_logs/{sample}.fastq2bam_DNA.log", sample = sample_tab.sample_name),
 
 
 ##### Modules #####
