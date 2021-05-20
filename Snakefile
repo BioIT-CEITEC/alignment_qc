@@ -27,12 +27,11 @@ wildcard_constraints:
 ##### Target rules #####
 
 rule all:
-    input:  expand("sample_final_reports/{sample}.final_sample_report.html", sample = sample_tab.sample_name),
-            expand("sample_logs/{sample}.fastq2bam_DNA.log", sample = sample_tab.sample_name),
+    input: expand("{lib_name}.final_report.html",lib_name = config["library_name"])
 
 
 ##### Modules #####
 
-#include: "rules/quality_control.smk"
-#include: "rules/cross_sample_correlation.smk"
+include: "rules/quality_control.smk"
+include: "rules/cross_sample_correlation.smk"
 include: "rules/sample_report.smk"
