@@ -1,10 +1,12 @@
 {
   "workflow_description": {
-    "name":"alignment_qc_DNA",
-    "version": 1.0,
-    "label":"Alignment QC DNA",
-    "type":"alignment_qc_DNA",
-    "inputs":"mapped/{sample}.bam",
+    "name":"alignment_qc",
+    "label":"After alignment QC",
+    "type":"alignment_qc",
+    "inputs":[
+      "mapped/{sample}.bam",
+      "raw_fastq_qc/{sample}*fastqc.html"
+    ],
     "outputs":[
       "map_qc/cross_sample_correlation/{lib_name}.cross_sample_correlation.snps.html",
       "map_qc/cross_sample_correlation/{lib_name}.cross_sample_correlation.snps.tsv",
@@ -14,6 +16,9 @@
       "map_qc/qualimap/{sample}/qualimapReport.pdf",
       "map_qc/samtools/{sample}.idxstats.tsv",
       "map_qc/samtools/{sample}.flagstat.tsv"
+    ],
+    "reports":[
+      "reports/alignment_qc/*"
     ]
   },
   "general_params": [
