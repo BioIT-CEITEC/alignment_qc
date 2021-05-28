@@ -19,7 +19,7 @@ if os.stat(snakemake.input.ilist).st_size != 0:
     f.write("## VERSION: Picard "+version+"\n")
     f.close()
 
-    command = "picard -Xmx"+str(snakemake.resources.mem)+"g CollectHsMetrics I="+snakemake.input.bam+" O="+snakemake.output.table+" R="+snakemake.input.ref+" BAIT_INTERVALS="+snakemake.input.ilist+" \
+    command = "picard -Xmx"+str(snakemake.resources.mem)+"g CollectHsMetrics I="+snakemake.input.bam+" O="+snakemake.output.table+" R="+str(snakemake.input.ref)+" BAIT_INTERVALS="+str(snakemake.input.ilist)+" \
 PER_TARGET_COVERAGE="+snakemake.params.per_target+" TARGET_INTERVALS="+snakemake.input.ilist+" VALIDATION_STRINGENCY=LENIENT 2>> "+snakemake.log.run+""
     f = open(snakemake.log.run, 'at')
     f.write("## COMMAND: "+command+"\n")

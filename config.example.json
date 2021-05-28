@@ -4,27 +4,13 @@
   "lib_reverse_read_length":151,
   "organism": "homsap",
   "reference": "GRCh37-p13",
-  "additional_options":"",
-  "sample": {
-    "id4": {
-      "sample_name": "ES1903krev",
-      "i7_name": "A02",
-      "i7_sequence": "CGATGT"
-    }
-  },
+  "lib_ROI":"BRONCO",
   "samples":{
     "id4":{
-      "sample_name":"ES1903krev",
-      "i7_name":"A02",
-      "i7_sequence":"CGATGT"
-    },
+      "sample_name":"H-0246"},
     "id5":{
-      "sample_name":"RT1207krev",
-      "i7_name":"A07",
-      "i7_sequence":"CAGATC"},
+      "sample_name":"BR-0764"},
     "id6":{
-      "sample_name":"AR0109krev",
-      "i7_name":"A19",
-      "i7_sequence":"GTGAAA"}
-    }
+      "sample_name":"BR-0767"}
+  }
 }

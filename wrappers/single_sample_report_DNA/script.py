@@ -2,11 +2,7 @@
 # wrapper for rule: single_sample_report_DNA
 ######################################
 import os
-import sys
 import subprocess
-sys.path.append(os.path.abspath(os.path.dirname(__file__)+"/../../../scripts/"))
-from supply import html_report
-from supply import unfold_list
 from snakemake.shell import shell
 
 f = open(snakemake.log.run, 'a+')
@@ -37,7 +33,7 @@ f = open(snakemake.log.run, 'at')
 f.write("## VERSION: "+version+"\n")
 f.close()
 
-multiqc_search_paths = snakemake.params.run_dir + "/*/"+snakemake.wildcards.sample + "* " + snakemake.params.run_dir + "/*/*/"+snakemake.wildcards.sample+"*"
+multiqc_search_paths = "./*/"+snakemake.wildcards.sample + "* " + "./*/*/"+snakemake.wildcards.sample+"*"
 
 shell("mkdir -p " + os.path.dirname(snakemake.params.multiqc_html))
 command = TOOL+" -f --config " + snakemake.params.multiqc_config + " -n "\
@@ -53,6 +49,26 @@ command = "cat `ls -tr "+ os.path.dirname(snakemake.log.run) +"/*.log` > "+snake
 f.write("## COMMAND: "+command+"\n")
 f.close()
 shell(command)
+
+
+def html_report(text,out_name):
+    out_name = out_name.replace(".html",".Rmd")
+    if os.path.isfile(out_name):
+        os.remove(out_name)
+    f = open(out_name,"w")
+    f.write(text)
+    f.close()
+
+    command = "Rscript " + os.path.dirname(__file__) + "/render_markdown.R " + out_name
+    subprocess.call(command, shell=True)
+
+
+def unfold_list(str_start, what, str_end):
+    if(isinstance(what,list)):
+        return '\n'.join(map(lambda item: str_start+os.path.split(item)[1]+str_end, what))+'\n'
+    else:
+        return str_start+os.path.split(what)[1]+str_end+'\n'
+
 
 if not snakemake.input.raw_fastqc:
     fastq_report_text = "Detailed raw fastq QC - (FastQC) - not available for merged BAMs"
@@ -76,30 +92,3 @@ fastq_report_text+
 ---
 Return to [start page](../'''+ snakemake.params.lib_name +'''.final_report.html)
 ''',snakemake.output.html)
-
-
-
-# OLD STUFF:
-#     run:
-#         shell(" {MULTIQC} -f -n {params.name} -b 'Return to <a href=\"../{wildcards.run_name}.final_report.html\">start page</a>' {params.prefix} > {log.run} 2>&1 ")
-#         html_report('''
-# ---
-# title: Sample '''+wildcards.sample+''' report
-# ---
-#
-# Overview report of workflow done for sample '''+wildcards.sample+'''.
-#
-# ### Report files:
-#
-# '''+
-# unfold_list("* [1st FastQC report (for raw data)](../1st_qc/",input.fastqc_1st,")")+
-# unfold_list("* [Alignment report](../mapped/",input.alignment,")")+
-# unfold_list("* [Samtools stats](../map_qc/",input.samtools,")")+
-# unfold_list("* [Picard report](../map_qc/",input.picard,")")+
-# unfold_list("* [Alfred report](../map_qc/",input.alfred,")")+
-# unfold_list("* [Qualimap report](../map_qc/",input.qualimap,")")+
-# unfold_list("* [MultiQC report](",params.name,")")+
-# '''\n
-# ---
-# Return to [start page](../'''+wildcards.run_name+'''.final_report.html)
-# ''',output.html)
