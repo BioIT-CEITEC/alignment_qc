@@ -19,8 +19,8 @@ if os.stat(snakemake.input.ilist).st_size != 0:
     f.write("## VERSION: Picard "+version+"\n")
     f.close()
 
-    command = "picard -Xmx"+str(snakemake.resources.mem)+"g CollectHsMetrics I="+snakemake.input.bam+" O="+snakemake.output.table+" R="+snakemake.input.ref+" BAIT_INTERVALS="+snakemake.input.ilist+" \
-PER_TARGET_COVERAGE="+snakemake.params.per_target+" TARGET_INTERVALS="+snakemake.input.ilist+" VALIDATION_STRINGENCY=LENIENT 2>> "+snakemake.log.run+""
+    command = "picard -Xmx"+str(snakemake.resources.mem)+"g CollectHsMetrics I="+snakemake.input.bam+" O="+snakemake.output.table+" R="+str(snakemake.input.ref)+" BAIT_INTERVALS="+str(snakemake.input.ilist)+" \
+PER_TARGET_COVERAGE="+snakemake.params.per_target+" TARGET_INTERVALS="+str(snakemake.input.ilist)+" VALIDATION_STRINGENCY=LENIENT 2>> "+snakemake.log.run+""
     f = open(snakemake.log.run, 'at')
     f.write("## COMMAND: "+command+"\n")
     f.close()
@@ -28,15 +28,13 @@ PER_TARGET_COVERAGE="+snakemake.params.per_target+" TARGET_INTERVALS="+snakemake
 
 
 else:
-    # command = "touch " + snakemake.output.table
-    # shell(command)
     version = str(subprocess.Popen("picard CollectWgsMetricsWithNonZeroCoverage --version 2>&1",shell=True,stdout=subprocess.PIPE).communicate()[0], 'utf-8')
     f = open(snakemake.log.run, 'at')
     f.write("## VERSION: Picard "+version+"\n")
     f.close()
 
     command = "picard -Xmx"+str(snakemake.resources.mem)+"g CollectWgsMetricsWithNonZeroCoverage I="+snakemake.input.bam+" \
-O="+snakemake.output.table+" R="+snakemake.input.ref+" CHART="+snakemake.params.wgs_chart+" >> "+snakemake.log.run+" 2>&1"
+O="+snakemake.output.table+" R="+str(snakemake.input.ref)+" CHART="+str(snakemake.params.wgs_chart)+" >> "+snakemake.log.run+" 2>&1"
     f = open(snakemake.log.run, 'at')
     f.write("## COMMAND: "+command+"\n")
     f.close()
