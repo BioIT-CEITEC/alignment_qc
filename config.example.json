@@ -1,0 +1,19 @@
+{
+  "library_name":"MOII_e88_krve",
+  "lib_forward_read_length":151,
+  "lib_reverse_read_length":151,
+  "organism": "homsap",
+  "reference": "GRCh37-p13",
+  "lib_ROI":"BRONCO",
+  "qc_picard_DNA": true,
+  "qc_qualimap_DNA":true,
+  "qc_samtools_DNA":true,
+  "samples":{
+    "id4":{
+      "sample_name":"H-0246"},
+    "id5":{
+      "sample_name":"BR-0764"},
+    "id6":{
+      "sample_name":"BR-0767"}
+  }
+}

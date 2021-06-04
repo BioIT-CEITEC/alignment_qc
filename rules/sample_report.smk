@@ -23,7 +23,7 @@ rule merge_reports:
 
 def single_sample_report_DNA_input(wildcards):
     input = {
-        'raw_fastqc': expand("raw_fastq_qc/{sample}{read_pair_tag}.fastqc.html",zip,sample = sample_tab.sample_name,read_pair_tag = read_pair_tags)[0]}
+        'raw_fastqc': expand("raw_fastq_qc/{sample}{read_pair_tag}_fastqc.html",zip,sample = sample_tab.sample_name,read_pair_tag = read_pair_tags)[0]}
     if config["qc_picard_DNA"] == "true":
         input['picard'] = "map_qc/picard/{sample}.picard.tsv",
     if config["qc_qualimap_DNA"] == "true":

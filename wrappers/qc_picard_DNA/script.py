@@ -28,6 +28,8 @@ PER_TARGET_COVERAGE="+snakemake.params.per_target+" TARGET_INTERVALS="+str(snake
 
 
 else:
+    # command = "touch " + snakemake.output.table
+    # shell(command)
     version = str(subprocess.Popen("picard CollectWgsMetricsWithNonZeroCoverage --version 2>&1",shell=True,stdout=subprocess.PIPE).communicate()[0], 'utf-8')
     f = open(snakemake.log.run, 'at')
     f.write("## VERSION: Picard "+version+"\n")
