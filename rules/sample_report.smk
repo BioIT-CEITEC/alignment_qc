@@ -3,42 +3,36 @@
 # all = final whole run report
 
 
-def cross_html_input(wildcards):
-    snp_list = expand("{ref_dir}/other/snp/{ref}.snp.bed",ref_dir=reference_directory,ref = config["reference"])[0]
-    if os.path.isfile(snp_list) and os.stat(snp_list).st_size != 0:
-        return "map_qc/cross_sample_correlation/" + wildcards.lib_name + ".cross_sample_correlation.snps.html"
-    else:
-        return list()
-
-rule merge_reports:
-    input:  html = expand("sample_final_reports/{sample}.final_sample_report.html", sample = sample_tab.sample_name),
-            cross_html = cross_html_input,
-            #ref_info = expand("{ref_dir}/info.txt",ref_dir=reference_directory)[0]
-    output: html = "{lib_name}.final_report.html",
-    log:    run = "{lib_name}.multiqc_report.log",
-    params: multiqc_html = "{lib_name}.multiqc_report.html",
-            lib_name = config["library_name"]
-    conda: "../wrappers/merge_reports/env.yaml"
-    script: "../wrappers/merge_reports/script.py"
 
 def single_sample_report_DNA_input(wildcards):
     input = {
-        'raw_fastqc': expand("raw_fastq_qc/{sample}{read_pair_tag}_fastqc.html",zip,sample = sample_tab.sample_name,read_pair_tag = read_pair_tags)[0]}
-    if config["qc_picard_DNA"] == "true":
-        input['picard'] = "map_qc/picard/{sample}.picard.tsv",
-    if config["qc_qualimap_DNA"] == "true":
-        input['qualimap'] = "map_qc/qualimap/{sample}/qualimapReport.pdf",
-    if config["qc_samtools_DNA"] == "true":
-        input['samtools'] = "map_qc/samtools/{sample}.idxstats.tsv",
+        'raw_fastqc': "map_qc/picard/"}
+    if config["qc_picard_DNA"]:
+        input['picard'] = expand("map_qc/picard/{sample}.picard.tsv",sample=sample_tab.sample_name)
+    if config["qc_qualimap_DNA"]:
+        input['qualimap'] = expand("map_qc/qualimap/{sample}/qualimapReport.pdf",sample=sample_tab.sample_name)
+    if config["qc_samtools_DNA"]:
+        input['samtools'] = expand("map_qc/samtools/{sample}.idxstats.tsv",sample=sample_tab.sample_name)
     return input
+
+
+rule multiqc_report:
+    input:  "general_analysis_report.html",
+    output: report = "multiqc_report.html",
+    log:    run = "multiqc_report.log",
+    params:
+        multiqc_html = "sample_final_reports/multiqc_report.html",
+        multiqc_config = "/home/245829/Rmarkdown_test/wrappers/multiqc_report/multiqc_config.txt", #upravit cestu!
+        lib_name = config["library_name"],
+        sample_name = sample_tab.sample_name.tolist,
+        run_dir = "/mnt/ssd/ssd_1/workspace/katka/Rmarkdown/201111_TP53-20201111/"
+    conda:  "../wrappers/multiqc_report/env.yaml"
+    script: "../wrappers/multiqc_report/script.py"
 
 
 rule single_sample_report_DNA:
     input: unpack(single_sample_report_DNA_input)
-    output: html = "sample_final_reports/{sample}.final_sample_report.html",
-            whole_run_log = "sample_logs/{sample}.fastq2bam_DNA.log",
-    log:    run = "sample_logs/{sample}/single_sample_report_DNA.log"
-    params: multiqc_html = "sample_final_reports/{sample}.multiqc_report.html",
-            lib_name = config["library_name"]
+    output: html = "general_analysis_report.html"
+    log: run = "sample_final_reports/final_sample_report.html"
     conda: "../wrappers/single_sample_report_DNA/env.yaml"
-    script: "../wrappers/single_sample_report_DNA/script.py"
+    script: "../wrappers/single_sample_report_DNA/test_markdown.Rmd"

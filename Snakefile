@@ -45,7 +45,9 @@ wildcard_constraints:
 ##### Target rules #####
 
 rule all:
-    input: expand("{lib_name}.final_report.html",lib_name = config["library_name"])
+    input:  "general_analysis_report.html",
+            "multiqc_report.html"
+
 
 
 ##### Modules #####

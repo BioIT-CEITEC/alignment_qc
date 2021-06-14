@@ -4,7 +4,7 @@
 #
 
 rule cross_sample_correlation_viz:
-    input:  Rdata_for_viz = "map_qc/cross_sample_correlation/{lib_name}.cross_sample_correlation.Rdata"
+    input:  Rdata_for_viz = expand("map_qc/cross_sample_correlation/{lib_name}.cross_sample_correlation.Rdata",lib_name = config["library_name"])
     output: html = "map_qc/cross_sample_correlation/{lib_name}.cross_sample_correlation.snps.html",
             tsv = "map_qc/cross_sample_correlation/{lib_name}.cross_sample_correlation.snps.tsv",
     log:    run = "map_qc/cross_sample_correlation/{lib_name}.cross_sample_correlation_viz.log"
