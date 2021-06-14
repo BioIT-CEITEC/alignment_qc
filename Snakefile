@@ -40,13 +40,13 @@ else:
 
 wildcard_constraints:
      sample = "|".join(sample_tab.sample_name),
-     lib_name="[^\.\/]+"
+     lib_name="[^\.\/]+",
+     read_pair_tag = "(_R.)?"
 
 ##### Target rules #####
 
 rule all:
-    input:  "general_analysis_report.html",
-            "multiqc_report.html"
+    input:  expand("sample_logs/{sample}.fastq2bam.log",sample=sample_tab.sample_name)
 
 
 
