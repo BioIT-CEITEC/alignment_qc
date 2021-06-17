@@ -11,7 +11,7 @@ MIN_SNPS_COUNT_RATIO_TO_LIB_MEAN <<- 0.01
 MIN_VALUES_TO_CORELATE <<- 5
 
 run_all <- function(args){
-  output_file_base <- args[1]
+  output_file <- args[1]
   vcf_files <- args[-1]
   if(length(vcf_files) > 1 & all(file.size(vcf_files) > 0)){
     
@@ -65,23 +65,23 @@ run_all <- function(args){
         snps_matrix <- print_plotly(all_snps,"snps")
         var_freq_matrix <- print_plotly(all_snps,"var_freq")
         
-        save(snps_matrix,var_freq_matrix,cast_variant_freq,file = paste0(output_file_base,".Rdata"))
+        save(snps_matrix,var_freq_matrix,cast_variant_freq,file = output_file)
       } else {
         m1 <- "not enough SNPs in the data intervals to asses sample correlation"
         m2<- '<font size="3" color="red">not enough SNPs in the data intervals to asses sample correlation</font>'
-        save(m1,m2,file = paste0(output_file_base,".Rdata"))
+        save(m1,m2,file = output_file)
       }
     } else {
       m1 <- "not enough SNPs in the data intervals to asses sample correlation"
       m2<- '<font size="3" color="red">not enough SNPs in the data intervals to asses sample correlation</font>'
-      save(m1,m2,file = paste0(output_file_base,".Rdata"))
+      save(m1,m2,file = output_file)
     }
 
     
   } else {
     m1 <- "Only 1 sample in library or SNPs not called in the samples (SNPs not known for the organism)"
     m2 <- '<font size="3" color="red">only 1 sample in library or SNPs not called in the samples (SNPs not known for the organism)</font>'
-    save(m1,m2,file = paste0(output_file_base,".Rdata"))
+    save(m1,m2,file = output_file)
   }
 }
 
@@ -96,16 +96,6 @@ print_plotly <- function(all_snps,value.var){
 }
 
 
-#to test
-# output_file_base <- "test.cross_sample_correlation"
-# vcf_files <- list.files(path = "/mnt/ssd/ssd_1/snakemake/library1458_200306_Kurucova_TP53/map_qc/cross_sample_correlation/",pattern = ".snp.vcf",full.names = T)
-# vcf_files <- c("/mnt/nfs/shared/Ondrej_Slaby/sequencing_results/primary_data/200529_MOII_e72_tkaneA_B_germinal_20200529/map_qc/cross_sample_correlation/PM1403FFPE_001.snp.vcf",
-#                "/mnt/nfs/shared/Ondrej_Slaby/sequencing_results/primary_data/200601_MOII_e72_krve_20200601/map_qc/cross_sample_correlation/PM1403krev.snp.vcf",
-#                "/mnt/nfs/shared/Ondrej_Slaby/sequencing_results/primary_data/200529_MOII_e72_tkaneA_B_germinal_20200529/map_qc/cross_sample_correlation/RF1986FFPE_001.snp.vcf",
-#                "/mnt/nfs/shared/Ondrej_Slaby/sequencing_results/primary_data/200601_MOII_e72_krve_20200601/map_qc/cross_sample_correlation/")
-# line<- readLines("/mnt/ssd/ssd_1/snakemake/library1861_201001_200930_PG_Seq_NextSeq_1/map_qc/cross_sample_correlation/command.log")
-# args <- strsplit(line,split = " ")[[1]]
-# setwd("/mnt/ssd/ssd_1/snakemake")
 
 #to run
 args <- commandArgs(trailingOnly = T)

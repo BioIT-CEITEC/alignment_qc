@@ -1,47 +1,47 @@
 ######################################
 # wrapper for rule: qc_qualimap_DNA
 ######################################
-import os
 import subprocess
 from snakemake.shell import shell
+shell.executable("/bin/bash")
+log_filename = str(snakemake.log)
 
-f = open(snakemake.log.run, 'a+')
+f = open(log_filename, 'wt')
 f.write("\n##\n## RULE: qc_qualimap_DNA \n##\n")
 f.close()
 
-
-shell.executable("/bin/bash")
-
 version = str(subprocess.Popen("qualimap -v 2>&1 | grep QualiMap",shell=True,stdout=subprocess.PIPE).communicate()[0], 'utf-8')
-f = open(snakemake.log.run, 'at')
+f = open(log_filename, 'at')
 f.write("## VERSION: "+version+"\n")
 f.close()
 
-command = "mkdir -p $(dirname "+snakemake.output.pdf+") >> "+snakemake.log.run+" 2>&1"
-f = open(snakemake.log.run, 'at')
+command = "mkdir -p $(dirname "+snakemake.output.html+") >> "+log_filename+" 2>&1"
+f = open(log_filename, 'at')
 f.write("## COMMAND: "+command+"\n")
 f.close()
 shell(command)
 
-command = "bash -c unset DISPLAY >> "+snakemake.log.run+" 2>&1"
-f = open(snakemake.log.run, 'at')
+command = "bash -c unset DISPLAY >> "+log_filename+" 2>&1"
+f = open(log_filename, 'at')
 f.write("## COMMAND: "+command+"\n")
 f.close()
 shell(command)
 
-if os.stat(snakemake.input.bed).st_size != 0:
-    command = "qualimap bamqc -bam "+snakemake.input.bam+" -gff "+snakemake.input.bed+" -outdir "+snakemake.params.prefix+" -nt "+str(snakemake.threads)+" \
-    --java-mem-size="+str(snakemake.resources.mem)+"G >> "+snakemake.log.run+" 2>&1"
+if "lib_ROI" in snakemake.input:
+    lib_ROI_param = " -gff " +snakemake.input.lib_ROI
 else:
-    command = "qualimap bamqc -bam "+snakemake.input.bam+" -outdir "+snakemake.params.prefix+" -nt "+str(snakemake.threads)+" \
-    --java-mem-size="+str(snakemake.resources.mem)+"G >> "+snakemake.log.run+" 2>&1"
-f = open(snakemake.log.run, 'at')
+    lib_ROI_param = ""
+
+command = "qualimap bamqc -bam " + snakemake.input.bam + lib_ROI_param + " -outdir " + dirname(snakemake.output.html) +" -nt "+str(snakemake.threads)+" \
+    --java-mem-size="+str(snakemake.resources.mem)+"G >> "+log_filename+" 2>&1"
+
+f = open(log_filename, 'at')
 f.write("## COMMAND: "+command+"\n")
 f.close()
 shell(command)
 
-command = "wkhtmltopdf "+ snakemake.params.html + " " + snakemake.output.pdf + " >> "+snakemake.log.run+" 2>&1"
-f = open(snakemake.log.run, 'at')
-f.write("## COMMAND: "+command+"\n")
-f.close()
-shell(command)
+# command = "wkhtmltopdf "+ snakemake.params.html + " " + snakemake.output.pdf + " >> "+log_filename+" 2>&1"
+# f = open(log_filename, 'at')
+# f.write("## COMMAND: "+command+"\n")
+# f.close()
+# shell(command)

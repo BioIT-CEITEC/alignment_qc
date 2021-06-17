@@ -7,14 +7,14 @@ min_version("5.18.0")
 
 GLOBAL_REF_PATH = "/mnt/references/"
 
-## Reference processing
+# Reference processing
 #
-if config["lib_ROI"] != "wgs":
+if "lib_ROI" in config and config["lib_ROI"] != "wgs":
     # setting reference from lib_ROI
     f = open(os.path.join(GLOBAL_REF_PATH,"reference_info","DNA_ROI.json"))
     lib_ROI_dict = json.load(f)
     f.close()
-    config["reference"] = [ref_name for ref_name in lib_ROI_dict.keys() if isinstance(lib_ROI_dict[ref_name],dict) and config["lib_ROI"] in lib_ROI_dict[ref_name].values()][0]
+    config["reference"] = [ref_name for ref_name in lib_ROI_dict.keys() if isinstance(lib_ROI_dict[ref_name],dict) and config["lib_ROI"] in lib_ROI_dict[ref_name].keys()][0]
 
 
 # setting organism from reference
@@ -39,14 +39,14 @@ else:
     read_pair_tags = ["_R1","_R2"]
 
 wildcard_constraints:
-     sample = "|".join(sample_tab.sample_name),
+     sample = "|".join(sample_tab.sample_name) + "|all_samples",
      lib_name="[^\.\/]+",
      read_pair_tag = "(_R.)?"
 
 ##### Target rules #####
 
 rule all:
-    input:  expand("sample_logs/{sample}.fastq2bam.log",sample=sample_tab.sample_name)
+    input:  "qc_reports/alignment_final_report.html"
 
 
 

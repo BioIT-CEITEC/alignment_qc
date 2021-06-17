@@ -1,0 +1,62 @@
+---
+title:  Sample reports DNA
+output:
+  html_document:
+    highlight: tango
+    toc: true
+    toc_depth: 2
+    toc_float: 
+      collapsed: no
+      smooth_scroll: yes
+---
+
+```{r load-packages, include=FALSE}
+library(data.table)
+library(jsonlite)
+
+```
+
+```{r, results='asis', echo=FALSE}
+# BASEDIR <- "/mnt/ssd/"
+# STAGE <- "210604"
+# PROJECT <- "alignment_qc_71"
+# WORKDIR <- paste0(BASEDIR,STAGE,"_",PROJECT)
+# INPUTFILES <- paste0(WORKDIR,"/")
+BASEDIR <- "/mnt/ssd/ssd_1/workspace/katka/Rmarkdown/"
+STAGE <- "201111"
+PROJECT <- "TP53-20201111"
+WORKDIR <- paste0(BASEDIR,STAGE,"_",PROJECT)
+INPUTFILES <- paste0(WORKDIR,"/")
+
+```
+
+
+```{r, include=FALSE}
+config_json = as.data.table(fromJSON(paste0(INPUTFILES,"config.json")))
+```
+`r if(unique(config_json$qc_picard_DNA)   == TRUE){"## QC picard DNA reports"}`
+`r if(unique(config_json$qc_picard_DNA)   == TRUE){paste0("[",snakemake@input$picard,  "](./",snakemake@input$picard,  ")")} `
+
+`r if(unique(config_json$qc_qualimap_DNA) == TRUE){"## QC qualimap DNA reports"}`
+`r if(unique(config_json$qc_qualimap_DNA) == TRUE){paste0("[",snakemake@input$qualimap,"](./",snakemake@input$qualimap,")")} `
+
+`r if(unique(config_json$qc_samtools_DNA) == TRUE){"## QC samtools DNA reports"}`
+`r if(unique(config_json$qc_samtools_DNA) == TRUE){paste0("[",snakemake@input$samtools,"](./",snakemake@input$samtools,")")} `
+
+
+# The end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
