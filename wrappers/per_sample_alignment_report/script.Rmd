@@ -12,18 +12,10 @@ library(jsonlite)
 
 ```
 
-```{r, results='asis', echo=FALSE}
-BASEDIR <- "/mnt/ssd/"
-STAGE <- "210615"
-PROJECT <- "alignment_qc_130"
-WORKDIR <- paste0(BASEDIR,STAGE,"_",PROJECT)
-INPUTFILES <- paste0(WORKDIR,"/")
-
-```
 
 
 ```{r, include=FALSE}
-config_json = as.data.table(fromJSON(paste0(INPUTFILES,"config.json")))
+config_json = as.data.table(fromJSON(paste0(snakemake@params$config,"config.json")))
 ```
 Overview report of workflow done for sample `r snakemake@params$sample_name `.
 

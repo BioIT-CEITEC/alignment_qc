@@ -1,22 +1,5 @@
 # REPORTING RULES
 #
-# all = final whole run report
-
-# if config["qc_qualimap_DNA"]:
-#     input['qualimap'] = expand("map_qc/qualimap/{sample}/qualimapReport.pdf",sample=sample_tab.sample_name)
-# if config["qc_samtools_DNA"]:
-#     input['samtools'] = expand("map_qc/samtools/{sample}.idxstats.tsv",sample=sample_tab.sample_name)
-# return input
-#
-#
-# rule final_report:
-#     input: unpack(final_report_input)
-#     output: html="general_analysis_report.html"
-#     log: run="sample_final_reports/final_sample_report.html"
-#     conda: "../wrappers/single_sample_report_DNA/env.yaml"
-#     script: "../wrappers/single_sample_report_DNA/test_markdown.Rmd"
-
-
 
 
 def multiqc_report_input(wildcards):
@@ -38,7 +21,7 @@ rule multiqc_report:
     output: html="qc_reports/{sample}/multiqc.html"
     log: "logs/{sample}/multiqc.log"
     params:
-        multiqc_config = "/mnt/BioRoots/alignment_qc/wrappers/multiqc_report/multiqc_config.txt", #přepiš cestu!!!!!
+        multiqc_config = workflow.basedir+"/../wrappers/multiqc_report/multiqc_config.txt",
         multiqc_path = "qc_reports/{sample}/"
     conda: "../wrappers/multiqc_report/env.yaml"
     script: "../wrappers/multiqc_report/script.py"
@@ -56,7 +39,8 @@ rule per_sample_alignment_report:
     input: unpack(per_sample_alignment_report_input)
     output: sample_report = "qc_reports/{sample}/final_alignment_report.html",
     log:  "logs/{sample}/per_sample_alignment_report.log"
-    params: sample_name = "{sample}"
+    params: sample_name = "{sample}",
+            config = config
     conda: "../wrappers/per_sample_alignment_report/env.yaml"
     script: "../wrappers/per_sample_alignment_report/script.Rmd"
 
@@ -73,27 +57,7 @@ rule final_alignment_report:
     output: html="qc_reports/alignment_final_report.html"
     log: "logs/final_alignment_report.log"
     params:
-        sample_name = sample_tab.sample_name
+        sample_name = sample_tab.sample_name,
+        config = config
     conda: "../wrappers/final_alignment_report/env.yaml"
     script: "../wrappers/final_alignment_report/script.Rmd"
-
-# rule merge_reports:
-#     input:  html = set(expand(DIR + "/sample_final_reports/{sample}.final_report.html",sample = cfg[SAMPLE].tolist())),
-#             biotype = set(expand(DIR + "/postQC/{sample}/Biotype/{sample}.biotype_counts.txt",sample = cfg[SAMPLE].tolist())),
-#     output: html = "alignment_final_report.html",
-#     log:    run = DIR + "/"+LIB_NAME+".multiqc_report.log",
-#     params: cfg = cfg,
-#             multiqc_html = DIR + "/"+LIB_NAME+".multiqc_report.html",
-#             dupraxpbox_all_pdf = DIR + "/postQC/"+LIB_NAME+".duprateExpBoxplot_all.pdf",
-#             exphist_all_pdf = DIR + "/postQC/"+LIB_NAME+".expressionHist_all.pdf",
-#             dupraexpden_all_pdf = DIR + "/postQC/"+LIB_NAME+".duprateExpDens_all.pdf",
-#             multipergene_all_pdf = DIR + "/postQC/"+LIB_NAME+".multimapPerGene_all.pdf",
-#             readdist_all_pdf = DIR + "/postQC/"+LIB_NAME+".readDist_all.pdf",
-#             # biotype_all_txt = DIR + "/postQC/"+LIB_NAME+".biotype_all.txt",
-#             biotype_all_pdf = DIR + "/postQC/"+LIB_NAME+".biotype_all.pdf",
-#             fastq_screen_all_pdf = DIR + "/postQC/"+LIB_NAME+".fastqscreen_all.pdf",
-#             prefix = DIR + "/",
-#             lib_name = LIB_NAME,
-#             multiqc_config = workflow.basedir + "/../scripts/multiqc_config.txt"
-#     conda:  "../wraps/fastq2bam_RNA/merge_reports/env.yaml"
-#     script: "../wraps/fastq2bam_RNA/merge_reports/script.py"

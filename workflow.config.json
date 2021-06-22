@@ -6,7 +6,7 @@
     "type":"alignment_qc",
     "inputs":[
       "mapped/{sample}.bam",
-      "qc_reports/{sample}/fastqc/fastqc*"
+      "qc_reports/{sample}/raw_fastqc/fastqc/fastqc*"
     ],
     "outputs":[
       "qc_report/*"

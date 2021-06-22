@@ -22,7 +22,7 @@ f = open(log_filename, 'at')
 f.write("## VERSION: "+version+"\n")
 f.close()
 
-multiqc_search_paths = " /mnt/ssd/210615_alignment_qc_130/qc_reports/"+snakemake.wildcards.sample+ "/*/* /mnt/ssd/210615_alignment_qc_130/qc_reports/"+snakemake.wildcards.sample+"/*"
+multiqc_search_paths = " /mnt/ssd/210615_alignment_qc_130/qc_reports/*/* /mnt/ssd/210615_alignment_qc_130/qc_reports/*"
 
 command = "multiqc -f --config " + snakemake.params.multiqc_config +" -n multiqc -o ./"+ snakemake.params.multiqc_path + multiqc_search_paths + " >> "+log_filename+" 2>&1 "
 #command = "multiqc -f --config " + snakemake.params.multiqc_config +" -n multiqc" + multiqc_search_paths + " >> "+log_filename+" 2>&1 "

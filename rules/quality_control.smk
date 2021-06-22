@@ -42,7 +42,7 @@ rule qc_qualimap_DNA:
 rule qc_samtools_DNA:
     input:  bam = "mapped/{sample}.bam"
     output: idxstats = "qc_reports/{sample}/qc_samtools_DNA/idxstats.tsv",
-            flagstats = "qc_reports/{sample}/qc_samtools_DNA/flagstat.tsv"
+            flagstats = "qc_reports/{sample}/qc_samtools_DNA/{sample}.flagstat.tsv"
     log:    "logs/{sample}/qc_samtools_DNA.log"
     threads:    1
     conda: "../wrappers/qc_samtools_DNA/env.yaml"
