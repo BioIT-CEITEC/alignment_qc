@@ -38,6 +38,6 @@ Overview report of workflow done for sample `r snakemake@params$sample_name `.
 
 ---
 
-Return to [start page](./qc_reports/alignment_final_report.html)
+Return to [start page](./alignment_final_report.html)
 
 ---

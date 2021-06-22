@@ -39,6 +39,7 @@ rule multiqc_report:
     log: "logs/{sample}/multiqc.log"
     params:
         multiqc_config = "/mnt/BioRoots/alignment_qc/wrappers/multiqc_report/multiqc_config.txt", #přepiš cestu!!!!!
+        multiqc_path = "qc_reports/{sample}/"
     conda: "../wrappers/multiqc_report/env.yaml"
     script: "../wrappers/multiqc_report/script.py"
 
@@ -64,7 +65,7 @@ def final_alignment_report_input(wildcards):
     input['all_sample_multiqc'] = "qc_reports/all_samples/multiqc.html"
     input['per_sample_reports'] = expand("qc_reports/{sample}/final_alignment_report.html",sample=sample_tab.sample_name)
     if config["cross_sample_correlation"]:
-        input['cross_sample_correlation'] = "qc_reports/cross_sample_correlation/cross_sample_correlation.html"
+        input['cross_sample_correlation'] = "qc_reports/cross_sample_correlation/cross_sample_correlation.snps.html"
     return input
 
 rule final_alignment_report:
