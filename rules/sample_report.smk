@@ -22,7 +22,7 @@
 def multiqc_report_input(wildcards):
     input = {}
     if wildcards.sample != "all_samples":
-        input['raw_fastq_report'] = expand("qc_reports/"+wildcards.sample+"/fastqc/fastqc{read_pair_tags}.html",read_pair_tags=read_pair_tags)
+        input['raw_fastq_report'] = expand("qc_reports/"+wildcards.sample+"/raw_fastqc/fastqc{read_pair_tags}.html",read_pair_tags=read_pair_tags)
         if config["qc_qualimap_DNA"]:
             input['qc_qualimap_DNA'] = "qc_reports/{sample}/qc_qualimap_DNA/qualimapReport.html"
         if config["qc_samtools_DNA"]:
@@ -38,29 +38,24 @@ rule multiqc_report:
     output: html="qc_reports/{sample}/multiqc.html"
     log: "logs/{sample}/multiqc.log"
     params:
-        multiqc_config = "../wrappers/multiqc_report/multiqc_config.txt", #upravit cestu!
+        multiqc_config = "/mnt/BioRoots/alignment_qc/wrappers/multiqc_report/multiqc_config.txt", #přepiš cestu!!!!!
     conda: "../wrappers/multiqc_report/env.yaml"
     script: "../wrappers/multiqc_report/script.py"
 
 def per_sample_alignment_report_input(wildcards):
     input = {}
     input['multiqc'] = "qc_reports/{sample}/multiqc.html"
-    input['raw_fastq_report'] = expand("qc_reports/"+wildcards.sample+"/fastqc/fastqc{read_pair_tags}.html",read_pair_tags = read_pair_tags)
+    input['raw_fastq_R1_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/fastqc_R1.html"
+    input['raw_fastq_R2_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/fastqc_R2.html"
     if config["qc_qualimap_DNA"]:
         input['qc_qualimap_DNA'] = "qc_reports/{sample}/qc_qualimap_DNA/qualimapReport.html"
     return input
 
 rule per_sample_alignment_report:
     input: unpack(per_sample_alignment_report_input)
-    output:
-        sample_report = "qc_reports/{sample}/final_alignment_report.html",
-    log: "logs/{sample}/per_sample_alignment_report.log"
-    params:
-        multiqc_html_single = "sample_final_reports/{sample}.multiqc_report.html",
-        multiqc_html_all= ".multiqc_report.html",#snakemake.params.lib_name + snakemake.params.multiqc_html_final,
-        multiqc_config = "/home/245829/Rmarkdown_test/wrappers/multiqc_report/multiqc_config.txt", #upravit cestu!
-        lib_name = config["library_name"],
-        run_dir = "/mnt/ssd/ssd_1/workspace/katka/Rmarkdown/201111_TP53-20201111/"
+    output: sample_report = "qc_reports/{sample}/final_alignment_report.html",
+    log:  "logs/{sample}/per_sample_alignment_report.log"
+    params: sample_name = "{sample}"
     conda: "../wrappers/per_sample_alignment_report/env.yaml"
     script: "../wrappers/per_sample_alignment_report/script.Rmd"
 
@@ -76,6 +71,8 @@ rule final_alignment_report:
     input: unpack(final_alignment_report_input)
     output: html="qc_reports/alignment_final_report.html"
     log: "logs/final_alignment_report.log"
+    params:
+        sample_name = sample_tab.sample_name
     conda: "../wrappers/final_alignment_report/env.yaml"
     script: "../wrappers/final_alignment_report/script.Rmd"
 

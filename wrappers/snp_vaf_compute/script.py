@@ -25,8 +25,8 @@ if os.stat(snakemake.input.snp_bed).st_size != 0:
     f.write("## VERSION: "+version+"\n")
     f.close()
 
-    if os.stat(snakemake.input.region_bed).st_size != 0:
-        command = "bedtools intersect -a "+snakemake.input.snp_bed+" -b "+snakemake.input.region_bed+" > "+snakemake.params.intersect_bed+" 2>> "+log_filename
+    if os.stat(snakemake.input.lib_ROI).st_size != 0:
+        command = "bedtools intersect -a "+snakemake.input.snp_bed+" -b "+snakemake.input.lib_ROI+" > "+snakemake.params.intersect_bed+" 2>> "+log_filename
     else:
         command = " ln -s "+snakemake.input.snp_bed+" "+snakemake.params.intersect_bed+" >> "+log_filename+" 2>&1"
     f = open(log_filename, 'at')

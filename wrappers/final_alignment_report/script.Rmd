@@ -1,0 +1,50 @@
+---
+# Final report
+output:
+  html_document:
+    highlight: tango
+
+---
+
+```{r load-packages, include=FALSE}
+library(data.table)
+library(jsonlite)
+
+```
+
+```{r, results='asis', echo=FALSE}
+BASEDIR <- "/mnt/ssd/"
+STAGE <- "10615"
+PROJECT <- "alignment_qc_130"
+WORKDIR <- paste0(BASEDIR,STAGE,"_",PROJECT)
+INPUTFILES <- paste0(WORKDIR,"/")
+
+```
+
+
+```{r, include=FALSE}
+config_json = as.data.table(fromJSON(paste0(INPUTFILES,"config.json")))
+```
+## Main report:
+* [Multi-sample main QC summary (MultiQC)](./snakemake@input$all_sample_multiqc)
+* `r if(unique(config_json$cross_sample_correlation)   == TRUE){paste0("[Cross sample correlation report](./",snakemake@input$cross_sample_correlation,  ")")} `
+
+---
+
+## Individual samples reports:
+```{r, results='asis', echo=FALSE}
+for (i in snakemake@params$sample_name){
+   cat('\n')
+   #cat(paste0(" * [Sample ", i, " report](",i,".final_sample_report.html)\n"))
+   cat(paste0(" * [Sample ", i, " report](./qc_reports/",i,"/final_alignment_report.html)\n"))
+   cat('\n')
+}
+```
+
+
+
+
+
+---
+
+

@@ -1,6 +1,7 @@
 ######################################
 # wrapper for rule: qc_qualimap_DNA
 ######################################
+import os
 import subprocess
 from snakemake.shell import shell
 shell.executable("/bin/bash")
@@ -32,7 +33,7 @@ if "lib_ROI" in snakemake.input:
 else:
     lib_ROI_param = ""
 
-command = "qualimap bamqc -bam " + snakemake.input.bam + lib_ROI_param + " -outdir " + dirname(snakemake.output.html) +" -nt "+str(snakemake.threads)+" \
+command = "qualimap bamqc -bam " + snakemake.input.bam + lib_ROI_param + " -outdir "+ os.path.dirname(snakemake.output.html) +" -nt "+str(snakemake.threads)+" \
     --java-mem-size="+str(snakemake.resources.mem)+"G >> "+log_filename+" 2>&1"
 
 f = open(log_filename, 'at')
@@ -45,3 +46,4 @@ shell(command)
 # f.write("## COMMAND: "+command+"\n")
 # f.close()
 # shell(command)
+

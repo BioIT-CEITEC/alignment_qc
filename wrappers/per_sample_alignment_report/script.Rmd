@@ -1,0 +1,43 @@
+# Sample reports
+
+---
+output:
+  html_document:
+   highlight: tango
+---
+
+```{r load-packages, include=FALSE}
+library(data.table)
+library(jsonlite)
+
+```
+
+```{r, results='asis', echo=FALSE}
+BASEDIR <- "/mnt/ssd/"
+STAGE <- "210615"
+PROJECT <- "alignment_qc_130"
+WORKDIR <- paste0(BASEDIR,STAGE,"_",PROJECT)
+INPUTFILES <- paste0(WORKDIR,"/")
+
+```
+
+
+```{r, include=FALSE}
+config_json = as.data.table(fromJSON(paste0(INPUTFILES,"config.json")))
+```
+Overview report of workflow done for sample `r snakemake@params$sample_name `.
+
+
+
+
+## Report files:
+* "[Main QC summary - (MultiQC)](./snakemake@input$multiqc)
+* `r if(unique(config_json$qc_qualimap_DNA) == TRUE){paste0("[Detailed mapping QC - (Qualimap)](./",snakemake@input$qc_qualimap_DNA,")")} `
+* [Detailed raw fastq QC - (FastQC)](./snakemake@input$raw_fastq_R1_report)
+* [Detailed raw fastq QC - (FastQC)](./snakemake@input$raw_fastq_R2_report)
+
+---
+
+Return to [start page](./qc_reports/alignment_final_report.html)
+
+---
