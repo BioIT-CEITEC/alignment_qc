@@ -46,7 +46,7 @@ wildcard_constraints:
 ##### Target rules #####
 
 rule all:
-    input:  "qc_reports/alignment_final_report.html"
+    input:  "qc_reports/final_alignment_report.html"
 
 
 

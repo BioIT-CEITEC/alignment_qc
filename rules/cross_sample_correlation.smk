@@ -3,9 +3,10 @@
 # CROSS SAMPLE VALIDATION
 #
 
+
 rule cross_sample_correlation_viz:
     input:  Rdata_for_viz =  "qc_reports/cross_sample_correlation/cross_sample_correlation.Rdata",
-    output: html = "qc_reports/cross_sample_correlation/cross_sample_correlation.html",
+    output: html = "qc_reports/cross_sample_correlation/cross_sample_correlation.snps.html",
             tsv =  "qc_reports/cross_sample_correlation/cross_sample_correlation.snps.tsv",
     log:    "logs/cross_sample_correlation/cross_sample_correlation_viz.log"
     params: output = "qc_reports/cross_sample_correlation/cross_sample_correlation"

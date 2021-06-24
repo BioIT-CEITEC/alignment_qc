@@ -15,7 +15,8 @@ library(jsonlite)
 
 
 ```{r, include=FALSE}
-config_json = as.data.table(fromJSON(paste0(snakemake@params$config,"config.json")))
+config_json = as.data.table(fromJSON(snakemake@params$config))
+
 ```
 Overview report of workflow done for sample `r snakemake@params$sample_name `.
 
@@ -23,13 +24,13 @@ Overview report of workflow done for sample `r snakemake@params$sample_name `.
 
 
 ## Report files:
-* "[Main QC summary - (MultiQC)](./snakemake@input$multiqc)
-* `r if(unique(config_json$qc_qualimap_DNA) == TRUE){paste0("[Detailed mapping QC - (Qualimap)](./",snakemake@input$qc_qualimap_DNA,")")} `
-* [Detailed raw fastq QC - (FastQC)](./snakemake@input$raw_fastq_R1_report)
-* [Detailed raw fastq QC - (FastQC)](./snakemake@input$raw_fastq_R2_report)
+* "[Main QC summary - (MultiQC)](`r basename(snakemake@input$multiqc)`)
+* `r if(unique(config_json$qc_qualimap_DNA) == TRUE){paste0("[Detailed mapping QC - (Qualimap)](../../",snakemake@input$qc_qualimap_DNA,")")} `
+* [Detailed raw fastq QC - (FastQC)](../../`r snakemake@input$raw_fastq_R1_report`)
+* [Detailed raw fastq QC - (FastQC)](../../`r snakemake@input$raw_fastq_R2_report`)
 
 ---
 
-Return to [start page](./alignment_final_report.html)
+Return to [start page](../final_alignment_report.html)
 
 ---
