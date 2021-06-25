@@ -23,7 +23,7 @@ f.write("## VERSION: "+version+"\n")
 f.close()
 
 if snakemake.wildcards.sample != "all_samples":
-    multiqc_search_paths = " ./*/"+snakemake.wildcards.sample+"/*/* ./*/"+snakemake.wildcards.sample
+    multiqc_search_paths = " ./*/"+snakemake.wildcards.sample+"/*/* ./*/"+snakemake.wildcards.sample+"*"
 else:
     multiqc_search_paths = " ./qc_reports/*/*"
 

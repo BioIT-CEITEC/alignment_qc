@@ -5,8 +5,9 @@
     "label":"Alignment QC",
     "type":"alignment_qc",
     "inputs":[
-      "mapped/{sample}.bam",
-      "qc_reports/{sample}/raw_fastqc/fastqc/fastqc*"
+      "qc_reports/{sample}/raw_fastqc/fastqc*",
+      "mapped/{sample}.bam"
+
     ],
     "outputs":[
       "qc_report/*"
