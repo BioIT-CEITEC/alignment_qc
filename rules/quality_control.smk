@@ -26,12 +26,12 @@ def qc_qualimap_DNA_input(wildcards):
     input = {}
     input["bam"] = "mapped/{sample}.bam"
     if "lib_ROI" in config and config["lib_ROI"] != "wgs":
-        input['lib_ROI'] = expand("{ref_dir}/intervals/{lib_ROI}/{lib_ROI}.interval_list",ref_dir=reference_directory,lib_ROI=config["lib_ROI"])[0]
+        input['lib_ROI'] = expand("{ref_dir}/intervals/{lib_ROI}/{lib_ROI}.bed",ref_dir=reference_directory,lib_ROI=config["lib_ROI"])[0]
     return input
 
 rule qc_qualimap_DNA:
     input:  unpack(qc_qualimap_DNA_input)
-    output: html = "qc_reports/{sample}/qc_qualimap_DNA/qualimapReport.html"
+    output: html = "qc_reports/{sample}/qc_qualimap_DNA/{sample}/qualimapReport.html"
     log:    "logs/{sample}/qc_qualimap_DNA.log"
     threads:    4
     resources:  mem = 16
