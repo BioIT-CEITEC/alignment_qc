@@ -28,6 +28,10 @@ Overview report of workflow done for sample `r snakemake@params$sample_name `.
 * `r if(unique(config_json$qc_qualimap_DNA) == TRUE){paste0("[Detailed mapping QC - (Qualimap)](../../",snakemake@input$qc_qualimap_DNA,")")} `
 * [Detailed raw fastq QC - (FastQC)](../../`r snakemake@input$raw_fastq_R1_report`)
 * [Detailed raw fastq QC - (FastQC)](../../`r snakemake@input$raw_fastq_R2_report`)
+* `r if(unique(config_json$qc_picard_RNA) == TRUE){paste0("[RNA-Seq metrics - Picard](../../",snakemake@input$qc_picard_RNA,")")} `
+* `r if(unique(config_json$featureCounts_biotype) == TRUE){paste0("[RNA-Seq metrics - featureCounts biotype](../../",snakemake@input$featureCounts_biotype,")")} `
+* `r if(unique(config_json$fastq_screen) == TRUE){paste0("[RNA-Seq metrics - Fastq screen](../../",snakemake@input$fastq_screen,")")} `
+* `r if(unique(config_json$biobloom) == TRUE){paste0("[RNA-Seq metrics - BioBloom Tools](../../",snakemake@input$biobloom,")")} `
 
 ---
 

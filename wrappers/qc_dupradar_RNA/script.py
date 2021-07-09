@@ -20,7 +20,7 @@ f.close()
 f = open(log_filename, 'at')
 extra_flags_dupradar="single"
 msg = "Running as single end"
-if snakemake.params.pair == "PE":
+if snakemake.params.paired == "PE":
   	extra_flags_dupradar="pair"
   	msg = "Running as paired end"
 if snakemake.params.strandness == "fwd":
@@ -38,7 +38,10 @@ else:
 f.close()
 
 reads_thr = 20
-mapped_count = str(subprocess.Popen("samtools view -F 4 "+str(snakemake.input.bam)+" | head -100 | wc -l",shell=True,stdout=subprocess.PIPE).communicate()[0], 'utf-8')
+command = "samtools view -F 4 "+str(snakemake.input.bam)+" | head -100 | wc -l"
+with open(log_filename, 'at') as f:
+    f.write("## COMMAND: " + command + "\n")
+mapped_count = str(subprocess.Popen(command,shell=True,stdout=subprocess.PIPE).communicate()[0], 'utf-8')
 f = open(log_filename, 'at')
 f.write("## Number of reads (min "+str(reads_thr)+"): "+str(mapped_count)+"\n")
 f.close()

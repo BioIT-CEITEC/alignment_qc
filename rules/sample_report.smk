@@ -8,10 +8,24 @@ def multiqc_report_input(wildcards):
         input['raw_fastq_report'] = expand("qc_reports/"+wildcards.sample+"/raw_fastqc/fastqc{read_pair_tags}.html",read_pair_tags=read_pair_tags)
         if config["qc_qualimap_DNA"]:
             input['qc_qualimap_DNA'] = "qc_reports/{sample}/qc_qualimap_DNA/{sample}/qualimapReport.html"
-        if config["qc_samtools_DNA"]:
-            input['qc_samtools_DNA'] = "qc_reports/{sample}/qc_samtools_DNA/idxstats.tsv"
+        if config["qc_samtools"]:
+            input['qc_samtools'] = "qc_reports/{sample}/qc_samtools/idxstats.tsv"
         if config["qc_picard_DNA"]:
             input['qc_picard_DNA'] = "qc_reports/{sample}/qc_picard_DNA/picard.tsv"
+        if config["qc_qualimap_DNA"]:
+            input['qc_qualimap_DNA'] = "qc_reports/{sample}/qc_qualimap_DNA/{sample}/qualimapReport.html"
+        if config["qc_picard_RNA"]:
+            input['qc_picard_RNA'] = "qc_reports/{sample}/qc_picard_RNA/{sample}.npc.pdf"
+        if config["featureCounts_biotype"]:
+            input['featureCounts_biotype'] = ""
+        if config["qc_fastq_screen_RNA"]:
+            input['qc_fastq_screen_RNA'] = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png"
+        if config["biobloom"]:
+            input['biobloom'] = "cleaned_fastq/{sample}.biobloom_summary.tsv"
+        if config["qc_qualimap_RNA"]:
+            input['qc_qualimap_RNA'] = "qc_reports/{sample}/qc_qualimap_RNA/{sample}/qualimapReport.html"
+        if config["qc_RSeQC_RNA"]:
+            input['qc_RSeQC_RNA'] = "qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.read_distribution.txt"
     else:
         input['per_sample_reports'] = expand("qc_reports/{sample}/single_sample_alignment_report.html",sample=sample_tab.sample_name)
     return input
@@ -33,6 +47,14 @@ def per_sample_alignment_report_input(wildcards):
     input['raw_fastq_R2_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/fastqc_R2.html"
     if config["qc_qualimap_DNA"]:
         input['qc_qualimap_DNA'] = "qc_reports/{sample}/qc_qualimap_DNA/{sample}/qualimapReport.html"
+    if config["qc_picard_RNA"]:
+        input['qc_picard_RNA'] = "qc_reports/{sample}/qc_picard_RNA/{sample}.npc.pdf"
+    if config["featureCounts_biotype"]:
+        input['featureCounts_biotype'] = ""
+    if config["qc_fastq_screen_RNA"]:
+        input['qc_fastq_screen_RNA'] = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png"
+    if config["biobloom"]:
+        input['biobloom'] = "cleaned_fastq/{sample}.biobloom_summary.tsv"
     return input
 
 rule per_sample_alignment_report:
@@ -49,6 +71,14 @@ def final_alignment_report_input(wildcards):
     input['per_sample_reports'] = expand("qc_reports/{sample}/single_sample_alignment_report.html",sample=sample_tab.sample_name)
     if config["cross_sample_correlation"]:
         input['cross_sample_correlation'] = "qc_reports/all_samples/cross_sample_correlation/cross_sample_correlation.snps.html"
+    if config["qc_fastq_screen_RNA"]:
+        input['qc_fastq_screen_RNA'] = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png"
+    if config["qc_dupradar_RNA"]:
+        input['dupraxpbox'] = "qc_reports/{sample}/qc_dupradar_RNA/{sample}_duprateExpBoxplot.pdf"
+        input['exphist'] = "qc_reports/{sample}/qc_dupradar_RNA/{sample}_expressionHist.pdf"
+        input['dupraexpden'] = "qc_reports/{sample}/qc_dupradar_RNA/{sample}_duprateExpDens.pdf"
+        input['multipergene'] = "qc_reports/{sample}/qc_dupradar_RNA/{sample}_multimapPerGene.pdf"
+        input['readdist'] = "qc_reports/{sample}/qc_dupradar_RNA/{sample}_readDist.pdf"
     return input
 
 rule final_alignment_report:

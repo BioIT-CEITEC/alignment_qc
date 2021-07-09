@@ -1,5 +1,5 @@
 ######################################
-# wrapper for rule: qc_samtools_DNA
+# wrapper for rule: qc_samtools
 ######################################
 import subprocess
 from snakemake.shell import shell
@@ -7,7 +7,7 @@ shell.executable("/bin/bash")
 log_filename = str(snakemake.log)
 
 f = open(log_filename, 'wt')
-f.write("\n##\n## RULE: qc_samtools_DNA \n##\n")
+f.write("\n##\n## RULE: qc_samtools \n##\n")
 f.close()
 
 shell.executable("/bin/bash")

@@ -19,13 +19,10 @@ f.close()
 shell(command)
 
 
-
-output=check_output("dmesg | grep hda", shell=True)
-
-
-
-
-mapped_count = str(subprocess.Popen("samtools view "+str(snakemake.input.bam)+" | head -20 | wc -l",shell=True,stdout=subprocess.PIPE).communicate()[0], 'utf-8')
+command = "samtools view "+str(snakemake.input.bam)+" | head -20 | wc -l"
+with open(log_filename, 'at') as f:
+    f.write("## COMMAND: " + command + "\n")
+mapped_count = str(subprocess.Popen(command,shell=True,stdout=subprocess.PIPE).communicate()[0], 'utf-8')
 f = open(log_filename, 'at')
 f.write("## Number of reads (max 20): "+str(mapped_count)+"\n")
 f.close()

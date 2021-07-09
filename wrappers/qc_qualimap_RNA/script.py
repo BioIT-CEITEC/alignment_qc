@@ -21,7 +21,7 @@ f.close()
 f = open(log_filename, 'at')
 extra_flags_qualimap=""
 msg = "Running as single end"
-if snakemake.params.pair == "PE":
+if snakemake.params.paired == "PE":
 	extra_flags_qualimap+="--paired"
 	msg = "Running as paired end"
 if snakemake.params.strandness == "fwd":
@@ -51,27 +51,28 @@ f.write("## COMMAND: "+command+"\n")
 f.close()
 shell(command)
 
-mapped_count = str(subprocess.Popen("samtools view -F 4 "+str(snakemake.input.bam)+" | head -20 | wc -l",shell=True,stdout=subprocess.PIPE).communicate()[0], 'utf-8')
+command = "samtools view -F 4 "+str(snakemake.input.bam)+" | head -20 | wc -l"
+with open(log_filename, 'at') as f:
+	f.write("## COMMAND: " + command + "\n")
+mapped_count = str(subprocess.Popen(command,shell=True,stdout=subprocess.PIPE).communicate()[0], 'utf-8')
 f = open(log_filename, 'at')
 f.write("## Number of reads (max 20): "+str(mapped_count)+"\n")
 f.close()
 
-
 if int(mapped_count) >= 20:
-  	if os.stat(snakemake.input.gtf).st_size != 0:
-		params = " -gtf " + snakemake.input.gtf
-  	else:
+	if os.stat(snakemake.input.gtf).st_size != 0:
+		params = " -gtf " +snakemake.input.gtf
+	else:
 		params = ""
 
 	command = "export JAVA_OPTS='-Djava.io.tmpdir=/mnt/ssd/ssd_1/tmp/ -Xmx24G' && qualimap rnaseq -bam " + snakemake.input.bam + params + extra_flags_qualimap + " -outdir " + os.path.dirname(snakemake.output.html) + " >> " + log_filename + " 2>&1"
-  	f = open(log_filename, 'at')
-  	f.write("## COMMAND: "+command+"\n")
-  	f.close()
-  	shell(command)
+	f = open(log_filename, 'at')
+	f.write("## COMMAND: "+command+"\n")
+	f.close()
+	shell(command)
 else:
-  	command = "touch " + snakemake.output.html+" >> "+log_filename+" 2>&1"
-  	f = open(log_filename, 'at')
-  	f.write("## COMMAND: "+command+"\n")
-  	f.close()
-  	shell(command)
-
+	command = "touch " + snakemake.output.html+" >> "+log_filename+" 2>&1"
+	f = open(log_filename, 'at')
+	f.write("## COMMAND: "+command+"\n")
+	f.close()
+	shell(command)

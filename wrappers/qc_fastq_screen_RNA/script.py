@@ -12,7 +12,10 @@ f = open(log_filename, 'a+')
 f.write("\n##\n## RULE: qc_fastq_screen_RNA \n##\n")
 f.close()
 
-read_count = str(subprocess.Popen("gunzip -c "+str(snakemake.input.fastq)+" | head -20 | wc -l",shell=True,stdout=subprocess.PIPE).communicate()[0], 'utf-8')
+command = "gunzip -c "+str(snakemake.input.fastq)+" | head -20 | wc -l"
+with open(log_filename, 'at') as f:
+  f.write("## COMMAND: " + command + "\n")
+read_count = str(subprocess.Popen(command,shell=True,stdout=subprocess.PIPE).communicate()[0], 'utf-8')
 
 if sum(1 for line in open(snakemake.input.fastqscreen_conf)) == 0 or int(read_count) < 20:
   # there are no data to process so an empty plot is generated

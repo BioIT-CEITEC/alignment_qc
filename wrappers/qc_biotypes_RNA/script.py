@@ -28,7 +28,7 @@ shell(command)
 f = open(log_filename, 'at')
 extra_flags_feature=""
 msg = "Running as single end"
-if snakemake.params.pair == "PE":
+if snakemake.params.paired == "PE":
 	extra_flags_feature+="-p"
 	msg = "Running as paired end"
 if snakemake.params.strandness == "fwd":
@@ -62,7 +62,10 @@ if biotype == '':
   shell(command)
 else:
   # get all feature types (e.g., exon, gene, etc.) containing biotype information in 9th column of annotation file
-  featuretype_list = str(subprocess.Popen("cat "+snakemake.input.gtf+" | grep '"+biotype+"' | cut -f 3 | sort -u ",shell=True,stdout=subprocess.PIPE).communicate()[0], 'utf-8').split("\n")
+  command = "cat "+snakemake.input.gtf+" | grep '"+biotype+"' | cut -f 3 | sort -u "
+  with open(log_filename, 'at') as f:
+      f.write("## COMMAND: " + command + "\n")
+  featuretype_list = str(subprocess.Popen(command,shell=True,stdout=subprocess.PIPE).communicate()[0], 'utf-8').split("\n")
   print(featuretype_list)
   # check if prefered featuretype in count_over is in the list so it can be used
   featuretype = snakemake.params.count_over
