@@ -12,6 +12,10 @@
     ],
     "outputs":[
       "qc_report/*"
+    ],
+    "report_index": "qc_reports/final_alignment_report.html",
+    "reports":[
+       "qc_report/*"
     ]
   },
   "general_params": [

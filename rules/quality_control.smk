@@ -62,9 +62,8 @@ rule qc_qualimap_RNA:
             strandness = config["strandness"],
     threads:    10
     resources:  mem = 1
-    shell: "touch {output}"
-    # conda:  "../wrappers/qc_qualimap_RNA/env.yaml"
-    # script: "../wrappers/qc_qualimap_RNA/script.py"
+    conda:  "../wrappers/qc_qualimap_RNA/env.yaml"
+    script: "../wrappers/qc_qualimap_RNA/script.py"
 
 
 rule qc_dupradar_RNA:
@@ -78,11 +77,10 @@ rule qc_dupradar_RNA:
             txt = "qc_reports/{sample}/qc_dupradar_RNA/{sample}_duprateExpDensCurve.txt",
     log:    "logs/{sample}/qc_dupradar_RNA.log"
     threads:  10
-    params: pair = paired,
+    params: paired = paired,
             strandness = config["strandness"],
-    shell: "touch {output}"
-    # conda:  "../wrappers/qc_dupradar_RNA/env.yaml"
-    # script: "../wrappers/qc_dupradar_RNA/script.py"
+    conda:  "../wrappers/qc_dupradar_RNA/env.yaml"
+    script: "../wrappers/qc_dupradar_RNA/script.py"
 
 
 rule qc_biotypes_RNA:
@@ -92,13 +90,12 @@ rule qc_biotypes_RNA:
     log: "logs/{sample}/qc_biotypes_RNA.log"
     threads: 10
     params: prefix="qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype",
-        pair = paired,
+        paired = paired,
         strandness=config["strandness"],
         #info = expand("{ref_dir}/info.txt", ref_dir=reference_directory,ref=config["reference"])[0],#DÁVALI JSME TO U DNA???!
         count_over=config["count_over"],  # [exon, three_prime_utr] what feature to use for the summary? For QuantSeq it might be 3 UTR ("three_prime_utr" is for Ensembl annotation
-    shell: "touch {output}"
-    # conda: "../wrappers/qc_biotypes_RNA/env.yaml"
-    # script: "../wrappers/qc_biotypes_RNA/script.py"
+    conda: "../wrappers/qc_biotypes_RNA/env.yaml"
+    script: "../wrappers/qc_biotypes_RNA/script.py"
 
 ##### rule pro RAW_FASTQ_QC
 rule qc_fastq_screen_RNA:
@@ -109,9 +106,8 @@ rule qc_fastq_screen_RNA:
     log:    "logs/{sample}/qc_fastq_screen_RNA{read_pair_tag}.log"
     threads:    10
     resources:  mem = 10
-    shell: "touch {output}"
-    # conda:  "../wrappers/qc_fastq_screen_RNA/env.yaml"
-    # script: "../wrappers/qc_fastq_screen_RNA/script.py"
+    conda:  "../wrappers/qc_fastq_screen_RNA/env.yaml"
+    script: "../wrappers/qc_fastq_screen_RNA/script.py"
 
 rule qc_RSeQC_RNA:
     input: bam="mapped/{sample}.bam",
@@ -123,9 +119,8 @@ rule qc_RSeQC_RNA:
     params: prefix="qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC"
     threads: 10
     resources: mem=10
-    shell: "touch {output}"
-    # conda: "../wrappers/qc_RSeQC_RNA/env.yaml"
-    # script: "../wrappers/qc_RSeQC_RNA/script.py"
+    conda: "../wrappers/qc_RSeQC_RNA/env.yaml"
+    script: "../wrappers/qc_RSeQC_RNA/script.py"
 
 rule qc_picard_RNA:
     input: bam="mapped/{sample}.bam",
@@ -136,9 +131,8 @@ rule qc_picard_RNA:
     params: strandness=config["strandness"],
     threads: 8
     resources: mem=10
-    shell: "touch {output}"
-    # conda: "../wrappers/qc_picard_RNA/env.yaml"
-    # script: "../wrappers/qc_picard_RNA/script.py"
+    conda: "../wrappers/qc_picard_RNA/env.yaml"
+    script: "../wrappers/qc_picard_RNA/script.py"
 
 
 
@@ -150,11 +144,10 @@ rule feature_count:
      threads: 10
      resources:  mem = 10
      params: count_over=config["count_over"], # [exon, three_prime_utr] what feature to use for the summary? For QuantSeq it might be 3 UTR ("three_prime_utr" is for Ensembl annotation
-             pair = paired, # [true, false] "true" for PE reads, "false" for SE reads
+             paired = paired, # [true, false] "true" for PE reads, "false" for SE reads
              strandness = config["strandness"], # [fwd, rev, none] strandedness of read
-     shell: "touch {output}"
-     # conda:  "../wrappers/feature_count/env.yaml"
-     # script: "../wrappers/feature_count/script.py"
+     conda:  "../wrappers/feature_count/env.yaml"
+     script: "../wrappers/feature_count/script.py"
 
 rule RSEM_count:
     input:  bam = "mapped/{sample}.bam",
@@ -163,18 +156,16 @@ rule RSEM_count:
     log:    run = "logs/{sample}/rsem_count.log"
     threads: 5
     resources:  mem = 10
-    params: pair = paired, # [true, false] "true" for PE reads, "false" for SE reads
+    params: paired = paired, # [true, false] "true" for PE reads, "false" for SE reads
             strandness = config["strandness"], # [fwd, rev, none] strandedness of read
-    shell: "touch {output}"
-    # conda:  "../wrappers/RSEM_count/env.yaml"
-    # script: "../wrappers/RSEM_count/script.py"
+    conda:  "../wrappers/RSEM_count/env.yaml"
+    script: "../wrappers/RSEM_count/script.py"
 
 def biobloom_input(wildcards):
-    # if config["trim_adapters"] == True or config["trim_quality"] == True:
-    #     preprocessed = "cleaned_fastq"
-    # else:
-    #     preprocessed = "raw_fastq"
-    preprocessed = "cleaned_fastq"
+    if config["trim_adapters"] == True or config["trim_quality"] == True:
+        preprocessed = "cleaned_fastq"
+    else:
+        preprocessed = "raw_fastq"
 
     input = {}
     input['flagstats'] = "qc_reports/{sample}/qc_samtools/{sample}.flagstat.tsv"
