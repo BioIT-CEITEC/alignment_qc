@@ -20,8 +20,8 @@ def multiqc_report_input(wildcards):
             input['feature_count'] = "feature_count/{sample}.featureCounts.tsv"
         if config["qc_fastq_screen_RNA"]:
             input['qc_fastq_screen_RNA'] = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png"
-        if config["biobloom"]:
-            input['biobloom'] = "cleaned_fastq/{sample}.biobloom_summary.tsv"
+        # if config["biobloom"]:
+        #     input['biobloom'] = "cleaned_fastq/{sample}.biobloom_summary.tsv"
         if config["qc_qualimap_RNA"]:
             input['qc_qualimap_RNA'] = "qc_reports/{sample}/qc_qualimap_RNA/{sample}/qualimapReport.html"
         if config["qc_RSeQC_RNA"]:
@@ -55,8 +55,8 @@ def per_sample_alignment_report_input(wildcards):
         input['feature_count'] = "feature_count/{sample}.featureCounts.tsv"
     if config["qc_fastq_screen_RNA"]:
         input['qc_fastq_screen_RNA'] = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png"
-    if config["biobloom"]:
-        input['biobloom'] = "cleaned_fastq/{sample}.biobloom_summary.tsv"
+    # if config["biobloom"]:
+    #     input['biobloom'] = "cleaned_fastq/{sample}.biobloom_summary.tsv"
     if config["qc_biotypes_RNA"]:
         input['qc_biotypes_RNA'] = "qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.txt"
     return input
