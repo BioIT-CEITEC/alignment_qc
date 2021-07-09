@@ -25,6 +25,10 @@ if not "strandness" in config:
 if not "count_over" in config:
     config["count_over"] = "exon"
 
+if not "max_mapped_reads_to_run_biobloom" in config:
+    config["max_mapped_reads_to_run_biobloom"] = 100
+
+
 # setting organism from reference
 f = open(os.path.join(GLOBAL_REF_PATH,"reference_info","genomic_references.json"),)
 reference_dict = json.load(f)
