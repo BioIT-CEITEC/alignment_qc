@@ -18,16 +18,16 @@ config_json = as.data.table(fromJSON(snakemake@params$config))
 
 ```
 ## Main report:
-* [Multi-sample main QC summary (MultiQC)](../`r snakemake@input$all_sample_multiqc`)
-* `r if(unique(config_json$cross_sample_correlation)   == TRUE){paste0("[Cross sample correlation report](../",snakemake@input$cross_sample_correlation,  ")")} `
-* `r if(unique(config_json$qc_fastq_screen_RNA)   == TRUE){paste0("[Fastq screen RNA QC report](../",snakemake@input$qc_fastq_screen_RNA,  ")")} `
-* All samples RNA-Seq metrics - featureCounts biotype
-* `r if(unique(config_json$qc_dupradar_RNA)   == TRUE){paste0("[All samples RNA-Seq metrics - Dupradar duprateExpBoxplot](../",snakemake@input$dupraxpbox,  ")")} `
-* `r if(unique(config_json$qc_dupradar_RNA)   == TRUE){paste0("[All samples RNA-Seq metrics - Dupradar expressionHist](../",snakemake@input$exphist,  ")")} `
-* `r if(unique(config_json$qc_dupradar_RNA)   == TRUE){paste0("[All samples RNA-Seq metrics - Dupradar duprateExpDens](../",snakemake@input$dupraexpden,  ")")} `
-* `r if(unique(config_json$qc_dupradar_RNA)   == TRUE){paste0("[All samples RNA-Seq metrics - Dupradar multimapPerGene](../",snakemake@input$multipergene,  ")")} `
-* `r if(unique(config_json$qc_dupradar_RNA)   == TRUE){paste0("[All samples RNA-Seq metrics - Dupradar readDist](../",snakemake@input$readdist,  ")")} `
----
+`r paste0("* [Multi-sample main QC summary (MultiQC)](../",snakemake@input$all_sample_multiqc,")  \\")`
+`r if(unique(config_json$cross_sample_correlation)   == TRUE){paste0("* [ Cross sample correlation report](../",snakemake@input$cross_sample_correlation,  ")  \\")}`
+`r if(unique(config_json$qc_fastq_screen_RNA)   == TRUE){paste0("[* Fastq screen RNA QC report](../",snakemake@input$qc_fastq_screen_RNA,  ")  \\")} `
+`r if(unique(config_json$feature_count)   == TRUE){paste0("* [Feature count report](../",snakemake@input$feature_count,  ")  \\")} `
+`r if(unique(config_json$qc_dupradar_RNA)   == TRUE){paste0("* [All samples RNA-Seq metrics - Dupradar duprateExpBoxplot](../",snakemake@input$dupraxpbox,  ")  \\")} `
+`r if(unique(config_json$qc_dupradar_RNA)   == TRUE){paste0("* [All samples RNA-Seq metrics - Dupradar expressionHist](../",snakemake@input$exphist,  ")  \\")} `
+`r if(unique(config_json$qc_dupradar_RNA)   == TRUE){paste0("* [All samples RNA-Seq metrics - Dupradar duprateExpDens](../",snakemake@input$dupraexpden,  ")  \\")} `
+`r if(unique(config_json$qc_dupradar_RNA)   == TRUE){paste0("* [All samples RNA-Seq metrics - Dupradar multimapPerGene](../",snakemake@input$multipergene,  ")  \\")} `
+`r if(unique(config_json$qc_dupradar_RNA)   == TRUE){paste0("* [All samples RNA-Seq metrics - Dupradar readDist](../",snakemake@input$readdist,  ")  \\")} `
+----------------------------------------------------------
 
 ## Individual samples reports:
 ```{r, results='asis', echo=FALSE}
