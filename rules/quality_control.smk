@@ -193,8 +193,27 @@ rule biobloom:
     resources: mem=30
     params: tool=  "/mnt/ssd/ssd_3/resources/biobloomtools/BioBloomCategorizer/biobloomcategorizer", ## změň cestu!
         prefix="cleaned_fastq/{sample}.biobloom",
-        filters=config["biobloom"], ### přidat do configu!
+        filters="all", ### přidat do configu!
         ref_dir = GLOBAL_REF_PATH,
-        paired = paired
+        paired = paired,
+        max_mapped_reads_to_run = config["max_mapped_reads_to_run_biobloom"]
     conda: "../wrappers/biobloom/env.yaml"
     script: "../wrappers/biobloom/script.py"
+
+# "biobloom": {
+#     "label": "Biobloom - contamination",
+#     "type": "enum",
+#     "default": "all",
+#     "list": {
+#         "all": "All",
+#         "human": "Human",
+#         "mouse": "Mouse",
+#         "rat": "Rat",
+#         "yeast": "Yeast",
+#         "fly": "Fly",
+#         "dog": "Dog",
+#         "arabidopsis": "Arabidopsis",
+#         "brassica": "Brassica",
+#         "c_elegans": "C_elegans"
+#     }
+# }

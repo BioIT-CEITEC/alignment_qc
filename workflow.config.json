@@ -5,9 +5,10 @@
     "label":"Alignment QC",
     "type":"alignment_qc",
     "inputs":[
-      "qc_reports/{sample}/raw_fastqc/fastqc*",
-      "mapped/*"
-
+      "qc_reports/{sample}/raw_fastqc/*",
+      "mapped/*",
+      "cleaned_fastq/{sample}*fastq.gz",
+      "raw_fastq/{sample}*fastq.gz"
     ],
     "outputs":[
       "qc_report/*"
@@ -94,22 +95,10 @@
         "type": "bool",
         "default": true
       },
-      "biobloom": {
-        "label": "Biobloom - contamination",
-        "type": "enum",
-        "default": "all",
-        "list":{
-          "all": "All",
-          "human": "Human",
-          "mouse": "Mouse",
-          "rat": "Rat",
-          "yeast": "Yeast",
-          "fly": "Fly",
-          "dog": "Dog",
-          "arabidopsis": "Arabidopsis",
-          "brassica": "Brassica",
-          "c_elegans": "C_elegans"
-        }
+      "max_mapped_reads_to_run_biobloom": {
+        "label": "Biobloom - max mapped ratio",
+        "type": "int",
+        "default": 100
       }
     }
   }

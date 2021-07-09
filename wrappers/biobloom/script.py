@@ -22,7 +22,7 @@ f = open(log_filename, 'at')
 f.write("## Number of mapped reads: "+str(mapped_reads)+"\n")
 f.close()
 
-if float(mapped_reads) > 80:
+if float(mapped_reads) > snakemake.params.max_mapped_reads_to_run:
 
     version = str(subprocess.Popen(snakemake.params.tool+" --version 2>&1 | head -1", shell=True, stdout=subprocess.PIPE).communicate()[0], 'utf-8')
     f = open(log_filename, 'at')
@@ -111,5 +111,9 @@ if float(mapped_reads) > 80:
     shell(command)
 
 else:
-    with open(log_filename, 'at') as f:
-        f.write("## WARNING: Not enough aligned reads to run Biobloom.\n")
+    command = "cat \"Enough aligned reads ("+ mapped_reads +"%). Not neccesary to run Biobloom.\n\" > " + snakemake.output.table
+    f = open(log_filename, 'at')
+    f.write("## COMMAND: " + command + "\n")
+    f.close()
+    shell(command)
+
