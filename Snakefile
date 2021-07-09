@@ -7,18 +7,13 @@ min_version("5.18.0")
 
 GLOBAL_REF_PATH = "/mnt/references/"
 
-# Reference processing
+# DNA parameteres processing
 #
 if not "lib_ROI" in config:
     config["lib_ROI"] = "wgs"
 
-if config["lib_ROI"] != "wgs":
-    # setting reference from lib_ROI
-    f = open(os.path.join(GLOBAL_REF_PATH,"reference_info","DNA_ROI.json"))
-    lib_ROI_dict = json.load(f)
-    f.close()
-    config["reference"] = [ref_name for ref_name in lib_ROI_dict.keys() if isinstance(lib_ROI_dict[ref_name],dict) and config["lib_ROI"] in lib_ROI_dict[ref_name].keys()][0]
-
+# RNA parameteres processing
+#
 if not "strandness" in config:
     config["strandness"] = "unstr"
 
@@ -27,6 +22,15 @@ if not "count_over" in config:
 
 if not "max_mapped_reads_to_run_biobloom" in config:
     config["max_mapped_reads_to_run_biobloom"] = 100
+
+# Reference processing
+#
+if config["lib_ROI"] != "wgs":
+    # setting reference from lib_ROI
+    f = open(os.path.join(GLOBAL_REF_PATH,"reference_info","DNA_ROI.json"))
+    lib_ROI_dict = json.load(f)
+    f.close()
+    config["reference"] = [ref_name for ref_name in lib_ROI_dict.keys() if isinstance(lib_ROI_dict[ref_name],dict) and config["lib_ROI"] in lib_ROI_dict[ref_name].keys()][0]
 
 
 # setting organism from reference

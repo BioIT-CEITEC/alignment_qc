@@ -16,8 +16,8 @@ def multiqc_report_input(wildcards):
             input['qc_qualimap_DNA'] = "qc_reports/{sample}/qc_qualimap_DNA/{sample}/qualimapReport.html"
         if config["qc_picard_RNA"]:
             input['qc_picard_RNA'] = "qc_reports/{sample}/qc_picard_RNA/{sample}.npc.pdf"
-        if config["featureCounts_biotype"]:
-            input['featureCounts_biotype'] = ""
+        if config["feature_count"]:
+            input['feature_count'] = "feature_count/{sample}.featureCounts.tsv"
         if config["qc_fastq_screen_RNA"]:
             input['qc_fastq_screen_RNA'] = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png"
         if config["biobloom"]:
@@ -26,6 +26,8 @@ def multiqc_report_input(wildcards):
             input['qc_qualimap_RNA'] = "qc_reports/{sample}/qc_qualimap_RNA/{sample}/qualimapReport.html"
         if config["qc_RSeQC_RNA"]:
             input['qc_RSeQC_RNA'] = "qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.read_distribution.txt"
+        if config["qc_biotypes_RNA"]:
+            input['qc_biotypes_RNA'] = "qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.txt"
     else:
         input['per_sample_reports'] = expand("qc_reports/{sample}/single_sample_alignment_report.html",sample=sample_tab.sample_name)
     return input
@@ -49,12 +51,14 @@ def per_sample_alignment_report_input(wildcards):
         input['qc_qualimap_DNA'] = "qc_reports/{sample}/qc_qualimap_DNA/{sample}/qualimapReport.html"
     if config["qc_picard_RNA"]:
         input['qc_picard_RNA'] = "qc_reports/{sample}/qc_picard_RNA/{sample}.npc.pdf"
-    if config["featureCounts_biotype"]:
-        input['featureCounts_biotype'] = ""
+    if config["feature_count"]:
+        input['feature_count'] = "feature_count/{sample}.featureCounts.tsv"
     if config["qc_fastq_screen_RNA"]:
         input['qc_fastq_screen_RNA'] = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png"
     if config["biobloom"]:
         input['biobloom'] = "cleaned_fastq/{sample}.biobloom_summary.tsv"
+    if config["qc_biotypes_RNA"]:
+        input['qc_biotypes_RNA'] = "qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.txt"
     return input
 
 rule per_sample_alignment_report:

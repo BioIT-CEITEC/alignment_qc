@@ -89,8 +89,8 @@
         "type": "bool",
         "default": true
       },
-      "gene_count_feature_count": {
-        "label": "Gene count feature count",
+      "feature_count": {
+        "label": "FeatureCounts",
         "type": "bool",
         "default": true
       },
