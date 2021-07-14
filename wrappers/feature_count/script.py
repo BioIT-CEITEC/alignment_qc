@@ -1,5 +1,5 @@
 ######################################
-# wrapper for rule: gene_counts_featureCounts
+# wrapper for rule: feature_count
 ######################################
 import os
 import subprocess
@@ -18,7 +18,7 @@ f = open(log_filename, 'at')
 f.write("## VERSION: "+version+"\n")
 f.close()
 
-command = "mkdir -p "+os.path.dirname(snakemake.output.feature_out)+" >> "+log_filename+" 2>&1"
+command = "mkdir -p "+os.path.dirname(snakemake.output.feature_count)+" >> "+log_filename+" 2>&1"
 f = open(log_filename, 'at')
 f.write("## COMMAND: "+command+"\n")
 f.close()
@@ -37,8 +37,9 @@ else:
     extra_flags_feature += " -s 0"
 
 command = "featureCounts -t "+snakemake.params.count_over+" -g gene_id "+extra_flags_feature+" -T "+str(snakemake.threads)+" -F GTF -Q 0 -d 1 -D 25000 -a " + \
-            snakemake.input.gtf+" -o "+snakemake.output.feature_out+" "+snakemake.input.bam+" >> "+log_filename+" 2>&1 "
+            snakemake.input.gtf+" -o "+snakemake.output.feature_count+" "+snakemake.input.bam+" >> "+log_filename+" 2>&1 "
 f = open(log_filename, 'at')
 f.write("## COMMAND: "+command+"\n")
 f.close()
 shell(command)
+

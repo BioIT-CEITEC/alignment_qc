@@ -1,45 +1,51 @@
 {
-  "run_forward_read_length":150,
-  "run_reverse_read_length":150,
-  "library_name":"210510_BRONCO44",
-  "lib_forward_read_length":150,
-  "lib_reverse_read_length":150,
-  "additional_fastqc_options":"",
-  "qc_picard_DNA": true,
-  "qc_qualimap_DNA":false,
-  "qc_samtools_DNA":true,
-  "samples": {
-    "11":{
-      "sample_name":"BR-0896"},
-    "12":{
-      "sample_name":"BR-0902"},
-    "13":{
-      "sample_name":"BR-0903"},
-    "14":{
-      "sample_name":"BR-0904"},
-    "15":{
-      "sample_name":"BR-0905"},
-    "16":{
-      "sample_name":"BR-0908"},
-    "17":{
-      "sample_name":"BR-0907"},
-    "18":{
-      "sample_name":"BR-0909"},
-    "19":{
-      "sample_name":"BR-0910"},
-    "20":{
-      "sample_name":"BR-0911"},
-    "21":{
-      "sample_name":"BR-0912"},
-    "22":{
-      "sample_name":"H-0005"},
-    "23":{
-      "sample_name":"H-0319"},
-    "24":{
-      "sample_name":"H-0320"},
-    "25":{
-      "sample_name":"H-0321"},
-    "26":{
-      "sample_name":"H-0322"}
-  }
+    "library_name": "210616_Schumacher",
+    "lib_forward_read_length": 75,
+    "lib_reverse_read_length": 0,
+    "UMI": "Quantseq FWD",
+    "reference": "GRCh38-p10",
+    "RNAseq_type": "quant_fwd",
+    "type_of_extraction": "PolyA",
+    "barcode_mismatches": 0,
+    "base_mask_field": "",
+    "no_lane_splitting": true,
+    "additional_options": "",
+    "trim_adapters": "",
+    "mark_duplicates": true,
+    "trim_quality": false,
+    "umi_usage": "mark_duplicates",
+    "remove_duplicates": true,
+    "keep_not_markDups_bam": false,
+    "max_intron": 1000000,
+    "strandness": "fwd",
+    "trim_left1": 12,
+    "trim_left2": 0,
+    "trim_right1": 0,
+    "trim_right2": 0,
+    "map_score": "0.66",
+    "map_perc": "0.66",
+    "perc_mismatch": "0.66",
+    "min_length": 35,
+    "count_over": "exon",
+    "qc_samtools": true,
+    "qc_qualimap_DNA": false,
+    "qc_picard_DNA": false,
+    "cross_sample_correlation": false,
+    "qc_dupradar_RNA": true,
+    "qc_qualimap_RNA": true,
+    "qc_picard_RNA": true,
+    "qc_biotypes_RNA": true,
+    "qc_fastq_screen_RNA": true,
+    "qc_RSeQC_RNA": true,
+    "feature_count": true,
+    "RSEM_count": false,
+    "max_mapped_reads_to_run_biobloom": 100,
+    "samples": {
+        "149": {
+            "sample_name": "Mut-1"
+        },
+        "150": {
+            "sample_name": "Mut-2"
+        }
+    }
 }

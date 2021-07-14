@@ -74,25 +74,30 @@ rule qc_dupradar_RNA:
             dupraexpden = "qc_reports/{sample}/qc_dupradar_RNA/{sample}_duprateExpDens.pdf",
             multipergene = "qc_reports/{sample}/qc_dupradar_RNA/{sample}_multimapPerGene.pdf",
             readdist = "qc_reports/{sample}/qc_dupradar_RNA/{sample}_readDist.pdf",
-            txt = "qc_reports/{sample}/qc_dupradar_RNA/{sample}_duprateExpDensCurve.txt",
+            txt = "qc_reports/{sample}/qc_dupradar_RNA/{sample}_duprateExpDensCurve.txt"
     log:    "logs/{sample}/qc_dupradar_RNA.log"
     threads:  10
     params: paired = paired,
             strandness = config["strandness"],
+            dupraxpbox_pdf= "qc_reports/all_samples/qc_dupradar_RNA/dupraxpbox.pdf",
+            exphist_pdf= "qc_reports/all_samples/qc_dupradar_RNA/exphist.pdf",
+            dupraexpden_pdf= "qc_reports/all_samples/qc_dupradar_RNA/dupraexpden.pdf",
+            multipergene_pdf= "qc_reports/all_samples/qc_dupradar_RNA/multipergene.pdf",
+            readdist_pdf= "qc_reports/all_samples/qc_dupradar_RNA/readdist.pdf",
     conda:  "../wrappers/qc_dupradar_RNA/env.yaml"
     script: "../wrappers/qc_dupradar_RNA/script.py"
 
 
 rule qc_biotypes_RNA:
-    input: bam="mapped/{sample}.bam",
-        gtf=expand("{ref_dir}/annot/{ref}.gtf",ref_dir=reference_directory,ref=config["reference"])[0],
+    input:  bam="mapped/{sample}.bam",
+            gtf=expand("{ref_dir}/annot/{ref}.gtf",ref_dir=reference_directory,ref=config["reference"])[0],
     output: txt="qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.txt",
+            pdf="qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.pdf",
     log: "logs/{sample}/qc_biotypes_RNA.log"
     threads: 10
     params: prefix="qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype",
         paired = paired,
         strandness=config["strandness"],
-        #info = expand("{ref_dir}/info.txt", ref_dir=reference_directory,ref=config["reference"])[0],#DÁVALI JSME TO U DNA???!
         count_over=config["count_over"],  # [exon, three_prime_utr] what feature to use for the summary? For QuantSeq it might be 3 UTR ("three_prime_utr" is for Ensembl annotation
     conda: "../wrappers/qc_biotypes_RNA/env.yaml"
     script: "../wrappers/qc_biotypes_RNA/script.py"
@@ -100,12 +105,16 @@ rule qc_biotypes_RNA:
 ##### rule pro RAW_FASTQ_QC
 rule qc_fastq_screen_RNA:
     input:  fastq = "raw_fastq/{sample}{read_pair_tag}.fastq.gz",
-            fastqscreen_conf = expand("{ref_dir}/other/BOWTIE2/fastq_screen_RNA_indexes/fastq_screen.conf",ref_dir=reference_directory)[0],
     output: fastqscreen = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png",
             tmp_image = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.txt"
     log:    "logs/{sample}/qc_fastq_screen_RNA{read_pair_tag}.log"
     threads:    10
     resources:  mem = 10
+    params: prefix = "qc_reports/{sample}/qc_fastq_screen_RNA/fastq_screen.conf",
+            organism = config["organism"],
+            general_index= os.path.join(reference_directory,"other/BOWTIE2/fastq_screen_RNA_indexes/GRCh38-p10.ncbi.fna"),
+            rRNA_index= os.path.join(reference_directory,"other/BOWTIE2/fastq_screen_RNA_indexes/GRCh38-p10.ncbi.rRNA.fasta"),
+            tRNA_index= os.path.join(reference_directory,"other/BOWTIE2/fastq_screen_RNA_indexes/GRCh38-p10.ncbi.tRNA.fasta")
     conda:  "../wrappers/qc_fastq_screen_RNA/env.yaml"
     script: "../wrappers/qc_fastq_screen_RNA/script.py"
 
@@ -135,11 +144,10 @@ rule qc_picard_RNA:
     script: "../wrappers/qc_picard_RNA/script.py"
 
 
-
 rule feature_count:
      input:  bam = "mapped/{sample}.bam",
              gtf = expand("{ref_dir}/annot/{ref}.gtf",ref_dir=reference_directory,ref=config["reference"])[0],
-     output: feature_out = "feature_count/{sample}.featureCounts.tsv"
+     output: feature_count = "qc_reports/{sample}/feature_count/{sample}.feature_count.tsv"
      log:    "logs/{sample}/feature_count.log"
      threads: 10
      resources:  mem = 10
@@ -151,8 +159,9 @@ rule feature_count:
 
 rule RSEM_count:
     input:  bam = "mapped/{sample}.bam",
+            transcriptome = "mapped/transcriptome/{sample}.transcriptome.bam",
             rsem_index = expand("{ref_dir}/index/RSEM/{ref}.idx.fa",ref_dir=reference_directory,ref=config["reference"])[0],
-    output: rsem_out = "rsem_count/{sample}.genes.results"
+    output: rsem_out = "qc_reports/{sample}/rsem_count/{sample}.genes.results"
     log:    run = "logs/{sample}/rsem_count.log"
     threads: 5
     resources:  mem = 10

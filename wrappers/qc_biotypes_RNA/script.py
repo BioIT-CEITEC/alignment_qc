@@ -105,3 +105,17 @@ else:
     f.write("## COMMAND: "+command+"\n")
     f.close()
     shell(command)
+
+
+if os.stat(snakemake.output.txt).st_size != 0:
+    # there are no data to process so an empty plot is generated
+    command = "Rscript " + os.path.dirname(__file__) + "/biotypes.r" + " " + snakemake.output.pdf + " " + str(snakemake.output.txt)
+    with open(log_filename, 'at') as f:
+        f.write("## COMMAND: " + command + "\n")
+    shell(command)
+else:
+    command = "echo \"WARNING: there are no Biotype data to process so a plot with a notice is generated.\n\" > " + snakemake.output.pdf + " 2>> " + log_filename
+    f = open(log_filename, 'at')
+    f.write("## COMMAND: "+command+"\n")
+    f.close()
+    shell(command)

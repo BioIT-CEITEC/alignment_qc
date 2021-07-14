@@ -26,12 +26,15 @@ Overview report of workflow done for sample `r snakemake@params$sample_name `.
 ## Report files:
 `r paste0("* [Main QC summary - (MultiQC)](../../",snakemake@input$multiqc,")  \\")`
 `r if(unique(config_json$qc_qualimap_DNA) == TRUE){paste0("* [Detailed mapping QC - (Qualimap)](../../",snakemake@input$qc_qualimap_DNA,")  \\")} `
-`r paste0("* [Detailed raw fastq QC - (FastQC)](../../",snakemake@input$raw_fastq_R1_report,")  \\")`
-`r paste0("* [Detailed raw fastq QC - (FastQC)](../../",snakemake@input$raw_fastq_R2_report,")  \\")`
+`r if(unique(snakemake@params$paired) == "PE"){paste0("* [Detailed raw fastq QC - (FastQC)](../../",snakemake@input$raw_fastq_R1_report,")  \\")} `
+`r if(unique(snakemake@params$paired) == "PE"){paste0("* [Detailed raw fastq QC - (FastQC)](../../",snakemake@input$raw_fastq_R2_report,")  \\")} `
+`r if(unique(snakemake@params$paired) == "SE"){paste0("* [Detailed raw fastq QC - (FastQC)](../../",snakemake@input$raw_fastq_SE_report,")  \\")} `
 `r if(unique(config_json$qc_picard_RNA) == TRUE){paste0("* [RNA-Seq metrics - Picard](../../",snakemake@input$qc_picard_RNA,")  \\")} `
 `r if(unique(config_json$feature_count) == TRUE){paste0("* [RNA-Seq metrics - featureCounts](../../",snakemake@input$feature_count,")  \\")} `
 `r if(unique(config_json$qc_fastq_screen_RNA) == TRUE){paste0("* [RNA-Seq metrics - Fastq screen](../../",snakemake@input$qc_fastq_screen_RNA,")  \\")} `
 `r if(unique(config_json$qc_biotypes_RNA) == TRUE){paste0("* [RNA-Seq metrics - Biotypes](../../",snakemake@input$qc_biotypes_RNA,")  \\")} `
+`r if(unique(config_json$qc_RSeQC_RNA) == TRUE){paste0("* [RNA-Seq metrics - RSeQC RNA](../../",snakemake@input$qc_RSeQC_RNA,")  \\")} `
+`r if(unique(config_json$RSEM_count) == TRUE){paste0("* [RNA-Seq metrics - RSEM count](../../",snakemake@input$RSEM_count,")  \\")} `
 
 ----------------------------------------------------------
 
