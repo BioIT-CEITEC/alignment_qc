@@ -105,7 +105,7 @@ else:
 
 #### convert PNG to PDF in python
 img_path = snakemake.output.fastqscreen
-pdf_path = str(snakemake.output.fastqscreen).replace(".png",".pdf")
+pdf_path = snakemake.output.fastqscreen_pdf
 
 image = Image.open(img_path)
 pdf_bytes = img2pdf.convert(image.filename)

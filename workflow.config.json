@@ -90,7 +90,7 @@
         "default": true
       },
       "feature_count": {
-        "label": "FeatureCounts",
+        "label": "Feature count",
         "type": "bool",
         "default": true
       },
