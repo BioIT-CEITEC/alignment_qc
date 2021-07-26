@@ -7,7 +7,7 @@
 
 def multiqc_report_input(wildcards):
     input = {}
-    if wildcards.sample != "all_samples":
+    if wildcards.sample != "    all_samples":
         if paired == "PE":
             input['raw_fastq_R1_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/R1_fastqc.zip"
             input['raw_fastq_R2_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/R2_fastqc.zip"
@@ -16,7 +16,7 @@ def multiqc_report_input(wildcards):
         if config["qc_qualimap_DNA"]:
             input['qc_qualimap_DNA'] = "qc_reports/{sample}/qc_qualimap_DNA/{sample}/qualimapReport.html"
         if config["qc_samtools"]:
-            input['qc_samtools'] = "qc_reports/{sample}/qc_samtools/idxstats.tsv"
+            input['qc_samtools'] = "qc_reports/{sample}/qc_samtools/{sample}.idxstats.tsv"
         if config["qc_picard_DNA"]:
             input['qc_picard_DNA'] = "qc_reports/{sample}/qc_picard_DNA/picard.tsv"
         if config["qc_qualimap_DNA"]:

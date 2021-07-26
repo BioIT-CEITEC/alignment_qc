@@ -40,7 +40,7 @@ rule qc_qualimap_DNA:
 
 rule qc_samtools:
     input:  bam = "mapped/{sample}.bam"
-    output: idxstats = "qc_reports/{sample}/qc_samtools/idxstats.tsv",
+    output: idxstats = "qc_reports/{sample}/qc_samtools/{sample}.idxstats.tsv",
             flagstats = "qc_reports/{sample}/qc_samtools/{sample}.flagstat.tsv"
     log:    "logs/{sample}/qc_samtools.log"
     threads:    1
