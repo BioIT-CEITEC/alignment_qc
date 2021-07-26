@@ -7,7 +7,7 @@
 
 def multiqc_report_input(wildcards):
     input = {}
-    if wildcards.sample != "    all_samples":
+    if wildcards.sample != "all_samples":
         if paired == "PE":
             input['raw_fastq_R1_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/R1_fastqc.zip"
             input['raw_fastq_R2_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/R2_fastqc.zip"
