@@ -51,7 +51,7 @@ rule qc_samtools:
 # PER SAMPLE RNA
 #
 #
-##### Nefunguje (zatím)
+
 rule qc_qualimap_RNA:
     input:  bam = "mapped/{sample}.bam",
             bai = "mapped/{sample}.bam.bai",
@@ -113,9 +113,9 @@ rule qc_fastq_screen_RNA:
     resources:  mem = 10
     params: prefix = "qc_reports/{sample}/qc_fastq_screen_RNA/fastq_screen.conf",
             organism = config["organism"],
-            general_index= os.path.join(reference_directory,"other/BOWTIE2/fastq_screen_RNA_indexes/GRCh38-p10.ncbi.fna"),
-            rRNA_index= os.path.join(reference_directory,"other/BOWTIE2/fastq_screen_RNA_indexes/GRCh38-p10.ncbi.rRNA.fasta"),
-            tRNA_index= os.path.join(reference_directory,"other/BOWTIE2/fastq_screen_RNA_indexes/GRCh38-p10.ncbi.tRNA.fasta")
+            general_index= expand("{ref_dir}/other/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.fna",ref_dir=reference_directory,ref=config["reference"])[0],
+            rRNA_index= expand("{ref_dir}/other/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.rRNA.fasta",ref_dir=reference_directory,ref=config["reference"])[0],
+            tRNA_index= expand("{ref_dir}/other/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.tRNA.fasta",ref_dir=reference_directory,ref=config["reference"])[0]
     conda:  "../wrappers/qc_fastq_screen_RNA/env.yaml"
     script: "../wrappers/qc_fastq_screen_RNA/script.py"
 
