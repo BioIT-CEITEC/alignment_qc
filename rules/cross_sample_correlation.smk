@@ -18,6 +18,7 @@ rule cross_sample_correlation:
     input:  vcfs = expand("qc_reports/all_samples/cross_sample_correlation/{sample}.snp.vcf",sample = sample_tab.sample_name)
     output: Rdata_for_viz =  "qc_reports/all_samples/cross_sample_correlation/cross_sample_correlation.Rdata",
     log:    "logs/cross_sample_correlation/cross_sample_correlation.log"
+    params: output = "qc_reports/all_samples/cross_sample_correlation/cross_sample_correlation"
     threads: 1
     conda: "../wrappers/cross_sample_correlation/env.yaml"
     script: "../wrappers/cross_sample_correlation/script.py"
@@ -33,3 +34,4 @@ rule snp_vaf_compute:
     threads: 1
     conda: "../wrappers/snp_vaf_compute/env.yaml"
     script: "../wrappers/snp_vaf_compute/script.py"
+
