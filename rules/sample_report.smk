@@ -108,7 +108,7 @@ rule per_sample_alignment_report:
     output: sample_report = "qc_reports/{sample}/single_sample_alignment_report.html",
     params: sample_name = "{sample}",
             config = "./config.json",
-            paired= paired
+            paired= paired,
     conda: "../wrappers/per_sample_alignment_report/env.yaml"
     script: "../wrappers/per_sample_alignment_report/script.Rmd"
 

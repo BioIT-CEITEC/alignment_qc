@@ -65,7 +65,7 @@ if int(mapped_count) >= 20:
 	else:
 		params = ""
 
-	command = "export JAVA_OPTS='-Djava.io.tmpdir=/mnt/ssd/ssd_1/tmp/ -Xmx24G' && qualimap rnaseq -bam " + snakemake.input.bam + params + extra_flags_qualimap + " -outdir " + os.path.dirname(snakemake.output.html) + " >> " + log_filename + " 2>&1"
+	command = "export JAVA_OPTS='-Djava.io.tmpdir=/tmp/ -Xmx24G' && qualimap rnaseq -bam " + snakemake.input.bam + params + extra_flags_qualimap + " -outdir " + os.path.dirname(snakemake.output.html) + " >> " + log_filename + " 2>&1"
 	f = open(log_filename, 'at')
 	f.write("## COMMAND: "+command+"\n")
 	f.close()
