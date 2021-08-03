@@ -158,18 +158,18 @@ rule feature_count:
      conda:  "../wrappers/feature_count/env.yaml"
      script: "../wrappers/feature_count/script.py"
 
-rule RSEM_count:
+rule RSEM:
     input:  bam = "mapped/{sample}.bam",
             transcriptome = "mapped/transcriptome/{sample}.transcriptome.bam",
             rsem_index = expand("{ref_dir}/index/RSEM/{ref}.idx.fa",ref_dir=reference_directory,ref=config["reference"])[0],
-    output: rsem_out = "qc_reports/{sample}/rsem_count/{sample}.genes.results"
-    log:    run = "logs/{sample}/rsem_count.log"
+    output: rsem_out = "qc_reports/{sample}/RSEM/{sample}.genes.results"
+    log:    run = "logs/{sample}/RSEM.log"
     threads: 5
     resources:  mem = 10
     params: paired = paired, # [true, false] "true" for PE reads, "false" for SE reads
             strandness = config["strandness"], # [fwd, rev, none] strandedness of read
-    conda:  "../wrappers/RSEM_count/env.yaml"
-    script: "../wrappers/RSEM_count/script.py"
+    conda:  "../wrappers/RSEM/env.yaml"
+    script: "../wrappers/RSEM/script.py"
 
 def biobloom_input(wildcards):
     if config["trim_adapters"] == True or config["trim_quality"] == True:

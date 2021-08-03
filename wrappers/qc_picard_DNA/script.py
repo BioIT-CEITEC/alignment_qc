@@ -16,8 +16,9 @@ if snakemake.input.lib_ROI:
     f.write("## VERSION: Picard "+version+"\n")
     f.close()
 
-    command = "picard -Xmx"+str(snakemake.resources.mem)+"g CollectHsMetrics I="+snakemake.input.bam+" O="+snakemake.output.table+" R="+str(snakemake.input.ref)+" BAIT_INTERVALS="+str(snakemake.input.lib_ROI)+" \
-PER_TARGET_COVERAGE="+snakemake.params.per_target+" TARGET_INTERVALS="+str(snakemake.input.lib_ROI)+" VALIDATION_STRINGENCY=LENIENT 2>> "+log_filename+""
+    command = "picard -Xmx"+str(snakemake.resources.mem)+"g CollectHsMetrics -I "+snakemake.input.bam+" -O "+snakemake.output.table+" -R "+str(snakemake.input.ref)+" -BAIT_INTERVALS "+str(snakemake.input.lib_ROI)+" \
+-PER_TARGET_COVERAGE "+snakemake.params.per_target+" -TARGET_INTERVALS "+str(snakemake.input.lib_ROI)+" -VALIDATION_STRINGENCY LENIENT 2>> "+log_filename+""
+
     f = open(log_filename, 'at')
     f.write("## COMMAND: "+command+"\n")
     f.close()
@@ -30,8 +31,8 @@ else:
     f.write("## VERSION: Picard "+version+"\n")
     f.close()
 
-    command = "picard -Xmx"+str(snakemake.resources.mem)+"g CollectWgsMetricsWithNonZeroCoverage I="+snakemake.input.bam+" \
-O="+snakemake.output.table+" R="+str(snakemake.input.ref)+" CHART="+str(snakemake.params.wgs_chart)+" >> "+log_filename+" 2>&1"
+    command = "picard -Xmx"+str(snakemake.resources.mem)+"g CollectWgsMetricsWithNonZeroCoverage -I "+snakemake.input.bam+" \
+-O "+snakemake.output.table+" -R "+str(snakemake.input.ref)+" -CHART "+str(snakemake.params.wgs_chart)+" >> "+log_filename+" 2>&1"
     f = open(log_filename, 'at')
     f.write("## COMMAND: "+command+"\n")
     f.close()

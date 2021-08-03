@@ -97,8 +97,8 @@ def per_sample_alignment_report_input(wildcards):
     #     input['biobloom'] = "cleaned_fastq/{sample}.biobloom_summary.tsv"
     if config["qc_biotypes_RNA"]:
         input['qc_biotypes_RNA'] = "qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.pdf"
-    if config["RSEM_count"]:
-        input['RSEM_count'] = "qc_reports/{sample}/rsem_count/{sample}.genes.results"
+    if config["RSEM"]:
+        input['RSEM'] = "qc_reports/{sample}/RSEM/{sample}.genes.results"
     if config["qc_RSeQC_RNA"]:
         input['qc_RSeQC_RNA'] = "qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.read_distribution.txt"
     return input

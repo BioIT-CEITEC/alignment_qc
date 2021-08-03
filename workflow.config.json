@@ -94,7 +94,7 @@
         "type": "bool",
         "default": true
       },
-      "RSEM_count": {
+      "RSEM": {
         "label": "Gene count RSEM",
         "type": "bool",
         "default": true
