@@ -28,7 +28,7 @@ f.write("## COMMAND: "+command+"\n")
 f.close()
 shell(command)
 
-if snakemake.input.lib_ROI:
+if snakemake.params.lib_ROI != "wgs":
     lib_ROI_param = " -gff " +snakemake.input.lib_ROI
 else:
     lib_ROI_param = ""

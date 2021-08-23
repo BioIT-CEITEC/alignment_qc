@@ -10,7 +10,7 @@ f = open(log_filename, 'wt')
 f.write("\n##\n## RULE: qc_picard_DNA \n##\n")
 f.close()
 
-if snakemake.input.lib_ROI:
+if snakemake.params.lib_ROI != "wgs":
     version = str(subprocess.Popen("picard CollectHsMetrics --version 2>&1",shell=True,stdout=subprocess.PIPE).communicate()[0], 'utf-8')
     f = open(log_filename, 'at')
     f.write("## VERSION: Picard "+version+"\n")
