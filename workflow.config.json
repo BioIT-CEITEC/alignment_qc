@@ -6,7 +6,7 @@
     "type":"alignment_qc",
     "inputs":[
       "qc_reports/{sample}/raw_fastqc/*",
-      "mapped/*",
+      "mapped/{sample}.bam*",
       "cleaned_fastq/{sample}*fastq.gz",
       "raw_fastq/{sample}*fastq.gz"
     ],
@@ -15,7 +15,10 @@
     ],
     "report_index": "qc_reports/final_alignment_report.html",
     "reports":[
-       "qc_reports/*"
+      "qc_reports/*.html",
+      "qc_reports/*.pdf",
+      "qc_reports/*.png",
+      "qc_reports/*.csv"
     ]
   },
   "general_params": [
