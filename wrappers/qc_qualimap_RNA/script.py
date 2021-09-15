@@ -22,7 +22,7 @@ f = open(log_filename, 'at')
 extra_flags_qualimap=""
 msg = "Running as single end"
 if snakemake.params.paired == "PE":
-	extra_flags_qualimap+="--paired"
+	extra_flags_qualimap+=" --paired"
 	msg = "Running as paired end"
 if snakemake.params.strandness == "fwd":
 	extra_flags_qualimap += " --sequencing-protocol strand-specific-forward"
@@ -65,7 +65,7 @@ if int(mapped_count) >= 20:
 	else:
 		params = ""
 
-	command = "export JAVA_OPTS='-Djava.io.tmpdir=/mnt/ssd/ssd_1/tmp/ -Xmx24G' && qualimap rnaseq -bam " + snakemake.input.bam + params + extra_flags_qualimap + " -outdir " + os.path.dirname(snakemake.output.html) + " >> " + log_filename + " 2>&1"
+	command = "export JAVA_OPTS='-Djava.io.tmpdir=/tmp/ -Xmx24G' && qualimap rnaseq -bam " + snakemake.input.bam + params + extra_flags_qualimap + " -outdir " + os.path.dirname(snakemake.output.html) + " >> " + log_filename + " 2>&1"
 	f = open(log_filename, 'at')
 	f.write("## COMMAND: "+command+"\n")
 	f.close()

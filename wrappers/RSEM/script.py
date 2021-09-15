@@ -1,5 +1,5 @@
 ######################################
-# wrapper for rule: RSEM_count
+# wrapper for rule: RSEM
 ######################################
 import os
 import subprocess

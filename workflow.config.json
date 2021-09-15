@@ -7,8 +7,7 @@
     "inputs":[
       "qc_reports/{sample}/raw_fastqc/*",
       "mapped/{sample}.bam*",
-      "cleaned_fastq/{sample}*fastq.gz",
-      "raw_fastq/{sample}*fastq.gz"
+      "*/{sample}*fastq.gz"
     ],
     "outputs":[
       "qc_reports/*"
@@ -97,7 +96,7 @@
         "type": "bool",
         "default": true
       },
-      "RSEM_count": {
+      "RSEM": {
         "label": "Gene count RSEM",
         "type": "bool",
         "default": true
