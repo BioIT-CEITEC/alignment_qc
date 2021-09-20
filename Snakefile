@@ -7,6 +7,18 @@ min_version("5.18.0")
 
 GLOBAL_REF_PATH = "/mnt/references/"
 
+def fetch_data(file_path):
+    if config["computing_type"] == "kubernetes":
+        if isinstance(file_path, list) and len(file_path) == 1:
+            return S3.remote(S3_BUCKET + "/" + file_path[0])
+        else:
+            return S3.remote(S3_BUCKET + "/" + file_path)
+    else:
+        if isinstance(file_path, list) and len(file_path) == 1:
+            return file_path[0]
+        else:
+            return file_path
+
 # DNA parameteres processing
 #
 if not "lib_ROI" in config:
@@ -64,7 +76,7 @@ wildcard_constraints:
 ##### Target rules #####
 
 rule all:
-    input:  "qc_reports/final_alignment_report.html"
+    input:  fetch_data("qc_reports/final_alignment_report.html")
 
 
 
