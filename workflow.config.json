@@ -6,7 +6,7 @@
     "type":"alignment_qc",
     "inputs":[
       "qc_reports/{sample}/raw_fastqc/*",
-      "qc_reports/{sample}/trimmomatic/trimmomatic_stats.log",
+      "qc_reports/{sample}/*/trim_stats*.log",
       "mapped/*",
       "*/{sample}*fastq.gz"
     ],

@@ -35,7 +35,7 @@ def multiqc_report_input(wildcards):
             input['qc_RSeQC_RNA'] = fetch_data("qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.read_distribution.txt")
         if config["qc_biotypes_RNA"]:
             input['qc_biotypes_RNA'] = fetch_data("qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.txt")
-        input['trimmomatic'] = fetch_data("qc_reports/{sample}/trimmomatic/trimmomatic_stats.log")
+        input['trim'] = fetch_data("qc_reports/{sample}/trim_galore/trim_stats{read_pair_tag}.log",read_pair_tag=read_pair_tags)
     else:
         input['per_sample_reports'] = fetch_data(expand("qc_reports/{sample}/single_sample_alignment_report.html",sample=sample_tab.sample_name))
     return input
