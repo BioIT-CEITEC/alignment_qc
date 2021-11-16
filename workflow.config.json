@@ -24,7 +24,7 @@
     "lib_forward_read_length",
     "lib_reverse_read_length"
   ],
-  "requested_params:": [
+  "requested_params": [
     "UMI",
     "umi_usage",
     "lib_ROI",
