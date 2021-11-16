@@ -35,7 +35,7 @@ def multiqc_report_input(wildcards):
             input['qc_RSeQC_RNA'] = "qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.read_distribution.txt"
         if config["qc_biotypes_RNA"]:
             input['qc_biotypes_RNA'] = "qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.txt"
-        input['trim'] = "qc_reports/{sample}/trim_galore/trim_stats{read_pair_tag}.log",read_pair_tag=read_pair_tags
+        input['trim'] = expand("qc_reports/{sample}/trim_galore/trim_stats{read_pair_tag}.log",sample=sample_tab.sample_name,read_pair_tag=read_pair_tags)
     else:
         input['per_sample_reports'] = expand("qc_reports/{sample}/single_sample_alignment_report.html",sample=sample_tab.sample_name)
     return input
@@ -82,8 +82,8 @@ def per_sample_alignment_report_input(wildcards):
     input = {}
     input['multiqc'] = "qc_reports/{sample}/multiqc.html"
     if paired == "PE":
-        input['raw_fastq_R1_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/fastqc_R1.html"
-        input['raw_fastq_R2_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/fastqc_R2.html"
+        input['raw_fastq_R1_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/R1_fastqc.html"
+        input['raw_fastq_R2_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/R2_fastqc.html"
     else:
         input['raw_fastq_SE_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/fastqc.html"
     if config["qc_qualimap_DNA"]:

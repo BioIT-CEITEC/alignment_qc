@@ -20,16 +20,17 @@
   },
   "general_params": [
     "entity_name",
-    "sample_name",
-    "lib_forward_read_length",
-    "lib_reverse_read_length"
+    "sample_name"
   ],
   "requested_params:": [
+    "is_paired",
     "UMI",
     "umi_usage",
     "lib_ROI",
     "reference",
-    "trim_adapters"
+    "trim_adapters",
+    "feature_count",
+    "RSEM"
   ],
   "gui_params" : {
     "detailed": {

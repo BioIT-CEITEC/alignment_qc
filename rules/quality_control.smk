@@ -5,9 +5,9 @@
 def qc_picard_DNA_input(wildcards):
     input = {}
     input["bam"] = "mapped/{sample}.bam"
-    input["ref"] = expand("{ref_dir}/seq/{ref}.fa",ref_dir=reference_directory,ref=config["reference"])
+    input["ref"] = expand("{ref_dir}/seq/{ref}.fa",ref_dir=reference_directory,ref=config["reference"])[0]
     if "lib_ROI" in config and config["lib_ROI"] != "wgs":
-        input['lib_ROI'] = expand("{ref_dir}/intervals/{lib_ROI}/{lib_ROI}.interval_list",ref_dir=reference_directory,lib_ROI=config["lib_ROI"])
+        input['lib_ROI'] = expand("{ref_dir}/intervals/{lib_ROI}/{lib_ROI}.interval_list",ref_dir=reference_directory,lib_ROI=config["lib_ROI"])[0]
     return input
 
 rule qc_picard_DNA:
@@ -26,7 +26,7 @@ def qc_qualimap_DNA_input(wildcards):
     input = {}
     input["bam"] = "mapped/{sample}.bam"
     if "lib_ROI" in config and config["lib_ROI"] != "wgs":
-        input['lib_ROI'] = expand("{ref_dir}/intervals/{lib_ROI}/{lib_ROI}.bed",ref_dir=reference_directory,lib_ROI=config["lib_ROI"])
+        input['lib_ROI'] = expand("{ref_dir}/intervals/{lib_ROI}/{lib_ROI}.bed",ref_dir=reference_directory,lib_ROI=config["lib_ROI"])[0]
     return input
 
 rule qc_qualimap_DNA:
@@ -57,7 +57,7 @@ rule qc_samtools:
 rule qc_qualimap_RNA:
     input:  bam = "mapped/{sample}.bam",
             bai = "mapped/{sample}.bam.bai",
-            gtf = expand("{ref_dir}/annot/{ref}.gtf",ref_dir=reference_directory,ref=config["reference"]),
+            gtf = expand("{ref_dir}/annot/{ref}.gtf",ref_dir=reference_directory,ref=config["reference"])[0],
     output: html = "qc_reports/{sample}/qc_qualimap_RNA/{sample}/qualimapReport.html"
     log:    "logs/{sample}/qc_qualimap_RNA.log"
     params: paired = paired,
@@ -70,7 +70,7 @@ rule qc_qualimap_RNA:
 
 rule qc_dupradar_RNA:
     input: bam="mapped/{sample}.bam",
-            gtf=expand("{ref_dir}/annot/{ref}.gtf",ref_dir=reference_directory,ref=config["reference"]),
+            gtf=expand("{ref_dir}/annot/{ref}.gtf",ref_dir=reference_directory,ref=config["reference"])[0],
     output: dupraxpbox = "qc_reports/{sample}/qc_dupradar_RNA/{sample}_duprateExpBoxplot.pdf",
             exphist = "qc_reports/{sample}/qc_dupradar_RNA/{sample}_expressionHist.pdf",
             dupraexpden = "qc_reports/{sample}/qc_dupradar_RNA/{sample}_duprateExpDens.pdf",
@@ -92,7 +92,7 @@ rule qc_dupradar_RNA:
 
 rule qc_biotypes_RNA:
     input:  bam="mapped/{sample}.bam",
-            gtf=expand("{ref_dir}/annot/{ref}.gtf",ref_dir=reference_directory,ref=config["reference"]),
+            gtf=expand("{ref_dir}/annot/{ref}.gtf",ref_dir=reference_directory,ref=config["reference"])[0],
     output: txt="qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.txt",
             pdf="qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.pdf",
     log: "logs/{sample}/qc_biotypes_RNA.log"
@@ -115,15 +115,15 @@ rule qc_fastq_screen_RNA:
     resources:  mem = 10
     params: prefix = "qc_reports/{sample}/qc_fastq_screen_RNA/fastq_screen.conf",
             organism = config["organism"],
-            general_index= expand("{ref_dir}/other/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.fna",ref_dir=reference_directory,ref=config["reference"]),
-            rRNA_index= expand("{ref_dir}/other/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.rRNA.fasta",ref_dir=reference_directory,ref=config["reference"]),
-            tRNA_index= expand("{ref_dir}/other/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.tRNA.fasta",ref_dir=reference_directory,ref=config["reference"])
+            general_index= expand("{ref_dir}/other/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.fna",ref_dir=reference_directory,ref=config["reference"])[0],
+            rRNA_index= expand("{ref_dir}/other/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.rRNA.fasta",ref_dir=reference_directory,ref=config["reference"])[0],
+            tRNA_index= expand("{ref_dir}/other/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.tRNA.fasta",ref_dir=reference_directory,ref=config["reference"])[0]
     conda:  "../wrappers/qc_fastq_screen_RNA/env.yaml"
     script: "../wrappers/qc_fastq_screen_RNA/script.py"
 
 rule qc_RSeQC_RNA:
     input:  bam="mapped/{sample}.bam",
-            bed=expand("{ref_dir}/other/Picard_data/{ref}.bed12",ref_dir=reference_directory,ref=config["reference"]),
+            bed=expand("{ref_dir}/other/Picard_data/{ref}.bed12",ref_dir=reference_directory,ref=config["reference"])[0],
     output: read_distribution="qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.read_distribution.txt",
             infer_experiment="qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.infer_experiment.txt",
             inner_distance="qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.inner_distance.txt"
@@ -136,7 +136,7 @@ rule qc_RSeQC_RNA:
 
 rule qc_picard_RNA:
     input:  bam="mapped/{sample}.bam",
-            flat=expand("{ref_dir}/other/Picard_data/{ref}.refFlat",ref_dir=reference_directory,ref=config["reference"]),
+            flat=expand("{ref_dir}/other/Picard_data/{ref}.refFlat",ref_dir=reference_directory,ref=config["reference"])[0],
     output: picard_out="qc_reports/{sample}/qc_picard_RNA/{sample}.RNA.picard.txt",
         picard_out_pdf="qc_reports/{sample}/qc_picard_RNA/{sample}.npc.pdf",
     log: "logs/{sample}/qc_picard_RNA.log"
@@ -149,7 +149,7 @@ rule qc_picard_RNA:
 
 rule feature_count:
      input:  bam = "mapped/{sample}.bam",
-             gtf = expand("{ref_dir}/annot/{ref}.gtf",ref_dir=reference_directory,ref=config["reference"]),
+             gtf = expand("{ref_dir}/annot/{ref}.gtf",ref_dir=reference_directory,ref=config["reference"])[0],
      output: feature_count = "qc_reports/{sample}/feature_count/{sample}.feature_count.tsv"
      log:    "logs/{sample}/feature_count.log"
      threads: 10
@@ -163,7 +163,7 @@ rule feature_count:
 rule RSEM:
     input:  bam = "mapped/{sample}.bam",
             transcriptome = "mapped/transcriptome/{sample}.transcriptome.bam",
-            rsem_index = expand("{ref_dir}/index/RSEM/{ref}.idx.fa",ref_dir=reference_directory,ref=config["reference"]),
+            rsem_index = expand("{ref_dir}/index/RSEM/{ref}.idx.fa",ref_dir=reference_directory,ref=config["reference"])[0],
     output: rsem_out = "qc_reports/{sample}/RSEM/{sample}.genes.results"
     log:    "logs/{sample}/RSEM.log"
     threads: 5
