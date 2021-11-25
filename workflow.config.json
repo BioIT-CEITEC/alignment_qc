@@ -111,9 +111,9 @@
         "default": true
       },
       "RSEM": {
-        "label": "Gene count RSEM",
+        "label": "RSEM",
         "type": "bool",
-        "default": true
+        "default": false
       },
       "max_mapped_reads_to_run_biobloom": {
         "label": "Biobloom - max mapped ratio",
