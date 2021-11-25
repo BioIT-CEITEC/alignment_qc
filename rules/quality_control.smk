@@ -122,11 +122,11 @@ rule qc_fastq_screen_RNA:
     script: "../wrappers/qc_fastq_screen_RNA/script.py"
 
 rule qc_RSeQC_RNA:
-    input: bam="mapped/{sample}.bam",
-        bed=expand("{ref_dir}/other/Picard_data/{ref}.bed12",ref_dir=reference_directory,ref=config["reference"])[0],
+    input:  bam="mapped/{sample}.bam",
+            bed=expand("{ref_dir}/other/Picard_data/{ref}.bed12",ref_dir=reference_directory,ref=config["reference"])[0],
     output: read_distribution="qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.read_distribution.txt",
-        infer_experiment="qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.infer_experiment.txt",
-        inner_distance="qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.inner_distance.txt"
+            infer_experiment="qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.infer_experiment.txt",
+            inner_distance="qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.inner_distance.txt"
     log: "logs/{sample}/qc_RSeQC_RNA.log"
     params: prefix="qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC"
     threads: 10
@@ -135,8 +135,8 @@ rule qc_RSeQC_RNA:
     script: "../wrappers/qc_RSeQC_RNA/script.py"
 
 rule qc_picard_RNA:
-    input: bam="mapped/{sample}.bam",
-        flat=expand("{ref_dir}/other/Picard_data/{ref}.refFlat",ref_dir=reference_directory,ref=config["reference"])[0],
+    input:  bam="mapped/{sample}.bam",
+            flat=expand("{ref_dir}/other/Picard_data/{ref}.refFlat",ref_dir=reference_directory,ref=config["reference"])[0],
     output: picard_out="qc_reports/{sample}/qc_picard_RNA/{sample}.RNA.picard.txt",
         picard_out_pdf="qc_reports/{sample}/qc_picard_RNA/{sample}.npc.pdf",
     log: "logs/{sample}/qc_picard_RNA.log"
@@ -165,7 +165,7 @@ rule RSEM:
             transcriptome = "mapped/transcriptome/{sample}.transcriptome.bam",
             rsem_index = expand("{ref_dir}/index/RSEM/{ref}.idx.fa",ref_dir=reference_directory,ref=config["reference"])[0],
     output: rsem_out = "qc_reports/{sample}/RSEM/{sample}.genes.results"
-    log:    run = "logs/{sample}/RSEM.log"
+    log:    "logs/{sample}/RSEM.log"
     threads: 5
     resources:  mem = 10
     params: paired = paired, # [true, false] "true" for PE reads, "false" for SE reads
@@ -191,7 +191,7 @@ def biobloom_input(wildcards):
 rule biobloom:
     input: unpack(biobloom_input)
     output: table="cleaned_fastq/{sample}.biobloom_summary.tsv",
-    log: run="logs/{sample}/biobloom.log",
+    log: "logs/{sample}/biobloom.log",
     threads: 8
     resources: mem=30
     params: tool=  "/mnt/ssd/ssd_3/resources/biobloomtools/BioBloomCategorizer/biobloomcategorizer", ## změň cestu!

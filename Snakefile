@@ -23,6 +23,12 @@ if not "count_over" in config:
 if not "max_mapped_reads_to_run_biobloom" in config:
     config["max_mapped_reads_to_run_biobloom"] = 100
 
+if not "feature_count" in config:
+    config["feature_count"] = False
+
+if not "RSEM" in config:
+    config["RSEM"] = False
+
 # Reference processing
 #
 if config["lib_ROI"] != "wgs":
@@ -39,7 +45,6 @@ reference_dict = json.load(f)
 f.close()
 config["organism"] = [organism_name.lower().replace(" ","_") for organism_name in reference_dict.keys() if isinstance(reference_dict[organism_name],dict) and config["reference"] in reference_dict[organism_name].values()][0]
 
-
 ##### Config processing #####
 # Folders
 #
@@ -49,7 +54,7 @@ reference_directory = os.path.join(GLOBAL_REF_PATH,config["organism"],config["re
 #
 sample_tab = pd.DataFrame.from_dict(config["samples"],orient="index")
 
-if config["lib_reverse_read_length"] == 0:
+if not config["is_paired"]:
     read_pair_tags = [""]
     paired = "SE"
 else:

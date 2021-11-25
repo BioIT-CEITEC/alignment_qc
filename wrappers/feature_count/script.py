@@ -25,7 +25,7 @@ f.close()
 shell(command)
 
 if snakemake.params.paired == "PE" :
-    extra_flags_feature = " -p -P -C" # For featureCounts; -B
+    extra_flags_feature = " -p -P -B -C" # For featureCounts; -B
 else:
     extra_flags_feature = ""
 

@@ -6,6 +6,7 @@
     "type":"alignment_qc",
     "inputs":[
       "qc_reports/{sample}/raw_fastqc/*",
+      "qc_reports/{sample}/*/trim_stats*.log",
       "mapped/{sample}.bam*",
       "*/{sample}*fastq.gz"
     ],
@@ -21,12 +22,25 @@
     ]
   },
   "general_params": [
-    "library_name",
-    "sample_name",
-    "lib_forward_read_length",
-    "lib_reverse_read_length"
+    "entity_name",
+    "sample_name"
+  ],
+  "requested_params:": [
+    "is_paired",
+    "UMI",
+    "umi_usage",
+    "reference",
+    "trim_adapters"
   ],
   "gui_params" : {
+    "primary": {
+      "lib_ROI": {
+        "label": "Regions of interest",
+        "type": "enum",
+        "default": "wgs",
+        "list": ##INCLUDE:reference_info/lib_ROI.json##
+      }
+    },
     "detailed": {
       "count_over": {
         "label": "Count over",
