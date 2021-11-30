@@ -17,6 +17,11 @@ f = open(log_filename, 'a+')
 f.write("\n##\n## RULE: qc_dupradar_RNA \n##\n")
 f.close()
 
+version = str(subprocess.Popen("conda list ", shell=True, stdout=subprocess.PIPE).communicate()[0], 'utf-8')
+f = open(log_filename, 'at')
+f.write("## CONDA: "+version+"\n")
+f.close()
+
 f = open(log_filename, 'at')
 extra_flags_dupradar="single"
 msg = "Running as single end"

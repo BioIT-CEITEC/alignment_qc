@@ -8,14 +8,13 @@ shell.executable("/bin/bash")
 log_filename = str(snakemake.log)
 
 
-
 f = open(log_filename, 'a+')
 f.write("\n##\n## RULE: gene_counts_featureCounts \n##\n")
 f.close()
 
-version = str(subprocess.Popen("featureCounts -v 2>&1 | grep featureCounts",shell=True,stdout=subprocess.PIPE).communicate()[0], 'utf-8')
+version = str(subprocess.Popen("conda list ", shell=True, stdout=subprocess.PIPE).communicate()[0], 'utf-8')
 f = open(log_filename, 'at')
-f.write("## VERSION: "+version+"\n")
+f.write("## CONDA: "+version+"\n")
 f.close()
 
 command = "mkdir -p "+os.path.dirname(snakemake.output.feature_count)+" >> "+log_filename+" 2>&1"

@@ -17,10 +17,6 @@ f = open(log_filename, 'at')
 f.write("## CONDA LIST: "+version+"\n")
 f.close()
 
-version = str(subprocess.Popen("multiqc --version 2>&1 ",shell=True,stdout=subprocess.PIPE).communicate()[0], 'utf-8')
-f = open(log_filename, 'at')
-f.write("## VERSION: "+version+"\n")
-f.close()
 
 if snakemake.wildcards.sample != "all_samples":
     multiqc_search_paths = " ./*/"+snakemake.wildcards.sample+"/*/*"

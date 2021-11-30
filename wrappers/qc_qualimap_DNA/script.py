@@ -11,9 +11,9 @@ f = open(log_filename, 'wt')
 f.write("\n##\n## RULE: qc_qualimap_DNA \n##\n")
 f.close()
 
-version = str(subprocess.Popen("qualimap -v 2>&1 | grep QualiMap",shell=True,stdout=subprocess.PIPE).communicate()[0], 'utf-8')
+version = str(subprocess.Popen("conda list ", shell=True, stdout=subprocess.PIPE).communicate()[0], 'utf-8')
 f = open(log_filename, 'at')
-f.write("## VERSION: "+version+"\n")
+f.write("## CONDA: "+version+"\n")
 f.close()
 
 command = "mkdir -p $(dirname "+snakemake.output.html+") >> "+log_filename+" 2>&1"

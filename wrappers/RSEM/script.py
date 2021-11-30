@@ -7,8 +7,6 @@ from snakemake.shell import shell
 shell.executable("/bin/bash")
 log_filename = str(snakemake.log)
 
-
-
 f = open(log_filename, 'a+')
 f.write("\n##\n## RULE: gene_counts_RSEM \n##\n")
 f.close()

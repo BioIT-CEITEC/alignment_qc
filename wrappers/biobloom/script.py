@@ -11,6 +11,11 @@ f = open(log_filename, 'a+')
 f.write("\n##\n## RULE: biobloom \n##\n")
 f.close()
 
+version = str(subprocess.Popen("conda list ", shell=True, stdout=subprocess.PIPE).communicate()[0], 'utf-8')
+f = open(log_filename, 'at')
+f.write("## CONDA: "+version+"\n")
+f.close()
+
 #Minimum aligned reads to run Biobloom (%):
 
 command = "cat " + snakemake.input.flagstats + " | grep -P \"^[0-9]+ \+ [0-9]+ mapped\" | sed \"s/[0-9]\+ + [0-9]\+ mapped (\([^%]\+\)% .\+/\\1/\" "
@@ -23,11 +28,6 @@ f.write("## Number of mapped reads: "+str(mapped_reads)+"\n")
 f.close()
 
 if float(mapped_reads) > snakemake.params.max_mapped_reads_to_run:
-
-    version = str(subprocess.Popen(snakemake.params.tool+" --version 2>&1 | head -1", shell=True, stdout=subprocess.PIPE).communicate()[0], 'utf-8')
-    f = open(log_filename, 'at')
-    f.write("## VERSION: "+version+"\n")
-    f.close()
 
     # set up contamination filters
     human_38 = ref_dir + "homsap/GRCh38-p10/index/BioBloomTools/human_38.bf"

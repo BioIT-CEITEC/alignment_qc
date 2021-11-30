@@ -14,6 +14,11 @@ f = open(log_filename, 'a+')
 f.write("\n##\n## RULE: qc_fastq_screen_RNA \n##\n")
 f.close()
 
+version = str(subprocess.Popen("conda list ", shell=True, stdout=subprocess.PIPE).communicate()[0], 'utf-8')
+f = open(log_filename, 'at')
+f.write("## CONDA: "+version+"\n")
+f.close()
+
 ### create fastq_screen.conf file
 command = "echo 'THREADS " + str(snakemake.threads) + "' > " + snakemake.params.prefix + " 2>> " + log_filename
 f = open(log_filename, 'at')
@@ -80,12 +85,6 @@ WARNING: There are no valid data to process, because of the missing rRNA and tRN
   shell(command)
 
 else:
-  version = str(subprocess.Popen("fastq_screen --version 2>&1", shell=True, stdout=subprocess.PIPE).communicate()[0], 'utf-8')
-  f = open(log_filename, 'at')
-  f.write("## VERSION: "+version+"\n")
-  f.close()
-
-
   command = "mkdir -p "+os.path.dirname(snakemake.output.fastqscreen)+" >> "+log_filename+" 2>&1"
   f = open(log_filename, 'at')
   f.write("## COMMAND: "+command+"\n")

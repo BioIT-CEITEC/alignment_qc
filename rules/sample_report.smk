@@ -19,8 +19,8 @@ def multiqc_report_input(wildcards):
             input['qc_samtools'] = "qc_reports/{sample}/qc_samtools/{sample}.idxstats.tsv"
         if config["qc_picard_DNA"]:
             input['qc_picard_DNA'] = "qc_reports/{sample}/qc_picard_DNA/picard.tsv"
-        if config["qc_qualimap_DNA"]:
-            input['qc_qualimap_DNA'] = "qc_reports/{sample}/qc_qualimap_DNA/{sample}/qualimapReport.html"
+        if config["qc_qualimap_RNA"]:
+            input['qc_qualimap_RNA'] = "qc_reports/{sample}/qc_qualimap_RNA/{sample}/qualimapReport.html"
         if config["qc_picard_RNA"]:
             input['qc_picard_RNA'] = "qc_reports/{sample}/qc_picard_RNA/{sample}.npc.pdf"
         if config["feature_count"]:
@@ -35,7 +35,11 @@ def multiqc_report_input(wildcards):
             input['qc_RSeQC_RNA'] = "qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.read_distribution.txt"
         if config["qc_biotypes_RNA"]:
             input['qc_biotypes_RNA'] = "qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.txt"
-        input['trim'] = expand("qc_reports/{sample}/trim_galore/trim_stats{read_pair_tag}.log",sample=sample_tab.sample_name,read_pair_tag=read_pair_tags)
+        # if it's DNA or RNA
+        if config["qc_qualimap_DNA"]:
+            input['trim'] = expand("qc_reports/{sample}/trim_galore/trim_stats{read_pair_tag}.log",sample=sample_tab.sample_name,read_pair_tag=read_pair_tags)
+        else:
+            input['trim'] = expand("qc_reports/{sample}/trimmomatic/trim_stats.log",sample=sample_tab.sample_name)
     else:
         input['per_sample_reports'] = expand("qc_reports/{sample}/single_sample_alignment_report.html",sample=sample_tab.sample_name)
     return input

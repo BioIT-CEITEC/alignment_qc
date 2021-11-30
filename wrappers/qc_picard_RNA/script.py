@@ -11,9 +11,10 @@ f = open(log_filename, 'a+')
 f.write("\n##\n## RULE: qc_picard_RNA \n##\n")
 f.close()
 
-version = str(subprocess.Popen("picard CollectRnaSeqMetrics --version 2>&1",shell=True,stdout=subprocess.PIPE).communicate()[0], 'utf-8')
+version = str(subprocess.Popen("conda list ", shell=True, stdout=subprocess.PIPE).communicate()[0], 'utf-8')
 f = open(log_filename, 'at')
-f.write("## VERSION: Picard "+version+"\n")
+f.write("## CONDA: "+version+"\n")
+f.close()
 #
 # command = "mkdir -p "+os.path.dirname(snakemake.output.picard_out)+" >> "+log_filename+" 2>&1"
 # f = open(log_filename, 'at')
