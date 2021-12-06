@@ -162,7 +162,7 @@ rule feature_count:
 
 rule RSEM:
     input:  bam = "mapped/{sample}.bam",
-            transcriptome = "mapped/transcriptome/{sample}.transcriptome.bam",
+            transcriptome = "mapped/transcriptome/{sample}.not_markDups.transcriptome.bam",
             rsem_index = expand("{ref_dir}/index/RSEM/{ref}.idx.fa",ref_dir=reference_directory,ref=config["reference"])[0],
     output: rsem_out = "qc_reports/{sample}/RSEM/{sample}.genes.results"
     log:    "logs/{sample}/RSEM.log"
