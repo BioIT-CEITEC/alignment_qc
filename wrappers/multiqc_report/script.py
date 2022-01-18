@@ -1,6 +1,7 @@
 import subprocess
 import os
 from snakemake.shell import shell
+
 shell.executable("/bin/bash")
 log_filename = str(snakemake.log)
 
