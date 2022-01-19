@@ -29,8 +29,8 @@ rule inspect_bam_coverage:
     output: bw =  "mapped/{sample}.no_dups.bigWig",
     log:    "logs/{sample}/inspect_bam_coverage.log",
     threads: 5
-    params: effective_GS = config.effective_genome_size,
-            frag_len = config.fragment_length,
+    params: effective_GS = config["effective_genome_size"],
+            frag_len = config["fragment_length"],
             tmpd = GLOBAL_TMPD_PATH,
     conda:  "../wrappers/inspect_bam_coverage/env.yaml"
     script:  "../wrappers/inspect_bam_coverage/script.py"
@@ -52,7 +52,7 @@ rule multi_bam_summary:
     log:    "logs/all_samples/multi_bam_summary.{dups}.log",
     threads: 20
     params: matrix = "qc_reports/all_samples/multi_bam_summary.{dups}.npz",
-            corr_method = config.summary_correlation_method,
+            corr_method = config["summary_correlation_method"],
     conda:  "../wrappers/multi_bam_summary/env.yaml"
     script: "../wrappers/multi_bam_summary/script.py"
     
