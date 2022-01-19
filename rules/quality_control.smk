@@ -128,7 +128,8 @@ rule qc_RSeQC_RNA:
             infer_experiment="qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.infer_experiment.txt",
             inner_distance="qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.inner_distance.txt"
     log: "logs/{sample}/qc_RSeQC_RNA.log"
-    params: prefix="qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC"
+    params: prefix="qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC",
+            paired = paired,
     threads: 10
     resources: mem=10
     conda: "../wrappers/qc_RSeQC_RNA/env.yaml"
