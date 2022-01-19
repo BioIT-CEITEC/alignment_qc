@@ -26,8 +26,6 @@ def multiqc_report_input(wildcards):
             input['qc_fastq_screen_RNA'] = expand("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png",sample=sample_tab.sample_name,read_pair_tag=read_pair_tags)
         # if config["biobloom"]:
         #     input['biobloom'] = "cleaned_fastq/{sample}.biobloom_summary.tsv"
-        if config["qc_qualimap_RNA"]:
-            input['qc_qualimap_RNA'] = "qc_reports/{sample}/qc_qualimap_RNA/{sample}/qualimapReport.html"
         if config["qc_RSeQC_RNA"]:
             input['qc_RSeQC_RNA'] = "qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.read_distribution.txt"
         if config["qc_biotypes_RNA"]:
@@ -88,14 +86,16 @@ def per_sample_alignment_report_input(wildcards):
     input = {}
     input['multiqc'] = "qc_reports/{sample}/multiqc.html"
     if paired == "PE":
-        input['raw_fastq_R1_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/R1_fastqc.html"
-        input['raw_fastq_R2_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/R2_fastqc.html"
+        input['raw_fastq_R1_report'] = "qc_reports/{sample}/raw_fastqc/R1_fastqc.html"
+        input['raw_fastq_R2_report'] = "qc_reports/{sample}/raw_fastqc/R2_fastqc.html"
     else:
-        input['raw_fastq_SE_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/SE_fastqc.html"
+        input['raw_fastq_SE_report'] = "qc_reports/{sample}/raw_fastqc/SE_fastqc.html"
     if config["qc_qualimap_DNA"]:
         input['qc_qualimap_DNA'] = "qc_reports/{sample}/qc_qualimap_DNA/{sample}/qualimapReport.html"
     if config["qc_picard_RNA"]:
         input['qc_picard_RNA'] = "qc_reports/{sample}/qc_picard_RNA/{sample}.npc.pdf"
+    if config["qc_qualimap_RNA"]:
+        input['qc_qualimap_RNA'] = "qc_reports/{sample}/qc_qualimap_RNA/{sample}/qualimapReport.html"
     if config["feature_count"]:
         input['feature_count'] = "qc_reports/{sample}/feature_count/{sample}.feature_count.tsv"
     if config["qc_fastq_screen_RNA"]:
