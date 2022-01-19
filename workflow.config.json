@@ -7,7 +7,7 @@
     "inputs":[
       "qc_reports/{sample}/raw_fastqc/*",
       "qc_reports/{sample}/*/trim_stats*.log",
-      "mapped/{sample}.bam*",
+      "mapped/*",
       "*/{sample}*fastq.gz"
     ],
     "outputs":[

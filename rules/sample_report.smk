@@ -89,7 +89,7 @@ def per_sample_alignment_report_input(wildcards):
         input['raw_fastq_R1_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/R1_fastqc.html"
         input['raw_fastq_R2_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/R2_fastqc.html"
     else:
-        input['raw_fastq_SE_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/fastqc.html"
+        input['raw_fastq_SE_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/SE_fastqc.html"
     if config["qc_qualimap_DNA"]:
         input['qc_qualimap_DNA'] = "qc_reports/{sample}/qc_qualimap_DNA/{sample}/qualimapReport.html"
     if config["qc_picard_RNA"]:

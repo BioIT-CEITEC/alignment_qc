@@ -1,4 +1,5 @@
 import subprocess
+import os
 from snakemake.shell import shell
 shell.executable("/bin/bash")
 log_filename = str(snakemake.log)
@@ -19,12 +20,10 @@ f.close()
 
 
 if snakemake.wildcards.sample != "all_samples":
-    multiqc_search_paths = " ./*/"+snakemake.wildcards.sample+"/*/*"
+    multiqc_search_paths = " ./*/"+snakemake.wildcards.sample+"/"
 else:
-    multiqc_search_paths = " ./qc_reports/*/*"
+    multiqc_search_paths = " ./qc_reports/*/*" + " ./mapped/*"
 
-    # if 'rsem_out' in snakemake.input:
-    #     multiqc_search_paths += " " + snakemake.params.run_dir + "/rsem_counts/" + snakemake.wildcards.sample + "*/"
 
 command = "multiqc -f --config " + snakemake.params.multiqc_config +" -n multiqc -o ./"+ snakemake.params.multiqc_path + multiqc_search_paths + " >> "+log_filename+" 2>&1 "
 

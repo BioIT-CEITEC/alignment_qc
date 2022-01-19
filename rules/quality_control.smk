@@ -104,7 +104,7 @@ rule qc_biotypes_RNA:
     conda: "../wrappers/qc_biotypes_RNA/env.yaml"
     script: "../wrappers/qc_biotypes_RNA/script.py"
 
-##### rule pro RAW_FASTQ_QC
+
 rule qc_fastq_screen_RNA:
     input:  fastq = "raw_fastq/{sample}{read_pair_tag}.fastq.gz",
     output: fastqscreen = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png",
@@ -128,7 +128,8 @@ rule qc_RSeQC_RNA:
             infer_experiment="qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.infer_experiment.txt",
             inner_distance="qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.inner_distance.txt"
     log: "logs/{sample}/qc_RSeQC_RNA.log"
-    params: prefix="qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC"
+    params: prefix="qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC",
+            paired = paired,
     threads: 10
     resources: mem=10
     conda: "../wrappers/qc_RSeQC_RNA/env.yaml"
@@ -162,7 +163,7 @@ rule feature_count:
 
 rule RSEM:
     input:  bam = "mapped/{sample}.bam",
-            transcriptome = "mapped/transcriptome/{sample}.transcriptome.bam",
+            transcriptome = "mapped/transcriptome/{sample}.not_markDups.transcriptome.bam",
             rsem_index = expand("{ref_dir}/index/RSEM/{ref}.idx.fa",ref_dir=reference_directory,ref=config["reference"])[0],
     output: rsem_out = "qc_reports/{sample}/RSEM/{sample}.genes.results"
     log:    "logs/{sample}/RSEM.log"
