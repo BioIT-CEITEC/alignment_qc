@@ -119,6 +119,11 @@
         "label": "Biobloom - max mapped ratio",
         "type": "int",
         "default": 100
+      },
+      "chip_extra_qc": {
+        "label": "ChIP-seq additional QC",
+        "type": "bool",
+        "default": false
       }
     }
   }
