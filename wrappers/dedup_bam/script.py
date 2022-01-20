@@ -21,12 +21,12 @@ f.write("## CONDA: "+version+"\n")
 f.close()
 
 
-command = "$(which time) --verbose samtools view -b -h -F 1024"+\
+command = "samtools view -b -h -F 1024"+\
           " -@ "+str(snakemake.threads)+\
           " "+snakemake.input.bam+\
           " > "+snakemake.output.bam+\
           " 2>> "+log_filename+\
-          " && $(which time) --verbose samtools index"+\
+          " && samtools index"+\
           " -@ "+str(snakemake.threads)+\
           " "+snakemake.output.bam+\
           " >> "+log_filename+" 2>&1"

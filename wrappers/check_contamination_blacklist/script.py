@@ -20,7 +20,7 @@ f = open(log_filename, 'at')
 f.write("## CONDA: "+version+"\n")
 f.close()
 
-command = "$(which time) --verbose samtools view"+\
+command = "samtools view"+\
           " -@ "+str(snakemake.threads)+\
           " -L "+snakemake.input.lst[0]+\
           " -U "+snakemake.output.bam_ok+\

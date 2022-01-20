@@ -28,7 +28,7 @@ if str(snakemake.params.frag_len) != "unk":
   extra = extra+" --extendReads "+str(snakemake.params.frag_len)
 
 command = "export TMPDIR="+snakemake.params.tmpd+";"+\
-          "$(which time) --verbose bamCoverage"+\
+          "bamCoverage"+\
           " -b "+snakemake.input.bam+\
           " -bs 5"+\
           " -o "+snakemake.output.bw+\

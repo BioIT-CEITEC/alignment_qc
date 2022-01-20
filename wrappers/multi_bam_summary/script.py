@@ -22,7 +22,7 @@ f.close()
 
 ignore_dups = ""
 
-command = "$(which time) --verbose multiBamSummary bins"+\
+command = "multiBamSummary bins"+\
           " -bs 10000"+\
           " "+ignore_dups+\
           " --smartLabels"+\
@@ -35,7 +35,7 @@ f.write("## COMMAND: "+command+"\n")
 f.close()
 shell(command)
 
-command = "$(which time) --verbose plotCorrelation"+\
+command = "plotCorrelation"+\
           " -in "+str(snakemake.params.matrix)+\
           " --whatToPlot heatmap"+\
           " --corMethod "+snakemake.params.corr_method+\
@@ -48,7 +48,7 @@ f.write("## COMMAND: "+command+"\n")
 f.close()
 shell(command)
 
-command = "$(which time) --verbose plotFingerprint"+\
+command = "plotFingerprint"+\
           " --outQualityMetrics "+snakemake.output.quality+\
           " --outRawCounts "+snakemake.output.counts+\
           " --smartLabels"+\
