@@ -19,7 +19,7 @@ rule phantom_peak_qual:
     threads: 2
     params: bam = "qc_reports/{sample}/phantompeakqual/{sample}.{dups}.bam",
             bai = "qc_reports/{sample}/phantompeakqual/{sample}.{dups}.bam.bai",
-            tmpd = "mnt/ssd/ssd_1/tmp/",
+            tmpd = GLOBAL_TMPD_PATH,
     conda:  "../wrappers/phantom_peak_qual/env.yaml"
     script:  "../wrappers/phantom_peak_qual/script.py"
 
