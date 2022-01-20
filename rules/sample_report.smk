@@ -109,13 +109,11 @@ def per_sample_alignment_report_input(wildcards):
     if config["qc_RSeQC_RNA"]:
         input['qc_RSeQC_RNA'] = "qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.read_distribution.txt"
     if config["chip_extra_qc"]:
-        input{
-            'samtools_contam': "qc_reports/{sample}/qc_samtools/{sample}.no_contam.flagstat.tsv",
-            'samtools_dups': "qc_reports/{sample}/qc_samtools/{sample}.no_dups.flagstat.tsv",
-            'no_dups_bam_cov': "mapped/{sample}.no_dups.bigWig",
-            'phantompeak': "qc_reports/{sample}/phantompeakqual/{sample}.no_dups.cross-correlation.pdf",
-            'phantompeak_dups': "qc_reports/{sample}/phantompeakqual/{sample}.keep_dups.cross-correlation.pdf",
-        }
+        input['samtools_contam'] = "qc_reports/{sample}/qc_samtools/{sample}.no_contam.flagstat.tsv",
+        input['samtools_dups'] = "qc_reports/{sample}/qc_samtools/{sample}.no_dups.flagstat.tsv",
+        input['no_dups_bam_cov'] = "mapped/{sample}.no_dups.bigWig",
+        input['phantompeak'] = "qc_reports/{sample}/phantompeakqual/{sample}.no_dups.cross-correlation.pdf",
+        input['phantompeak_dups'] = "qc_reports/{sample}/phantompeakqual/{sample}.keep_dups.cross-correlation.pdf",
     return input
 
 rule per_sample_alignment_report:
@@ -144,14 +142,12 @@ def final_alignment_report_input(wildcards):
         input['multipergene'] = "qc_reports/all_samples/qc_dupradar_RNA/multipergene.pdf"
         input['readdist'] = "qc_reports/all_samples/qc_dupradar_RNA/readdist.pdf"
     if config["chip_extra_qc"]:
-        input{
-            'phantompeak': "qc_reports/all_samples/phantompeakqual/cross-correlation.no_dups.pdf",
-            'phantompeak_dups': "qc_reports/all_samples/phantompeakqual/cross-correlation.keep_dups.pdf",
-            'corr_heatmap': "qc_reports/all_samples/deeptools/correlation_heatmap.no_dups.pdf",
-            'corr_heatmap_dups': "qc_reports/all_samples/deeptools/correlation_heatmap.keep_dups.pdf",
-            "fingerprint": "qc_reports/all_samples/deeptools/fingerprint.no_dups.pdf",
-            "fingerprint_dups": "qc_reports/all_samples/deeptools/fingerprint.keep_dups.pdf",
-        }
+        input['phantompeak'] = "qc_reports/all_samples/phantompeakqual/cross-correlation.no_dups.pdf",
+        input['phantompeak_dups'] = "qc_reports/all_samples/phantompeakqual/cross-correlation.keep_dups.pdf",
+        input['corr_heatmap'] = "qc_reports/all_samples/deeptools/correlation_heatmap.no_dups.pdf",
+        input['corr_heatmap_dups'] = "qc_reports/all_samples/deeptools/correlation_heatmap.keep_dups.pdf",
+        input["fingerprint"] = "qc_reports/all_samples/deeptools/fingerprint.no_dups.pdf",
+        input["fingerprint_dups"] = "qc_reports/all_samples/deeptools/fingerprint.keep_dups.pdf",
     return input
 
 rule final_alignment_report:
