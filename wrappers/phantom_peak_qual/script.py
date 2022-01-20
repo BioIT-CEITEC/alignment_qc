@@ -26,12 +26,12 @@ f.close()
 # f.close()
 time = "time"
     
-command = f"{time} run_spp.R"+\
-          " -c={snakemake.input.bam}"+\
-          " -savp={snakemake.output.plot}"+\
-          " -out={snakemake.output.stat}"+\
-          " -tmpdir={snakemake.params.tmpd}"+\
-          " >> {log_filename} 2>&1"
+command = time+" run_spp.R"+\
+          " -c="+snakemake.input.bam+\
+          " -savp="+snakemake.output.plot+\
+          " -out="+snakemake.output.stat+\
+          " -tmpdir="+snakemake.params.tmpd+\
+          " >> "+log_filename+" 2>&1"
 f = open(log_filename, 'at')
 f.write("## COMMAND: "+command+"\n")
 f.close()
