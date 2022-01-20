@@ -19,8 +19,13 @@ version = str(subprocess.Popen("conda list", shell=True, stdout=subprocess.PIPE)
 f = open(log_filename, 'at')
 f.write("## CONDA: "+version+"\n")
 f.close()
+
+time = str(subprocess.Popen('if [ $(which time) ] ;then echo "$(which time) --verbose"; else echo "time"; fi', shell=True, stdout=subprocess.PIPE).communicate()[0], 'utf-8')
+f = open(log_filename, 'at')
+f.write("## WHICH TIME: "+time+"\n")
+f.close()
     
-command = f"$(which time) --verbose run_spp.R"+\
+command = f"{time} run_spp.R"+\
           " -c={snakemake.input.bam}"+\
           " -savp={snakemake.output.plot}"+\
           " -out={snakemake.output.stat}"+\
