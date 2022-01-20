@@ -6,7 +6,7 @@ from snakemake.utils import min_version
 min_version("5.18.0")
 
 GLOBAL_REF_PATH = "/mnt/references/"
-GLOBAL_TMPD_PATH = "/mnt/ssd/ssd_1/tmp/"
+GLOBAL_TMPD_PATH = "/tmp/"
 
 # DNA parameteres processing
 #
