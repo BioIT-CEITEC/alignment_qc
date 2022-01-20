@@ -44,14 +44,14 @@ def multi_bam_summary_inputs(wildcards):
 
 rule multi_bam_summary:
     input:  bam = multi_bam_summary_inputs,
-    output: plot = "qc_reports/all_samples/correlation_heatmap.{dups}.pdf",
-            table= "qc_reports/all_samples/correlation_heatmap.{dups}.tsv",
-            finger = "qc_reports/all_samples/fingerprint.{dups}.pdf",
-            counts = "qc_reports/all_samples/fingerprint.{dups}.raw_counts",
-            quality= "qc_reports/all_samples/fingerprint.{dups}.quality_metrics",
+    output: plot = "qc_reports/all_samples/deeptools/correlation_heatmap.{dups}.pdf",
+            table= "qc_reports/all_samples/deeptools/correlation_heatmap.{dups}.tsv",
+            finger = "qc_reports/all_samples/deeptools/fingerprint.{dups}.pdf",
+            counts = "qc_reports/all_samples/deeptools/fingerprint.{dups}.raw_counts",
+            quality= "qc_reports/all_samples/deeptools/fingerprint.{dups}.quality_metrics",
     log:    "logs/all_samples/multi_bam_summary.{dups}.log",
     threads: 20
-    params: matrix = "qc_reports/all_samples/multi_bam_summary.{dups}.npz",
+    params: matrix = "qc_reports/all_samples/deeptools/multi_bam_summary.{dups}.npz",
             corr_method = config["summary_correlation_method"],
     conda:  "../wrappers/multi_bam_summary/env.yaml"
     script: "../wrappers/multi_bam_summary/script.py"
