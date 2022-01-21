@@ -2,6 +2,9 @@
 # wrapper for rule: merge_single_sample_reports
 ######################################
 import os
+import sys
+import math
+import subprocess
 from snakemake.shell import shell
 
 shell.executable("/bin/bash")
