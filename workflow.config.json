@@ -11,7 +11,10 @@
       "*/{sample}*fastq.gz"
     ],
     "outputs":[
-      "qc_reports/*"
+      "qc_reports/*",
+      "mapped/*.bam",
+      "mapped/*.bigWig",
+      "mapped/*.bedGraph"
     ],
     "report_index": "qc_reports/final_alignment_report.html",
     "reports":[
