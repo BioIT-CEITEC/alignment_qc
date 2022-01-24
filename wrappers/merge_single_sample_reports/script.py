@@ -85,7 +85,7 @@ else:
 
 
 ## QC extra for ChIP-seq    
-if snakemake.input.phantompeak:
+if hasattr(snakemake.input, 'phantompeak'):
     command = "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -sOutputFile="+snakemake.output.phantompeak_pdf+" "+str(snakemake.input.phantompeak)+" >> "+log_filename+" 2>&1"
     f = open(log_filename, 'at')
     f.write("## COMMAND: "+command+"\n")
@@ -94,7 +94,7 @@ if snakemake.input.phantompeak:
 else:
     shell("touch " + snakemake.output.phantompeak_pdf)
     
-if snakemake.input.phantompeak_dups:
+if hasattr(snakemake.input, 'phantompeak_dups'):
     command = "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -sOutputFile="+snakemake.output.phantompeak_dups_pdf+" "+str(snakemake.input.phantompeak_dups)+" >> "+log_filename+" 2>&1"
     f = open(log_filename, 'at')
     f.write("## COMMAND: "+command+"\n")
