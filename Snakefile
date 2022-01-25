@@ -6,6 +6,7 @@ from snakemake.utils import min_version
 min_version("5.18.0")
 
 GLOBAL_REF_PATH = "/mnt/references/"
+GLOBAL_TMPD_PATH = "/tmp/"
 
 # DNA parameteres processing
 #
@@ -28,6 +29,17 @@ if not "feature_count" in config:
 
 if not "RSEM" in config:
     config["RSEM"] = False
+    
+# ChIP-seq parameters processing
+#
+if not "effective_genome_size" in config:
+    config["effective_genome_size"] = "unk"
+
+if not "fragment_length" in config:
+    config["fragment_length"] = "unk"
+    
+if not "summary_correlation_method" in config:
+    config["summary_correlation_method"] = "spearman"
 
 # Reference processing
 #
@@ -76,4 +88,5 @@ rule all:
 
 include: "rules/quality_control.smk"
 include: "rules/cross_sample_correlation.smk"
+include: "rules/chipseq_specific_qc.smk"
 include: "rules/sample_report.smk"

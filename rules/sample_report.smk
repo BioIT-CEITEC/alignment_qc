@@ -2,9 +2,6 @@
 #
 
 
-
-
-
 def multiqc_report_input(wildcards):
     input = {}
     if wildcards.sample != "all_samples":
@@ -29,8 +26,6 @@ def multiqc_report_input(wildcards):
             input['qc_fastq_screen_RNA'] = expand("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png",sample=sample_tab.sample_name,read_pair_tag=read_pair_tags)
         # if config["biobloom"]:
         #     input['biobloom'] = "cleaned_fastq/{sample}.biobloom_summary.tsv"
-        if config["qc_qualimap_RNA"]:
-            input['qc_qualimap_RNA'] = "qc_reports/{sample}/qc_qualimap_RNA/{sample}/qualimapReport.html"
         if config["qc_RSeQC_RNA"]:
             input['qc_RSeQC_RNA'] = "qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.read_distribution.txt"
         if config["qc_biotypes_RNA"]:
@@ -66,6 +61,9 @@ def merge_single_sample_reports_input(wildcards):
         input['dupraexpden'] = expand("qc_reports/{sample}/qc_dupradar_RNA/{sample}_duprateExpDens.pdf",sample=sample_tab.sample_name)
         input['multipergene'] = expand("qc_reports/{sample}/qc_dupradar_RNA/{sample}_multimapPerGene.pdf",sample=sample_tab.sample_name)
         input['readdist'] = expand("qc_reports/{sample}/qc_dupradar_RNA/{sample}_readDist.pdf",sample=sample_tab.sample_name)
+    if config["chip_extra_qc"]:
+        input['phantompeak'] = expand("qc_reports/{sample}/phantompeakqual/{sample}.{dups}.cross-correlation.pdf", sample=sample_tab.sample_name, dups=['no_dups'])
+        input['phantompeak_dups'] = expand("qc_reports/{sample}/phantompeakqual/{sample}.{dups}.cross-correlation.pdf", sample=sample_tab.sample_name, dups=['keep_dups'])
     return input
 
 rule merge_single_sample_reports:
@@ -77,6 +75,8 @@ rule merge_single_sample_reports:
             dupraexpden_pdf = "qc_reports/all_samples/qc_dupradar_RNA/dupraexpden.pdf",
             multipergene_pdf = "qc_reports/all_samples/qc_dupradar_RNA/multipergene.pdf",
             readdist_pdf = "qc_reports/all_samples/qc_dupradar_RNA/readdist.pdf",
+            phantompeak_pdf="qc_reports/all_samples/phantompeakqual/cross-correlation.no_dups.pdf",
+            phantompeak_dups_pdf="qc_reports/all_samples/phantompeakqual/cross-correlation.keep_dups.pdf",
     log:    "logs/all_samples/merge_single_sample_reports.log"
     conda: "../wrappers/merge_single_sample_reports/env.yaml"
     script: "../wrappers/merge_single_sample_reports/script.py"
@@ -86,14 +86,16 @@ def per_sample_alignment_report_input(wildcards):
     input = {}
     input['multiqc'] = "qc_reports/{sample}/multiqc.html"
     if paired == "PE":
-        input['raw_fastq_R1_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/R1_fastqc.html"
-        input['raw_fastq_R2_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/R2_fastqc.html"
+        input['raw_fastq_R1_report'] = "qc_reports/{sample}/raw_fastqc/R1_fastqc.html"
+        input['raw_fastq_R2_report'] = "qc_reports/{sample}/raw_fastqc/R2_fastqc.html"
     else:
-        input['raw_fastq_SE_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/SE_fastqc.html"
+        input['raw_fastq_SE_report'] = "qc_reports/{sample}/raw_fastqc/SE_fastqc.html"
     if config["qc_qualimap_DNA"]:
         input['qc_qualimap_DNA'] = "qc_reports/{sample}/qc_qualimap_DNA/{sample}/qualimapReport.html"
     if config["qc_picard_RNA"]:
         input['qc_picard_RNA'] = "qc_reports/{sample}/qc_picard_RNA/{sample}.npc.pdf"
+    if config["qc_qualimap_RNA"]:
+        input['qc_qualimap_RNA'] = "qc_reports/{sample}/qc_qualimap_RNA/{sample}/qualimapReport.html"
     if config["feature_count"]:
         input['feature_count'] = "qc_reports/{sample}/feature_count/{sample}.feature_count.tsv"
     if config["qc_fastq_screen_RNA"]:
@@ -106,6 +108,12 @@ def per_sample_alignment_report_input(wildcards):
         input['RSEM'] = "qc_reports/{sample}/RSEM/{sample}.genes.results"
     if config["qc_RSeQC_RNA"]:
         input['qc_RSeQC_RNA'] = "qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.read_distribution.txt"
+    if config["chip_extra_qc"]:
+        input['samtools_contam'] = "qc_reports/{sample}/qc_samtools/{sample}.no_contam.flagstat.tsv",
+        input['samtools_dups'] = "qc_reports/{sample}/qc_samtools/{sample}.no_dups.flagstat.tsv",
+        input['no_dups_bam_cov'] = "mapped/{sample}.no_dups.bigWig",
+        input['phantompeak'] = "qc_reports/{sample}/phantompeakqual/{sample}.no_dups.cross-correlation.pdf",
+        input['phantompeak_dups'] = "qc_reports/{sample}/phantompeakqual/{sample}.keep_dups.cross-correlation.pdf",
     return input
 
 rule per_sample_alignment_report:
@@ -133,6 +141,13 @@ def final_alignment_report_input(wildcards):
         input['dupraexpden'] = "qc_reports/all_samples/qc_dupradar_RNA/dupraexpden.pdf"
         input['multipergene'] = "qc_reports/all_samples/qc_dupradar_RNA/multipergene.pdf"
         input['readdist'] = "qc_reports/all_samples/qc_dupradar_RNA/readdist.pdf"
+    if config["chip_extra_qc"]:
+        input['phantompeak'] = "qc_reports/all_samples/phantompeakqual/cross-correlation.no_dups.pdf",
+        input['phantompeak_dups'] = "qc_reports/all_samples/phantompeakqual/cross-correlation.keep_dups.pdf",
+        input['corr_heatmap'] = "qc_reports/all_samples/deeptools/correlation_heatmap.no_dups.pdf",
+        input['corr_heatmap_dups'] = "qc_reports/all_samples/deeptools/correlation_heatmap.keep_dups.pdf",
+        input["fingerprint"] = "qc_reports/all_samples/deeptools/fingerprint.no_dups.pdf",
+        input["fingerprint_dups"] = "qc_reports/all_samples/deeptools/fingerprint.keep_dups.pdf",
     return input
 
 rule final_alignment_report:

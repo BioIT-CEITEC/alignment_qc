@@ -11,7 +11,10 @@
       "*/{sample}*fastq.gz"
     ],
     "outputs":[
-      "qc_reports/*"
+      "qc_reports/*",
+      "mapped/*.bam",
+      "mapped/*.bai",
+      "mapped/*.bigWig"
     ],
     "report_index": "qc_reports/final_alignment_report.html",
     "reports":[
@@ -119,6 +122,11 @@
         "label": "Biobloom - max mapped ratio",
         "type": "int",
         "default": 100
+      },
+      "chip_extra_qc": {
+        "label": "ChIP-seq additional QC",
+        "type": "bool",
+        "default": false
       }
     }
   }
