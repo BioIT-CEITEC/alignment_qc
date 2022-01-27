@@ -111,7 +111,7 @@ def per_sample_alignment_report_input(wildcards):
     if config["chip_extra_qc"]:
         input['samtools_contam'] = "qc_reports/{sample}/qc_samtools/{sample}.no_contam.flagstat.tsv",
         input['samtools_dups'] = "qc_reports/{sample}/qc_samtools/{sample}.no_dups.flagstat.tsv",
-        input['no_dups_bam_cov'] = "mapped/{sample}.no_dups.bigWig",
+        input['no_dups_bam_cov'] = "mapped/{sample}.no_dups.bam.bigWig",
         input['phantompeak'] = "qc_reports/{sample}/phantompeakqual/{sample}.no_dups.cross-correlation.pdf",
         input['phantompeak_dups'] = "qc_reports/{sample}/phantompeakqual/{sample}.keep_dups.cross-correlation.pdf",
     return input

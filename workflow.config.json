@@ -12,9 +12,7 @@
     ],
     "outputs":[
       "qc_reports/*",
-      "mapped/*.bam",
-      "mapped/*.bai",
-      "mapped/*.bigWig"
+      "mapped/*.bam*"
     ],
     "report_index": "qc_reports/final_alignment_report.html",
     "reports":[

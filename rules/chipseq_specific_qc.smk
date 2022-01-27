@@ -26,7 +26,7 @@ rule phantom_peak_qual:
 
 rule inspect_bam_coverage:
     input:  bam = "mapped/{sample}.no_dups.bam",
-    output: bw =  "mapped/{sample}.no_dups.bigWig",
+    output: bw =  "mapped/{sample}.no_dups.bam.bigWig",
     log:    "logs/{sample}/inspect_bam_coverage.log",
     threads: 5
     params: effective_GS = config["effective_genome_size"],
