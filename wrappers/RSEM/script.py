@@ -58,8 +58,16 @@ with open(log_filename, 'at') as f:
     f.write("## COMMAND: " + command + "\n")
 
 if int(mapped_count) >= 20:
-    command = "rsem-calculate-expression --bam --estimate-rspd --calc-ci --seed 12345 -p "+str(snakemake.threads)+" --no-bam-output --ci-memory "+str(snakemake.resources.mem)+"000 "+extra_flags_rsem \
-                +" "+snakemake.input.transcriptome+" "+snakemake.input.rsem_index.replace(".idx.fa","")+" "+snakemake.output.rsem_out.replace(".genes.results","")+" >> "+log_filename+" 2>&1 "
+    # command = "rsem-calculate-expression --bam --estimate-rspd --calc-ci --seed 12345 -p "+str(snakemake.threads)+" --no-bam-output --ci-memory "+str(snakemake.resources.mem)+"000 "+extra_flags_rsem \
+    #             +" "+snakemake.input.transcriptome+" "+snakemake.input.rsem_index.replace(".idx.fa","")+" "+snakemake.output.rsem_out.replace(".genes.results","")+" >> "+log_filename+" 2>&1 "
+
+    command = "rsem-calculate-expression --bam --estimate-rspd --seed 12345 -p " \
+            + str(snakemake.threads) \
+            + " --no-bam-output " + extra_flags_rsem \
+            + " " + snakemake.input.transcriptome + " " \
+            + snakemake.input.rsem_index.replace(".idx.fa","") + " " \
+            + snakemake.output.rsem_out.replace(".genes.results", "") \
+            + " >> " + log_filename + " 2>&1 "
 
     f = open(log_filename, 'at')
     f.write("## COMMAND: "+command+"\n")
