@@ -99,8 +99,6 @@ else:
   f.close()
   shell(command)
 
-#shell("convert "+str(snakemake.output.fastqscreen)+" "+str(snakemake.output.fastqscreen).replace(".png",".pdf"))
-
 
 #### convert PNG to PDF in python
 img_path = snakemake.output.fastqscreen

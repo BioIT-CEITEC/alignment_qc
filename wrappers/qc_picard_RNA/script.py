@@ -15,12 +15,7 @@ version = str(subprocess.Popen("conda list ", shell=True, stdout=subprocess.PIPE
 f = open(log_filename, 'at')
 f.write("## CONDA: "+version+"\n")
 f.close()
-#
-# command = "mkdir -p "+os.path.dirname(snakemake.output.picard_out)+" >> "+log_filename+" 2>&1"
-# f = open(log_filename, 'at')
-# f.write("## COMMAND: "+command+"\n")
-# f.close()
-# shell(command)
+
 
 f = open(log_filename, 'at')
 if snakemake.params.strandness == "fwd":
@@ -47,4 +42,4 @@ f.close()
 shell(command)
 
 if not os.path.exists(snakemake.output.picard_out_pdf):
-	shell("touch " + snakemake.output.picard_out_pdf)
+    shell("touch " + snakemake.output.picard_out_pdf)

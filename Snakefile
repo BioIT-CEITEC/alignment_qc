@@ -82,8 +82,6 @@ wildcard_constraints:
 rule all:
     input:  "qc_reports/final_alignment_report.html"
 
-
-
 ##### Modules #####
 
 include: "rules/quality_control.smk"

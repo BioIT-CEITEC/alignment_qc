@@ -23,7 +23,7 @@ f.close()
 shell(command)
 
 if snakemake.params.paired == "PE" :
-    extra_flags_rsem="--paired-end" # For RSEM
+    extra_flags_rsem="--paired-end"
 else:
     extra_flags_rsem = ""
 

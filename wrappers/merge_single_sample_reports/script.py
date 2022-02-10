@@ -103,17 +103,3 @@ if hasattr(snakemake.input, 'phantompeak_dups'):
 else:
     shell("touch " + snakemake.output.phantompeak_dups_pdf)
 
-# 
-# if hasattr(snakemake.output, 'corr_heatmap_all_pdf'):
-#     command = "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -sOutputFile="+snakemake.output.corr_heatmap_all_pdf+" "+snakemake.input.corr_heatmap+" "+snakemake.input.corr_heatmap_dups
-#     f = open(log_filename, 'at')
-#     f.write("## COMMAND: "+command+"\n")
-#     f.close()
-#     shell(command)
-# 
-# if hasattr(snakemake.output, 'fingerprint_all_pdf'):
-#     command = "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -sOutputFile="+snakemake.output.fingerprint_all_pdf+" "+snakemake.input.fingerprint+" "+snakemake.input.fingerprint_dups
-#     f = open(log_filename, 'at')
-#     f.write("## COMMAND: "+command+"\n")
-#     f.close()
-#     shell(command)

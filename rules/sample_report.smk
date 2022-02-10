@@ -39,15 +39,16 @@ def multiqc_report_input(wildcards):
         input['per_sample_reports'] = expand("qc_reports/{sample}/single_sample_alignment_report.html",sample=sample_tab.sample_name)
     return input
 
+
 rule multiqc_report:
-    input: unpack(multiqc_report_input)
+    input:  unpack(multiqc_report_input)
     output: html="qc_reports/{sample}/multiqc.html"
-    log: "logs/{sample}/multiqc.log"
-    params:
-        multiqc_config = workflow.basedir+"/wrappers/multiqc_report/multiqc_config.txt",
-        multiqc_path = "qc_reports/{sample}/"
+    log:    "logs/{sample}/multiqc.log"
+    params: multiqc_config = workflow.basedir+"/wrappers/multiqc_report/multiqc_config.txt",
+            multiqc_path = "qc_reports/{sample}/"
     conda: "../wrappers/multiqc_report/env.yaml"
     script: "../wrappers/multiqc_report/script.py"
+
 
 def merge_single_sample_reports_input(wildcards):
     input = {}
@@ -67,7 +68,7 @@ def merge_single_sample_reports_input(wildcards):
     return input
 
 rule merge_single_sample_reports:
-    input: unpack(merge_single_sample_reports_input)
+    input:  unpack(merge_single_sample_reports_input)
     output: biotype_pdf = "qc_reports/all_samples/qc_biotype_RNA/biotype.pdf",
             fastq_screen_pdf = "qc_reports/all_samples/fastq_screen/fastq_screen.pdf",
             dupraxpbox_pdf = "qc_reports/all_samples/qc_dupradar_RNA/dupraxpbox.pdf",
@@ -117,13 +118,14 @@ def per_sample_alignment_report_input(wildcards):
     return input
 
 rule per_sample_alignment_report:
-    input: unpack(per_sample_alignment_report_input)
+    input:  unpack(per_sample_alignment_report_input)
     output: sample_report = "qc_reports/{sample}/single_sample_alignment_report.html",
     params: sample_name = "{sample}",
             config = "./config.json",
-            paired= paired,
+            paired = paired,
     conda: "../wrappers/per_sample_alignment_report/env.yaml"
     script: "../wrappers/per_sample_alignment_report/script.Rmd"
+
 
 def final_alignment_report_input(wildcards):
     input = {}
@@ -151,10 +153,9 @@ def final_alignment_report_input(wildcards):
     return input
 
 rule final_alignment_report:
-    input: unpack(final_alignment_report_input)
-    output: html="qc_reports/final_alignment_report.html"
-    params:
-        sample_name = sample_tab.sample_name,
-        config="./config.json"
+    input:  unpack(final_alignment_report_input)
+    output: html = "qc_reports/final_alignment_report.html"
+    params: sample_name = sample_tab.sample_name,
+            config = "./config.json"
     conda: "../wrappers/final_alignment_report/env.yaml"
     script: "../wrappers/final_alignment_report/script.Rmd"
