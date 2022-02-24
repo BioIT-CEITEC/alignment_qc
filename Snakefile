@@ -1,11 +1,15 @@
-import os
-import pandas as pd
-import json
 from snakemake.utils import min_version
 
-min_version("5.18.0")
+min_version("6.15")
 
-GLOBAL_REF_PATH = "/mnt/references/"
+module bioroots_utilities:
+    snakefile:
+            gitlab("bioroots/bioroots_utilities", path="bioroots_utilities.smk",branch="main")
+
+use rule * from bioroots_utilities as other_*
+
+
+GLOBAL_REF_PATH = bioroots_utilities.global_ref_path()
 GLOBAL_TMPD_PATH = "/tmp/"
 
 # DNA parameteres processing
@@ -43,34 +47,21 @@ if not "summary_correlation_method" in config:
 
 # Reference processing
 #
-if config["lib_ROI"] != "wgs":
-    # setting reference from lib_ROI
-    f = open(os.path.join(GLOBAL_REF_PATH,"reference_info","lib_ROI.json"))
-    lib_ROI_dict = json.load(f)
-    f.close()
-    config["reference"] = [ref_name for ref_name in lib_ROI_dict.keys() if isinstance(lib_ROI_dict[ref_name],dict) and config["lib_ROI"] in lib_ROI_dict[ref_name].keys()][0]
-
-# setting organism from reference
-f = open(os.path.join(GLOBAL_REF_PATH,"reference_info","reference.json"),)
-reference_dict = json.load(f)
-f.close()
-config["organism"] = [organism_name.lower().replace(" ","_") for organism_name in reference_dict.keys() if isinstance(reference_dict[organism_name],dict) and config["reference"] in reference_dict[organism_name].keys()][0]
+bioroots_utilities.load_ref(global_ref_path, config)
+bioroots_utilities.load_organism(global_ref_path, config)
 
 ##### Config processing #####
 # Folders
 #
-reference_directory = os.path.join(GLOBAL_REF_PATH,config["organism"],config["reference"])
+reference_directory = bioroots_utilities.reference_directory(global_ref_path, config)
 
 # Samples
 #
-sample_tab = pd.DataFrame.from_dict(config["samples"],orient="index")
+sample_tab = bioroots_utilities.load_sample(config)
 
-if not config["is_paired"]:
-    read_pair_tags = [""]
-    paired = "SE"
-else:
-    read_pair_tags = ["_R1","_R2"]
-    paired = "PE"
+read_pair_tags = bioroots_utilities.set_read_pair_tags(config)[0]
+paired = bioroots_utilities.set_read_pair_tags(config)[1]
+
 
 wildcard_constraints:
      sample = "|".join(sample_tab.sample_name) + "|all_samples",
