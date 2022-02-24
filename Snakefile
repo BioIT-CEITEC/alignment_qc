@@ -47,13 +47,13 @@ if not "summary_correlation_method" in config:
 
 # Reference processing
 #
-bioroots_utilities.load_ref(global_ref_path, config)
-bioroots_utilities.load_organism(global_ref_path, config)
+bioroots_utilities.load_ref(GLOBAL_REF_PATH, config)
+bioroots_utilities.load_organism(GLOBAL_REF_PATH, config)
 
 ##### Config processing #####
 # Folders
 #
-reference_directory = bioroots_utilities.reference_directory(global_ref_path, config)
+reference_directory = bioroots_utilities.reference_directory(GLOBAL_REF_PATH, config)
 
 # Samples
 #
