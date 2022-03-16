@@ -62,6 +62,7 @@ rule qc_qualimap_RNA:
     log:    "logs/{sample}/qc_qualimap_RNA.log"
     params: paired = paired,
             strandness = config["strandness"],
+            tmpd = GLOBAL_TMPD_PATH,
     threads: 10
     resources:  mem = 1
     conda:  "../wrappers/qc_qualimap_RNA/env.yaml"
