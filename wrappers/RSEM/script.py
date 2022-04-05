@@ -55,7 +55,7 @@ shell(command)
 command = "samtools view "+str(snakemake.input.transcriptome)+" | head -20 | wc -l"
 mapped_count = str(subprocess.Popen(command,shell=True,stdout=subprocess.PIPE).communicate()[0], 'utf-8')
 with open(log_filename, 'at') as f:
-    f.write("## COMMAND: " + command + "\n")
+    f.write("## COMMAND: " + command + "\n" + "Num. mapped reads = " + mapped_count + "\n")
 
 if int(mapped_count) >= 2:
     command = "rsem-calculate-expression --bam --estimate-rspd --calc-ci --seed 12345 -p "+str(snakemake.threads)+" --no-bam-output --ci-memory "+str(snakemake.resources.mem)+"000 "+extra_flags_rsem \

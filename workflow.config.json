@@ -117,6 +117,11 @@
         "type": "bool",
         "default": false
       },
+      "salmon": {
+        "label": "Salmon",
+        "type": "bool",
+        "default": false
+      },
       "max_mapped_reads_to_run_biobloom": {
         "label": "Biobloom - max mapped ratio",
         "type": "int",
