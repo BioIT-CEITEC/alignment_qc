@@ -57,7 +57,7 @@ mapped_count = str(subprocess.Popen(command,shell=True,stdout=subprocess.PIPE).c
 with open(log_filename, 'at') as f:
     f.write("## COMMAND: " + command + "\n")
 
-if int(mapped_count) >= 20:
+if int(mapped_count) >= 2:
     command = "rsem-calculate-expression --bam --estimate-rspd --calc-ci --seed 12345 -p "+str(snakemake.threads)+" --no-bam-output --ci-memory "+str(snakemake.resources.mem)+"000 "+extra_flags_rsem \
                 +" "+snakemake.input.transcriptome+" "+snakemake.input.rsem_index.replace(".idx.fa","")+" "+snakemake.output.rsem_out.replace(".genes.results","")+" >> "+log_filename+" 2>&1 "
 
