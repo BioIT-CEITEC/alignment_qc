@@ -4,18 +4,18 @@
 #
 def qc_picard_DNA_input(wildcards):
     input = {}
-    input["bam"] = "mapped/{sample}.bam"
-    input["ref"] = expand("{ref_dir}/seq/{ref}.fa",ref_dir=reference_directory,ref=config["reference"])[0]
+    input["bam"] = BR.remote("mapped/{sample}.bam")
+    input["ref"] = BR.remote(expand("{ref_dir}/seq/{ref}.fa",ref_dir=reference_directory,ref=config["reference"]))
     if "lib_ROI" in config and config["lib_ROI"] != "wgs":
-        input['lib_ROI'] = expand("{ref_dir}/intervals/{lib_ROI}/{lib_ROI}.interval_list",ref_dir=reference_directory,lib_ROI=config["lib_ROI"])[0]
+        input['lib_ROI'] = BR.remote(expand("{ref_dir}/DNA_panel/{lib_ROI}/{lib_ROI}.interval_list",ref_dir=reference_directory,lib_ROI=config["lib_ROI"]))
     return input
 
 rule qc_picard_DNA:
     input:  unpack(qc_picard_DNA_input)
-    output: table = "qc_reports/{sample}/qc_picard_DNA/picard.tsv",
-    log:    "logs/{sample}/qc_picard_DNA.log"
-    params: per_target = "qc_reports/{sample}/qc_picard_DNA/picard.per_target.tsv",
-            wgs_chart = "qc_reports/{sample}/qc_picard_DNA/picard.wgs_chart.pdf",
+    output: table = BR.remote("qc_reports/{sample}/qc_picard_DNA/picard.tsv"),
+    log:    BR.remote("logs/{sample}/qc_picard_DNA.log")
+    params: per_target = BR.remote("qc_reports/{sample}/qc_picard_DNA/picard.per_target.tsv"),
+            wgs_chart = BR.remote("qc_reports/{sample}/qc_picard_DNA/picard.wgs_chart.pdf"),
             lib_ROI = config["lib_ROI"]
     threads: 1
     resources:  mem = 20
@@ -24,9 +24,9 @@ rule qc_picard_DNA:
 
 def qc_qualimap_DNA_input(wildcards):
     input = {}
-    input["bam"] = "mapped/{sample}.bam"
+    input["bam"] = BR.remote("mapped/{sample}.bam")
     if "lib_ROI" in config and config["lib_ROI"] != "wgs":
-        input['lib_ROI'] = expand("{ref_dir}/intervals/{lib_ROI}/{lib_ROI}.bed",ref_dir=reference_directory,lib_ROI=config["lib_ROI"])[0]
+        input['lib_ROI'] = BR.remote(expand("{ref_dir}/intervals/{lib_ROI}/{lib_ROI}.bed",ref_dir=reference_directory,lib_ROI=config["lib_ROI"]))
     return input
 
 rule qc_qualimap_DNA:

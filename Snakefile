@@ -1,12 +1,24 @@
 import os
-import pandas as pd
-import json
 from snakemake.utils import min_version
 
-min_version("5.18.0")
+min_version("7.2.1")
+
 configfile: "config.json"
 
-GLOBAL_REF_PATH = "/mnt/references/"
+module BR:
+    snakefile: gitlab("bioroots/bioroots_utilities", path="bioroots_utilities.smk",branch="main")
+    config: config
+
+use rule * from BR as other_*
+
+##### Config processing #####
+#
+GLOBAL_REF_PATH = config["globalResources"]
+sample_tab = BR.load_sample()
+read_pair_tags = BR.set_read_pair_tags()[0]
+paired = BR.set_read_pair_tags()[1] # nahradit if not "is_paired in config:
+
+
 GLOBAL_TMPD_PATH = "./tmp/"
 
 os.makedirs(GLOBAL_TMPD_PATH, exist_ok=True)
@@ -44,36 +56,13 @@ if not "fragment_length" in config:
 if not "summary_correlation_method" in config:
     config["summary_correlation_method"] = "spearman"
 
-# Reference processing
+
+##### Reference processing #####
 #
-if config["lib_ROI"] != "wgs":
-    # setting reference from lib_ROI
-    f = open(os.path.join(GLOBAL_REF_PATH,"reference_info","lib_ROI.json"))
-    lib_ROI_dict = json.load(f)
-    f.close()
-    config["reference"] = [ref_name for ref_name in lib_ROI_dict.keys() if isinstance(lib_ROI_dict[ref_name],dict) and config["lib_ROI"] in lib_ROI_dict[ref_name].keys()][0]
+BR.load_ref()
+BR.load_organism()
+reference_directory = BR.reference_directory()
 
-# setting organism from reference
-f = open(os.path.join(GLOBAL_REF_PATH,"reference_info","reference.json"),)
-reference_dict = json.load(f)
-f.close()
-config["organism"] = [organism_name.lower().replace(" ","_") for organism_name in reference_dict.keys() if isinstance(reference_dict[organism_name],dict) and config["reference"] in reference_dict[organism_name].keys()][0]
-
-##### Config processing #####
-# Folders
-#
-reference_directory = os.path.join(GLOBAL_REF_PATH,config["organism"],config["reference"])
-
-# Samples
-#
-sample_tab = pd.DataFrame.from_dict(config["samples"],orient="index")
-
-if not config["is_paired"]:
-    read_pair_tags = [""]
-    paired = "SE"
-else:
-    read_pair_tags = ["_R1","_R2"]
-    paired = "PE"
 
 wildcard_constraints:
      sample = "|".join(sample_tab.sample_name) + "|all_samples",
@@ -83,7 +72,7 @@ wildcard_constraints:
 ##### Target rules #####
 
 rule all:
-    input:  "qc_reports/final_alignment_report.html"
+    input:  BR.remote("qc_reports/final_alignment_report.html")
 
 ##### Modules #####
 
