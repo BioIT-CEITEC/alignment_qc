@@ -32,7 +32,8 @@
     "umi_usage",
     "reference",
     "lib_ROI",
-    "trim_adapters"
+    "trim_adapters",
+    "strandness"
   ],
   "gui_params" : {
     "primary": {
@@ -119,6 +120,11 @@
       },
       "salmon": {
         "label": "Salmon",
+        "type": "bool",
+        "default": false
+      },
+      "kallisto": {
+        "label": "Kallisto",
         "type": "bool",
         "default": false
       },
