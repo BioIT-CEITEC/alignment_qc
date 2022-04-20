@@ -58,6 +58,26 @@
           "five_prime_utr": "Five prime UTR"
         }
       },
+      "feature_count": {
+        "label": "Feature count",
+        "type": "bool",
+        "default": true
+      },
+      "RSEM": {
+        "label": "RSEM",
+        "type": "bool",
+        "default": false
+      },
+      "salmon": {
+        "label": "Salmon",
+        "type": "bool",
+        "default": false
+      },
+      "kallisto": {
+        "label": "Kallisto",
+        "type": "bool",
+        "default": false
+      },
       "qc_samtools": {
         "label": "QC samtools",
         "type": "bool",
@@ -107,26 +127,6 @@
         "label": "QC RSeQC RNA",
         "type": "bool",
         "default": true
-      },
-      "feature_count": {
-        "label": "Feature count",
-        "type": "bool",
-        "default": true
-      },
-      "RSEM": {
-        "label": "RSEM",
-        "type": "bool",
-        "default": false
-      },
-      "salmon": {
-        "label": "Salmon",
-        "type": "bool",
-        "default": false
-      },
-      "kallisto": {
-        "label": "Kallisto",
-        "type": "bool",
-        "default": false
       },
       "max_mapped_reads_to_run_biobloom": {
         "label": "Biobloom - max mapped ratio",
