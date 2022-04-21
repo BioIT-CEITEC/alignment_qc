@@ -192,7 +192,7 @@ def salmon_kallisto_input(wildcards):
 rule Salmon:
     input:  unpack(salmon_kallisto_input),
             index = expand("{ref_dir}/index/Salmon",ref_dir=reference_directory,ref=config["reference"])
-    output: sf = "qc_reports/{sample}/salmon/{sample}.sf,
+    output: sf = "qc_reports/{sample}/salmon/{sample}.sf",
     log:    "logs/{sample}/salmon.log"
     threads: 40
     resources:  mem = 34
@@ -207,7 +207,7 @@ rule Salmon:
 rule Kallisto:
     input:  unpack(salmon_kallisto_input),
             index = expand("{ref_dir}/index/Kallisto",ref_dir=reference_directory,ref=config["reference"])
-    output: h5 = "qc_reports/{sample}/kallisto/{sample}.h5,
+    output: h5 = "qc_reports/{sample}/kallisto/{sample}.h5",
     log:    "logs/{sample}/kallisto.log"
     threads: 40
     resources:  mem = 34
