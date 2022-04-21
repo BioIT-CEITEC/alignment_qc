@@ -137,6 +137,21 @@
         "label": "ChIP-seq additional QC",
         "type": "bool",
         "default": false
+      },
+      "lib_type": {
+        "label": "Salmon library type",
+        "type": "string",
+        "default": "A"
+      },
+      "gcbias": {
+        "label": "Salmon GC bias",
+        "type": "bool",
+        "default": true
+      },
+      "numGibbsSamples": {
+        "label": "Salmon number of Gibbs Samples",
+        "type": "string",
+        "default": "20"
       }
     }
   }
