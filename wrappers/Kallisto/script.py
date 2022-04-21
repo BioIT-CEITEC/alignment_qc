@@ -23,7 +23,7 @@ else:
     input_fastqs = snakemake.input.r1 + " " + snakemake.input.r2
 
 command = "kallisto quant -t " + str(snakemake.threads) + \
-               " -i " + snakemake.input.index + \
+               " -i " + str(snakemake.input.index) + \
                " -o " + snakemake.params.prefix + \
                " --seed 12345 " + input_fastqs + " >> "+log_filename+" 2>&1 "
 f = open(log_filename, 'at')
