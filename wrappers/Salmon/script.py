@@ -27,9 +27,9 @@ if snakemake.params.gcbias == True:
 else:
     salmon_gcbias = ""
 
-command = "salmon quant -p " + str(snakemake.threads) + input_fastqs + \
+command = "salmon quant -p " + str(snakemake.threads) + \
                " -i " + str(snakemake.input.index) + \
-               " -l " + snakemake.params.lib_type + \
+               " -l " + snakemake.params.lib_type + input_fastqs + \
                " -o " + snakemake.params.prefix + \
                " --numGibbsSamples " + snakemake.params.numGibbsSamples + salmon_gcbias + \
                " --validateMappings >> "+log_filename+" 2>&1 "

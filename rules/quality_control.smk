@@ -219,14 +219,14 @@ rule Kallisto:
 
 
 def biobloom_input(wildcards):
-    if config["trim_adapters"] == True or config["trim_quality"] == True:
-        preprocessed = "cleaned_fastq"
-    else:
-        preprocessed = "raw_fastq"
-
+    # if config["trim_adapters"] == True or config["trim_quality"] == True:
+    #     preprocessed = "cleaned_fastq"
+    # else:
+    #     preprocessed = "raw_fastq"
+    preprocessed = "cleaned_fastq"
     input = {}
     input['flagstats'] = "qc_reports/{sample}/qc_samtools/{sample}.flagstat.tsv"
-    if read_pair_tags == "":
+    if not config["is_paired"]:
         input['r1'] = os.path.join(preprocessed,"{sample}.fastq.gz")
     else:
         input['r1'] = os.path.join(preprocessed,"{sample}_R1.fastq.gz")

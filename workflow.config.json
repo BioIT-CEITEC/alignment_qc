@@ -128,6 +128,11 @@
         "type": "bool",
         "default": true
       },
+      "biobloom": {
+        "label": "Biobloom tools",
+        "type": "bool",
+        "default": true
+      },
       "max_mapped_reads_to_run_biobloom": {
         "label": "Biobloom - max mapped ratio",
         "type": "int",
