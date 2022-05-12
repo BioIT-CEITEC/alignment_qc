@@ -108,9 +108,9 @@ def per_sample_alignment_report_input(wildcards):
     if config["RSEM"]:
         input['RSEM'] = "qc_reports/{sample}/RSEM/{sample}.genes.results"
     if config["salmon"]:
-        input['salmon'] = "qc_reports/{sample}/salmon/{sample}.sf"
+        input['salmon'] = "qc_reports/{sample}/salmon/{sample}.salmon.sf"
     if config["kallisto"]:
-        input['kallisto'] = "qc_reports/{sample}/kallisto/{sample}.h5"
+        input['kallisto'] = "qc_reports/{sample}/kallisto/{sample}.kallisto.h5"
     if config["qc_RSeQC_RNA"]:
         input['qc_RSeQC_RNA'] = "qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.read_distribution.txt"
     if config["chip_extra_qc"]:
