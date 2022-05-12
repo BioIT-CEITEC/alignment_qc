@@ -179,15 +179,54 @@ rule RSEM:
     script: "../wrappers/RSEM/script.py"
 
 
-def biobloom_input(wildcards):
-    if config["trim_adapters"] == True or config["trim_quality"] == True:
-        preprocessed = "cleaned_fastq"
+def salmon_kallisto_input(wildcards):
+    preprocessed = "cleaned_fastq"
+    input = {}
+    if not config["is_paired"]:
+        input['r1'] = os.path.join(preprocessed,"{sample}.fastq.gz")
     else:
-        preprocessed = "raw_fastq"
+        input['r1'] = os.path.join(preprocessed,"{sample}_R1.fastq.gz")
+        input['r2'] = os.path.join(preprocessed,"{sample}_R2.fastq.gz")
+    return input
 
+rule Salmon:
+    input:  unpack(salmon_kallisto_input),
+            index = expand("{ref_dir}/index/Salmon",ref_dir=reference_directory,ref=config["reference"])
+    output: sf = "qc_reports/{sample}/salmon/{sample}.salmon.sf",
+    log:    "logs/{sample}/salmon.log"
+    threads: 40
+    resources:  mem = 34
+    params: prefix = "qc_reports/{sample}/salmon/{sample}",
+            lib_type = config["lib_type"],
+            gcbias = config["gcbias"],
+            numGibbsSamples = config["numGibbsSamples"],
+            paired = paired,
+    conda: "../wrappers/Salmon/env.yaml"
+    script: "../wrappers/Salmon/script.py"
+
+rule Kallisto:
+    input:  unpack(salmon_kallisto_input),
+            index = expand("{ref_dir}/index/Kallisto",ref_dir=reference_directory,ref=config["reference"])
+    output: h5 = "qc_reports/{sample}/kallisto/{sample}.kallisto.h5",
+    log:    "logs/{sample}/kallisto.log"
+    threads: 40
+    resources:  mem = 34
+    params: prefix = "qc_reports/{sample}/kallisto",
+            samplelog = "qc_reports/{sample}/kallisto/{sample}.kallisto.log",
+            paired = paired,
+    conda: "../wrappers/Kallisto/env.yaml"
+    script: "../wrappers/Kallisto/script.py"
+
+
+def biobloom_input(wildcards):
+    # if config["trim_adapters"] == True or config["trim_quality"] == True:
+    #     preprocessed = "cleaned_fastq"
+    # else:
+    #     preprocessed = "raw_fastq"
+    preprocessed = "cleaned_fastq"
     input = {}
     input['flagstats'] = "qc_reports/{sample}/qc_samtools/{sample}.flagstat.tsv"
-    if read_pair_tags == "":
+    if not config["is_paired"]:
         input['r1'] = os.path.join(preprocessed,"{sample}.fastq.gz")
     else:
         input['r1'] = os.path.join(preprocessed,"{sample}_R1.fastq.gz")
@@ -196,12 +235,11 @@ def biobloom_input(wildcards):
 
 rule biobloom:
     input:  unpack(biobloom_input)
-    output: table = "cleaned_fastq/{sample}.biobloom_summary.tsv",
+    output: table = "qc_reports/{sample}/biobloom/{sample}.biobloom_summary.tsv",
     log:    "logs/{sample}/biobloom.log",
     threads: 8
     resources: mem=30
-    params: tool =  "/mnt/ssd/ssd_3/resources/biobloomtools/BioBloomCategorizer/biobloomcategorizer",
-            prefix = "cleaned_fastq/{sample}.biobloom",
+    params: prefix = "qc_reports/{sample}/biobloom/{sample}.biobloom",
             filters = "all",
             ref_dir = GLOBAL_REF_PATH,
             paired = paired,

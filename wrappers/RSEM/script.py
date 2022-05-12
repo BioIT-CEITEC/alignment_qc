@@ -34,8 +34,9 @@ elif snakemake.params.strandness == "rev":
 else:
     extra_flags_rsem += " --forward-prob 0.5"
 
-command = "samtools view "+str(snakemake.input.transcriptome)+" | head -20 | wc -l"
+command = "samtools view "+str(snakemake.input.transcriptome)+" 2> /dev/null | head -20 | wc -l"
 mapped_count = str(subprocess.Popen(command,shell=True,stdout=subprocess.PIPE).communicate()[0], 'utf-8')
+print(int(mapped_count))
 with open(log_filename, 'at') as f:
     f.write("## COMMAND: " + command + "\n")
 
