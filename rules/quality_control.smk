@@ -208,6 +208,7 @@ rule Kallisto:
     input:  unpack(salmon_kallisto_input),
             index = expand("{ref_dir}/index/Kallisto",ref_dir=reference_directory,ref=config["reference"])
     output: h5 = "qc_reports/{sample}/kallisto/{sample}.kallisto.h5",
+            tsv = "qc_reports/{sample}/kallisto/{sample}.kallisto.tsv"
     log:    "logs/{sample}/kallisto.log"
     threads: 40
     resources:  mem = 34

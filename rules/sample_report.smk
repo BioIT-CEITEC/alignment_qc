@@ -110,7 +110,8 @@ def per_sample_alignment_report_input(wildcards):
     if config["salmon"]:
         input['salmon'] = "qc_reports/{sample}/salmon/{sample}.salmon.sf"
     if config["kallisto"]:
-        input['kallisto'] = "qc_reports/{sample}/kallisto/{sample}.kallisto.h5"
+        input['kallisto_h5'] = "qc_reports/{sample}/kallisto/{sample}.kallisto.h5",
+        input['kallisto_tsv'] = "qc_reports/{sample}/kallisto/{sample}.kallisto.tsv"
     if config["qc_RSeQC_RNA"]:
         input['qc_RSeQC_RNA'] = "qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.read_distribution.txt"
     if config["chip_extra_qc"]:
