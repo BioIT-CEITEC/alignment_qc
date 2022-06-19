@@ -4,6 +4,7 @@ import json
 from snakemake.utils import min_version
 
 min_version("5.18.0")
+configfile: "config.json"
 
 GLOBAL_REF_PATH = "/mnt/references/"
 GLOBAL_TMPD_PATH = "./tmp/"
@@ -42,6 +43,9 @@ if not "fragment_length" in config:
     
 if not "summary_correlation_method" in config:
     config["summary_correlation_method"] = "spearman"
+    
+if not "bam_quality_cutof" in config:
+    config['bam_quality_cutof'] = 20
 
 # Reference processing
 #
