@@ -34,26 +34,9 @@ elif snakemake.params.strandness == "rev":
 else:
     extra_flags_rsem += " --forward-prob 0.5"
 
-command = "cat <( samtools view -H " +snakemake.input.transcriptome+" )" + \
-    " <( samtools view -@ " +str(snakemake.threads)+ " " + snakemake.input.transcriptome+" | " + \
-    "awk '{{line=$0; getline; printf \"%s %s\\n\",line,$0}}' | " + \
-        "sort -S "+ str(snakemake.resources.mem)+"G -T tmp.sort | tr ' ' '\\n' ) | " + \
-        "samtools view -@ " + str(snakemake.threads)+" -b - > "+ snakemake.input.transcriptome+".tmp" + \
-        " 2>> " + log_filename + " 2>&1"
-f = open(log_filename, 'at')
-f.write("## COMMAND: "+command+"\n")
-f.close()
-shell(command)
-
-command = "mv "+snakemake.input.transcriptome+".tmp " + snakemake.input.transcriptome + " >> " +log_filename + " 2>&1"
-f = open(log_filename, 'at')
-f.write("## COMMAND: "+command+"\n")
-f.close()
-shell(command)
-
-
-command = "samtools view "+str(snakemake.input.transcriptome)+" | head -20 | wc -l"
+command = "samtools view "+str(snakemake.input.transcriptome)+" 2> /dev/null | head -20 | wc -l"
 mapped_count = str(subprocess.Popen(command,shell=True,stdout=subprocess.PIPE).communicate()[0], 'utf-8')
+print(int(mapped_count))
 with open(log_filename, 'at') as f:
     f.write("## COMMAND: " + command + "\n")
 

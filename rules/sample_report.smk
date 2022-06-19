@@ -25,7 +25,7 @@ def multiqc_report_input(wildcards):
         if config["qc_fastq_screen_RNA"]:
             input['qc_fastq_screen_RNA'] = expand("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png",sample=sample_tab.sample_name,read_pair_tag=read_pair_tags)
         # if config["biobloom"]:
-        #     input['biobloom'] = "cleaned_fastq/{sample}.biobloom_summary.tsv"
+        #     input['biobloom'] = "qc_reports/{sample}/biobloom/{sample}.biobloom_summary.tsv"
         if config["qc_RSeQC_RNA"]:
             input['qc_RSeQC_RNA'] = "qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.read_distribution.txt"
         if config["qc_biotypes_RNA"]:
@@ -102,11 +102,16 @@ def per_sample_alignment_report_input(wildcards):
     if config["qc_fastq_screen_RNA"]:
         input['qc_fastq_screen_RNA'] = expand("qc_reports/" + wildcards.sample + "/qc_fastq_screen_RNA/" + wildcards.sample + "{read_pair_tag}_screen.png",read_pair_tag=read_pair_tags)
     # if config["biobloom"]:
-    #     input['biobloom'] = "cleaned_fastq/{sample}.biobloom_summary.tsv"
+    #     input['biobloom'] = "qc_reports/{sample}/biobloom/{sample}.biobloom_summary.tsv"
     if config["qc_biotypes_RNA"]:
         input['qc_biotypes_RNA'] = "qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.pdf"
     if config["RSEM"]:
         input['RSEM'] = "qc_reports/{sample}/RSEM/{sample}.genes.results"
+    if config["salmon"]:
+        input['salmon'] = "qc_reports/{sample}/salmon/{sample}.salmon.sf"
+    if config["kallisto"]:
+        input['kallisto_h5'] = "qc_reports/{sample}/kallisto/{sample}.kallisto.h5",
+        input['kallisto_tsv'] = "qc_reports/{sample}/kallisto/{sample}.kallisto.tsv"
     if config["qc_RSeQC_RNA"]:
         input['qc_RSeQC_RNA'] = "qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.read_distribution.txt"
     if config["chip_extra_qc"]:

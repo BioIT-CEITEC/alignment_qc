@@ -30,7 +30,7 @@ f.close()
 if float(mapped_reads) > snakemake.params.max_mapped_reads_to_run:
 
     # set up contamination filters
-    human_38 = ref_dir + "homsap/GRCh38-p10/index/BioBloomTools/human_38.bf"
+    human_38 = ref_dir + "homo_sapiens/GRCh38-p10/index/BioBloomTools/human_38.bf"
     mouse    = ref_dir + "mus_musculus/GRCm38.p6-93/index/BioBloomTools/mouse.bf"
     rat      = ref_dir + "rattus_norvegicus/Rnor_6.0-91/index/BioBloomTools/rat.bf"
     yeast    = ref_dir + "saccharomyces_cerevisiae/R64-1-1.100/index/BioBloomTools/yeast.bf"
@@ -86,7 +86,7 @@ if float(mapped_reads) > snakemake.params.max_mapped_reads_to_run:
         with open(log_filename, 'at') as f:
             f.write("## INFO: I noticed Single-end data\n")
 
-        command = "(time " + snakemake.params.tool + " -p " + snakemake.params.prefix + \
+        command = "(time biobloomcategorizer -p " + snakemake.params.prefix + \
                   " -t " + str(snakemake.threads) + \
                   " -f '" + " ".join(filters_list) + "'" + \
                   " <(zcat " + snakemake.input.r1 + ")" + \
