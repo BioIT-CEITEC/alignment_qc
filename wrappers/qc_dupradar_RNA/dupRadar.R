@@ -8,7 +8,7 @@
 # Command line argument processing
 args = commandArgs(trailingOnly=TRUE)
 if (length(args) < 4) {
-  stop("Usage: dupRadar.r <input.bam> <annotation.gtf> <paired/single> <strandness> <output_folder> <R-package-location (optional)>", call.=FALSE)
+  stop("Usage: dupRadar.r <input.bam> <annotation.gtf> <paired/single> <strandness> <output_folder> <#-threads> <R-package-location (optional)>", call.=FALSE)
 }
 input_bam <- args[1]
 annotation_gtf <- args[2]
@@ -16,9 +16,10 @@ paired_end <- if(args[3]=='pair') TRUE else FALSE
 stranded <- as.numeric(args[4]) # '0' (unstranded), '1' (stranded) and '2' (reversely stranded)
 input_bam_basename <- strsplit(tail(strsplit(input_bam, "/")[[1]],n=1),"\\.")[[1]][1]
 output_folder <- args[5]
+threads <- as.numeric(args[6])
 
 # Load / install packages
-if (length(args) > 5) { .libPaths( c( args[6], .libPaths() ) ) }
+if (length(args) > 6) { .libPaths( c( args[7], .libPaths() ) ) }
 if (!require("dupRadar")){
   source("http://bioconductor.org/biocLite.R")
   biocLite("dupRadar", suppressUpdates=TRUE)
@@ -31,9 +32,9 @@ if (!require("parallel")) {
 
 # Duplicate stats
 #stranded <- 2
-threads <- detectCores()
-dm <- analyzeDuprates(input_bam, annotation_gtf, stranded, paired_end, threads)
-write.table(dm, file=paste(output_folder,"/",input_bam_basename, "_dupMatrix.txt", sep=""), quote=F, row.name=F, sep="\t")
+#threads <- detectCores()
+dm <- analyzeDuprates(input_bam, annotation_gtf, stranded, paired_end, threads, verbose=TRUE)
+write.table(dm, file=paste0(output_folder,"/",input_bam_basename, "_dupMatrix.txt"), quote=F, row.name=F, sep="\t")
 
 if(sum(dm$allCountsMulti) > 1){
   # 2D density scatter plot

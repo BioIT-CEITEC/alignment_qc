@@ -58,7 +58,12 @@ if int(mapped_count) >= reads_thr:
     f.close()
     shell(command)
     
-    command ="Rscript "+ DUP_RADAR+" "+snakemake.input.bam+" "+snakemake.input.gtf+" "+extra_flags_dupradar+" "+os.path.dirname(snakemake.output.dupraxpbox)+" >> "+log_filename+" 2>&1"
+    command = "Rscript "+ DUP_RADAR+\
+              " "+snakemake.input.bam+\
+              " "+snakemake.input.gtf+\
+              " "+extra_flags_dupradar+\
+              " "+str(snakemake.threads)+\
+              " "+os.path.dirname(snakemake.output.dupraxpbox)+" >> "+log_filename+" 2>&1"
     f = open(log_filename, 'at')
     f.write("## COMMAND: "+command+"\n")
     f.close()

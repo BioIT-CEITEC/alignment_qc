@@ -64,7 +64,7 @@ rule qc_qualimap_RNA:
             strandness = config["strandness"],
             tmpd = GLOBAL_TMPD_PATH,
     threads: 10
-    resources:  mem = 1
+    resources:  mem = 24
     conda:  "../wrappers/qc_qualimap_RNA/env.yaml"
     script: "../wrappers/qc_qualimap_RNA/script.py"
 
