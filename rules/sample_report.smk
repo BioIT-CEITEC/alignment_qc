@@ -24,8 +24,8 @@ def multiqc_report_input(wildcards):
             input['feature_count'] = "qc_reports/{sample}/feature_count/{sample}.feature_count.tsv"
         if config["qc_fastq_screen_RNA"]:
             input['qc_fastq_screen_RNA'] = expand("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png",sample=sample_tab.sample_name,read_pair_tag=read_pair_tags)
-        # if config["biobloom"]:
-        #     input['biobloom'] = "qc_reports/{sample}/biobloom/{sample}.biobloom_summary.tsv"
+        if config["biobloom"]:
+            input['biobloom'] = "qc_reports/{sample}/biobloom/{sample}.biobloom_summary.tsv"
         if config["qc_RSeQC_RNA"]:
             input['qc_RSeQC_RNA'] = "qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.read_distribution.txt"
         if config["qc_biotypes_RNA"]:
@@ -101,8 +101,8 @@ def per_sample_alignment_report_input(wildcards):
         input['feature_count'] = "qc_reports/{sample}/feature_count/{sample}.feature_count.tsv"
     if config["qc_fastq_screen_RNA"]:
         input['qc_fastq_screen_RNA'] = expand("qc_reports/" + wildcards.sample + "/qc_fastq_screen_RNA/" + wildcards.sample + "{read_pair_tag}_screen.png",read_pair_tag=read_pair_tags)
-    # if config["biobloom"]:
-    #     input['biobloom'] = "qc_reports/{sample}/biobloom/{sample}.biobloom_summary.tsv"
+    if config["biobloom"]:
+        input['biobloom'] = "qc_reports/{sample}/biobloom/{sample}.biobloom_summary.tsv"
     if config["qc_biotypes_RNA"]:
         input['qc_biotypes_RNA'] = "qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.pdf"
     if config["RSEM"]:
