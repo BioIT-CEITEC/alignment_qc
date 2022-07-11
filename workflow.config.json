@@ -152,6 +152,34 @@
         "type": "bool",
         "default": false
       },
+      "salmon_align": {
+        "label": "Salmon quantification BAM-based",
+        "type": "bool",
+        "default": true,
+        "conditions": {
+          "relevance": {
+            "operand": "equal",
+            "negation": false,
+            "values": {
+              "salmon": true
+            }
+          }
+        }
+      },
+      "salmon_map": {
+        "label": "Salmon quantification fastq-based",
+        "type": "bool",
+        "default": false,
+        "conditions": {
+          "relevance": {
+            "operand": "equal",
+            "negation": false,
+            "values": {
+              "salmon": true
+            }
+          }
+        }
+      },
       "lib_type": {
         "label": "Salmon library type",
         "type": "string",
@@ -175,7 +203,7 @@
             "operand": "equal",
             "negation": false,
             "values": {
-              "salmon": true
+              "salmon_map": true
             }
           }
         }
@@ -189,7 +217,7 @@
             "operand": "equal",
             "negation": false,
             "values": {
-              "salmon": true
+              "salmon_map": true
             }
           }
         }
