@@ -33,7 +33,8 @@
     "reference",
     "lib_ROI",
     "trim_adapters",
-    "strandness"
+    "strandness",
+    "biobloom"
   ],
   "gui_params" : {
     "primary": {
@@ -127,25 +128,6 @@
         "label": "QC RSeQC RNA",
         "type": "bool",
         "default": true
-      },
-      "biobloom": {
-        "label": "Biobloom tools",
-        "type": "bool",
-        "default": false
-      },
-      "max_mapped_reads_to_run_biobloom": {
-        "label": "Biobloom - max mapped ratio",
-        "type": "int",
-        "default": 100,
-        "conditions": {
-          "relevance": {
-            "operand": "equal",
-            "negation": false,
-            "values": {
-              "biobloom": true
-            }
-          }
-        }
       },
       "chip_extra_qc": {
         "label": "ChIP-seq additional QC",
