@@ -5,8 +5,7 @@
     "label":"Alignment QC",
     "type":"alignment_qc",
     "inputs":[
-      "qc_reports/{sample}/raw_fastqc/*",
-      "qc_reports/{sample}/*/trim_stats*.log",
+      "qc_reports/*",
       "mapped/*",
       "*/{sample}*fastq.gz"
     ],
