@@ -27,7 +27,7 @@ shell(command)
 f = open(log_filename, 'at')
 extra_flags_feature=""
 msg = "Running as single end"
-if snakemake.params.paired == "PE":
+if snakemake.params.paired:
 	extra_flags_feature+="-p"
 	msg = "Running as paired end"
 if snakemake.params.strandness == "fwd":
@@ -93,13 +93,17 @@ else:
     shell(command)
     
   else:
-    command = "featureCounts -t "+featuretype+" -g "+biotype+" -O -M --fraction "+extra_flags_feature+" -T "+str(snakemake.threads)+" -a "+snakemake.input.gtf+" -o "+snakemake.params.prefix+" "+snakemake.input.bam+" >> "+log_filename+" 2>&1 "
+
+    prefix = snakemake.output.txt.replace("_counts.txt", "")
+
+
+    command = "featureCounts -t "+featuretype+" -g "+biotype+" -O -M --fraction "+extra_flags_feature+" -T "+str(snakemake.threads)+" -a "+snakemake.input.gtf+" -o "+prefix+" "+snakemake.input.bam+" >> "+log_filename+" 2>&1 "
     f = open(log_filename, 'at')
     f.write("## COMMAND: "+command+"\n")
     f.close()
     shell(command)
-  
-    command = "cut -f 1,7- "+snakemake.params.prefix+" > "+snakemake.output.txt+" 2>> "+log_filename
+
+    command = "cut -f 1,7- "+prefix+" > "+snakemake.output.txt+" 2>> "+log_filename
     f = open(log_filename, 'at')
     f.write("## COMMAND: "+command+"\n")
     f.close()

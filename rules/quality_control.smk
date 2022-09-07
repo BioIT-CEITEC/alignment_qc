@@ -57,10 +57,10 @@ rule qc_samtools:
     script: "../wrappers/qc_samtools/script.py"
 
 
-# # PER SAMPLE RNA
-# #
-# #
+# PER SAMPLE RNA
 #
+#
+
 # rule qc_qualimap_RNA:
 #     input:  bam = BR.remote("mapped/{sample}.bam"),
 #             # bai = BR.remote("mapped/{sample}.bam.bai"),
@@ -113,15 +113,14 @@ rule qc_samtools:
 #             pdf = BR.remote("qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.pdf"),
 #     log:    BR.remote("logs/{sample}/qc_biotypes_RNA.log")
 #     threads: 10
-#     params: prefix="qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype",
-#             paired = paired,
+#     params: paired = config["is_paired"],
 #             strandness=config["strandness"],
 #             count_over=config["count_over"],
 #     conda: "../wrappers/qc_biotypes_RNA/env.yaml"
 #     script: "../wrappers/qc_biotypes_RNA/script.py"
 
 
-# rule qc_fastq_screen_RNA:
+# rule qc_fastq_screen_RNA_new:
 #     input:  fastq = "raw_fastq/{sample}{read_pair_tag}.fastq.gz",
 #     output: fastqscreen = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png",
 #             fastqscreen_pdf = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.pdf",
@@ -136,7 +135,27 @@ rule qc_samtools:
 #             tRNA_index= expand("{ref_dir}/other/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.tRNA.fasta",ref_dir=reference_directory,ref=config["reference"])[0]
 #     conda:  "../wrappers/qc_fastq_screen_RNA/env.yaml"
 #     script: "../wrappers/qc_fastq_screen_RNA/script.py"
+
+
 #
+# rule qc_fastq_screen_RNA:
+#     input:  fastq=BR.remote("raw_fastq/{sample}{read_pair_tag}.fastq.gz"),
+#             general_index=BR.remote(expand("{ref_dir}/tool_data/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.fna.{end}",ref_dir=reference_directory,ref=config["reference"],end = ["1.bt2","2.bt2","3.bt2","4.bt2"])),
+#             rRNA_index=BR.remote(expand("{ref_dir}/tool_data/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.rRNA.fasta.{end}",ref_dir=reference_directory,ref=config["reference"],end = ["1.bt2","2.bt2","3.bt2","4.bt2"])),
+#             tRNA_index=BR.remote(expand("{ref_dir}/tool_data/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.tRNA.fasta.{end}",ref_dir=reference_directory,ref=config["reference"],end = ["1.bt2","2.bt2","3.bt2","4.bt2"])),
+#     output: fastqscreen = BR.remote("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png"),
+#             fastqscreen_pdf = BR.remote("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.pdf"),
+#             tmp_image = BR.remote("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.txt"),
+#             # prefix = BR.remote("qc_reports/{sample}/qc_fastq_screen_RNA/fastq_screen.conf"),
+#     log:    BR.remote("logs/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}.log")
+#     threads: 10
+#     resources: mem = 10
+#     params: organism = config["organism"],
+#     conda: "../wrappers/qc_fastq_screen_RNA/env.yaml"
+#     script: "../wrappers/qc_fastq_screen_RNA/script.py"
+
+
+
 # rule qc_RSeQC_RNA:
 #     input:  bam = "mapped/{sample}.bam",
 #             bed = expand("{ref_dir}/other/Picard_data/{ref}.bed12",ref_dir=reference_directory,ref=config["reference"])[0],
