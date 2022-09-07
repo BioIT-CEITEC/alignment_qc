@@ -21,15 +21,15 @@ f.write("## CONDA: "+version+"\n")
 f.close()
 
 
-command = "samtools view -b -h -F 1024"+\
+command = "(time samtools view -b -h -F 1024"+\
           " -@ "+str(snakemake.threads)+\
           " "+snakemake.input.bam+\
-          " > "+snakemake.output.bam+\
+          ") > "+snakemake.output.bam+\
           " 2>> "+log_filename+\
-          " && samtools index"+\
+          " && (time samtools index"+\
           " -@ "+str(snakemake.threads)+\
           " "+snakemake.output.bam+\
-          " >> "+log_filename+" 2>&1"
+          ") >> "+log_filename+" 2>&1"
 f = open(log_filename, 'at')
 f.write("## COMMAND: "+command+"\n")
 f.close()

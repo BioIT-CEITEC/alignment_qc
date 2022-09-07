@@ -4,9 +4,12 @@ import json
 from snakemake.utils import min_version
 
 min_version("5.18.0")
+configfile: "config.json"
 
 GLOBAL_REF_PATH = "/mnt/references/"
-GLOBAL_TMPD_PATH = "/tmp/"
+GLOBAL_TMPD_PATH = "./tmp/"
+
+os.makedirs(GLOBAL_TMPD_PATH, exist_ok=True)
 
 # DNA parameteres processing
 #
@@ -40,6 +43,9 @@ if not "fragment_length" in config:
     
 if not "summary_correlation_method" in config:
     config["summary_correlation_method"] = "spearman"
+    
+if not "bam_quality_cutof" in config:
+    config['bam_quality_cutof'] = 20
 
 # Reference processing
 #
@@ -51,10 +57,14 @@ if config["lib_ROI"] != "wgs":
     config["reference"] = [ref_name for ref_name in lib_ROI_dict.keys() if isinstance(lib_ROI_dict[ref_name],dict) and config["lib_ROI"] in lib_ROI_dict[ref_name].keys()][0]
 
 # setting organism from reference
-f = open(os.path.join(GLOBAL_REF_PATH,"reference_info","reference.json"),)
+f = open(os.path.join(GLOBAL_REF_PATH,"reference_info","reference2.json"),)
 reference_dict = json.load(f)
 f.close()
-config["organism"] = [organism_name.lower().replace(" ","_") for organism_name in reference_dict.keys() if isinstance(reference_dict[organism_name],dict) and config["reference"] in reference_dict[organism_name].keys()][0]
+config["species_name"] = [organism_name for organism_name in reference_dict.keys() if isinstance(reference_dict[organism_name],dict) and config["reference"] in reference_dict[organism_name].keys()][0]
+config["organism"] = config["species_name"].split(" (")[0].lower().replace(" ","_")
+if len(config["species_name"].split(" (")) > 1:
+    config["species"] = config["species_name"].split(" (")[1].replace(")","")
+
 
 ##### Config processing #####
 # Folders
@@ -81,8 +91,6 @@ wildcard_constraints:
 
 rule all:
     input:  "qc_reports/final_alignment_report.html"
-
-
 
 ##### Modules #####
 

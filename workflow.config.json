@@ -5,8 +5,7 @@
     "label":"Alignment QC",
     "type":"alignment_qc",
     "inputs":[
-      "qc_reports/{sample}/raw_fastqc/*",
-      "qc_reports/{sample}/*/trim_stats*.log",
+      "qc_reports/*",
       "mapped/*",
       "*/{sample}*fastq.gz"
     ],
@@ -31,7 +30,16 @@
     "UMI",
     "umi_usage",
     "reference",
-    "trim_adapters"
+    "lib_ROI",
+    "trim_adapters",
+    "strandness",
+    "feature_count",
+    "RSEM",
+    "kallisto",
+    "salmon",
+    "salmon_align",
+    "salmon_map",
+    "biobloom"
   ],
   "gui_params" : {
     "primary": {
@@ -64,17 +72,17 @@
       "qc_qualimap_DNA": {
         "label": "QC qualimap DNA",
         "type": "bool",
-        "default": true
+        "default": false
       },
       "qc_picard_DNA": {
         "label": "QC picard DNA",
         "type": "bool",
-        "default": true
+        "default": false
       },
       "cross_sample_correlation": {
         "label": "Cross sample correlation",
         "type": "bool",
-        "default": true
+        "default": false
       },
       "qc_dupradar_RNA": {
         "label": "QC dupradar RNA",
@@ -105,21 +113,6 @@
         "label": "QC RSeQC RNA",
         "type": "bool",
         "default": true
-      },
-      "feature_count": {
-        "label": "Feature count",
-        "type": "bool",
-        "default": true
-      },
-      "RSEM": {
-        "label": "RSEM",
-        "type": "bool",
-        "default": false
-      },
-      "max_mapped_reads_to_run_biobloom": {
-        "label": "Biobloom - max mapped ratio",
-        "type": "int",
-        "default": 100
       },
       "chip_extra_qc": {
         "label": "ChIP-seq additional QC",

@@ -8,8 +8,11 @@ def multiqc_report_input(wildcards):
         if paired == "PE":
             input['raw_fastq_R1_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/R1_fastqc.zip"
             input['raw_fastq_R2_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/R2_fastqc.zip"
+            input['cleaned_fastq_R1_report'] = "qc_reports/" + wildcards.sample + "/cleaned_fastqc/R1_fastqc.zip"
+            input['cleaned_fastq_R2_report'] = "qc_reports/" + wildcards.sample + "/cleaned_fastqc/R2_fastqc.zip"
         else:
             input['raw_fastq_SE_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/SE_fastqc.zip"
+            input['cleaned_fastq_SE_report'] = "qc_reports/" + wildcards.sample + "/cleaned_fastqc/SE_fastqc.zip"
         if config["qc_qualimap_DNA"]:
             input['qc_qualimap_DNA'] = "qc_reports/{sample}/qc_qualimap_DNA/{sample}/qualimapReport.html"
         if config["qc_samtools"]:
@@ -24,8 +27,19 @@ def multiqc_report_input(wildcards):
             input['feature_count'] = "qc_reports/{sample}/feature_count/{sample}.feature_count.tsv"
         if config["qc_fastq_screen_RNA"]:
             input['qc_fastq_screen_RNA'] = expand("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png",sample=sample_tab.sample_name,read_pair_tag=read_pair_tags)
-        # if config["biobloom"]:
-        #     input['biobloom'] = "cleaned_fastq/{sample}.biobloom_summary.tsv"
+        if config["biobloom"]:
+            input['biobloom'] = "qc_reports/{sample}/biobloom/{sample}.biobloom_summary.tsv"
+        if config["RSEM"]:
+            input['RSEM'] = "qc_reports/{sample}/RSEM/{sample}.genes.results"
+        if config["salmon_align"]:
+            input["salmon_align"] = "qc_reports/{sample}/salmon_aln/{sample}.salmon_aln.sf"
+            input["salmon_align_tab"] = "qc_reports/{sample}/salmon_aln/{sample}_aln.tsv"
+        if config["salmon_map"]:
+            input["salmon_map"] = "qc_reports/{sample}/salmon_map/{sample}.salmon_map.sf"
+            input["salmon_map_tab"] = "qc_reports/{sample}/salmon_map/{sample}_map.tsv"
+        if config["kallisto"]:
+            input['kallisto_h5'] = "qc_reports/{sample}/kallisto/{sample}.kallisto.h5"
+            input['kallisto_tsv'] = "qc_reports/{sample}/kallisto/{sample}.kallisto.tsv"
         if config["qc_RSeQC_RNA"]:
             input['qc_RSeQC_RNA'] = "qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.read_distribution.txt"
         if config["qc_biotypes_RNA"]:
@@ -39,15 +53,16 @@ def multiqc_report_input(wildcards):
         input['per_sample_reports'] = expand("qc_reports/{sample}/single_sample_alignment_report.html",sample=sample_tab.sample_name)
     return input
 
+
 rule multiqc_report:
-    input: unpack(multiqc_report_input)
+    input:  unpack(multiqc_report_input)
     output: html="qc_reports/{sample}/multiqc.html"
-    log: "logs/{sample}/multiqc.log"
-    params:
-        multiqc_config = workflow.basedir+"/wrappers/multiqc_report/multiqc_config.txt",
-        multiqc_path = "qc_reports/{sample}/"
+    log:    "logs/{sample}/multiqc.log"
+    params: multiqc_config = workflow.basedir+"/wrappers/multiqc_report/multiqc_config.txt",
+            multiqc_path = "qc_reports/{sample}/"
     conda: "../wrappers/multiqc_report/env.yaml"
     script: "../wrappers/multiqc_report/script.py"
+
 
 def merge_single_sample_reports_input(wildcards):
     input = {}
@@ -67,7 +82,7 @@ def merge_single_sample_reports_input(wildcards):
     return input
 
 rule merge_single_sample_reports:
-    input: unpack(merge_single_sample_reports_input)
+    input:  unpack(merge_single_sample_reports_input)
     output: biotype_pdf = "qc_reports/all_samples/qc_biotype_RNA/biotype.pdf",
             fastq_screen_pdf = "qc_reports/all_samples/fastq_screen/fastq_screen.pdf",
             dupraxpbox_pdf = "qc_reports/all_samples/qc_dupradar_RNA/dupraxpbox.pdf",
@@ -88,8 +103,11 @@ def per_sample_alignment_report_input(wildcards):
     if paired == "PE":
         input['raw_fastq_R1_report'] = "qc_reports/{sample}/raw_fastqc/R1_fastqc.html"
         input['raw_fastq_R2_report'] = "qc_reports/{sample}/raw_fastqc/R2_fastqc.html"
+        input['cleaned_fastq_R1_report'] = "qc_reports/{sample}/cleaned_fastqc/R1_fastqc.html"
+        input['cleaned_fastq_R2_report'] = "qc_reports/{sample}/cleaned_fastqc/R2_fastqc.html"
     else:
         input['raw_fastq_SE_report'] = "qc_reports/{sample}/raw_fastqc/SE_fastqc.html"
+        input['cleaned_fastq_SE_report'] = "qc_reports/{sample}/cleaned_fastqc/SE_fastqc.html"
     if config["qc_qualimap_DNA"]:
         input['qc_qualimap_DNA'] = "qc_reports/{sample}/qc_qualimap_DNA/{sample}/qualimapReport.html"
     if config["qc_picard_RNA"]:
@@ -100,30 +118,41 @@ def per_sample_alignment_report_input(wildcards):
         input['feature_count'] = "qc_reports/{sample}/feature_count/{sample}.feature_count.tsv"
     if config["qc_fastq_screen_RNA"]:
         input['qc_fastq_screen_RNA'] = expand("qc_reports/" + wildcards.sample + "/qc_fastq_screen_RNA/" + wildcards.sample + "{read_pair_tag}_screen.png",read_pair_tag=read_pair_tags)
-    # if config["biobloom"]:
-    #     input['biobloom'] = "cleaned_fastq/{sample}.biobloom_summary.tsv"
+    if config["biobloom"]:
+        input['biobloom'] = "qc_reports/{sample}/biobloom/{sample}.biobloom_summary.tsv"
     if config["qc_biotypes_RNA"]:
         input['qc_biotypes_RNA'] = "qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.pdf"
     if config["RSEM"]:
         input['RSEM'] = "qc_reports/{sample}/RSEM/{sample}.genes.results"
+    if config["salmon_align"]:
+        input["salmon_align"] = "qc_reports/{sample}/salmon_aln/{sample}.salmon_aln.sf"
+        input["salmon_align_tab"] = "qc_reports/{sample}/salmon_aln/{sample}_aln.tsv"
+    if config["salmon_map"]:
+        input["salmon_map"] = "qc_reports/{sample}/salmon_map/{sample}.salmon_map.sf"
+        input["salmon_map_tab"] = "qc_reports/{sample}/salmon_map/{sample}_map.tsv"
+    if config["kallisto"]:
+        input['kallisto_h5'] = "qc_reports/{sample}/kallisto/{sample}.kallisto.h5"
+        input['kallisto_tsv'] = "qc_reports/{sample}/kallisto/{sample}.kallisto.tsv"
     if config["qc_RSeQC_RNA"]:
         input['qc_RSeQC_RNA'] = "qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.read_distribution.txt"
     if config["chip_extra_qc"]:
-        input['samtools_contam'] = "qc_reports/{sample}/qc_samtools/{sample}.no_contam.flagstat.tsv",
-        input['samtools_dups'] = "qc_reports/{sample}/qc_samtools/{sample}.no_dups.flagstat.tsv",
+        input['samtools_contam'] = "qc_reports/{sample}/qc_samtools/{sample}.keep_dups.flagstat.tsv"
+        input['samtools_dups'] = "qc_reports/{sample}/qc_samtools/{sample}.no_dups.flagstat.tsv"
+        input['keep_dups_bam_cov'] = "mapped/{sample}.keep_dups.bam.bigWig",
         input['no_dups_bam_cov'] = "mapped/{sample}.no_dups.bam.bigWig",
-        input['phantompeak'] = "qc_reports/{sample}/phantompeakqual/{sample}.no_dups.cross-correlation.pdf",
-        input['phantompeak_dups'] = "qc_reports/{sample}/phantompeakqual/{sample}.keep_dups.cross-correlation.pdf",
+        input['phantompeak'] = "qc_reports/{sample}/phantompeakqual/{sample}.no_dups.cross-correlation.pdf"
+        input['phantompeak_dups'] = "qc_reports/{sample}/phantompeakqual/{sample}.keep_dups.cross-correlation.pdf"
     return input
 
 rule per_sample_alignment_report:
-    input: unpack(per_sample_alignment_report_input)
+    input:  unpack(per_sample_alignment_report_input)
     output: sample_report = "qc_reports/{sample}/single_sample_alignment_report.html",
     params: sample_name = "{sample}",
             config = "./config.json",
-            paired= paired,
+            paired = paired,
     conda: "../wrappers/per_sample_alignment_report/env.yaml"
     script: "../wrappers/per_sample_alignment_report/script.Rmd"
+
 
 def final_alignment_report_input(wildcards):
     input = {}
@@ -151,10 +180,9 @@ def final_alignment_report_input(wildcards):
     return input
 
 rule final_alignment_report:
-    input: unpack(final_alignment_report_input)
-    output: html="qc_reports/final_alignment_report.html"
-    params:
-        sample_name = sample_tab.sample_name,
-        config="./config.json"
+    input:  unpack(final_alignment_report_input)
+    output: html = "qc_reports/final_alignment_report.html"
+    params: sample_name = sample_tab.sample_name,
+            config = "./config.json"
     conda: "../wrappers/final_alignment_report/env.yaml"
     script: "../wrappers/final_alignment_report/script.Rmd"

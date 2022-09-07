@@ -22,7 +22,7 @@ f.close()
 #### from all samples, into one sample report
 
 ## qc_biotypes_RNA
-if snakemake.input.biotype:
+if hasattr(snakemake.input, 'biotype'):
     biotype = [file for file in snakemake.input.biotype if os.stat(file).st_size != 0]
     command = "Rscript " + os.path.dirname(__file__) + "/biotypes.r" + " " + snakemake.output.biotype_pdf + " " +  " ".join(biotype)+" >> "+log_filename+" 2>&1"
     with open(log_filename, 'at') as f:
@@ -33,7 +33,7 @@ else:
 
 
 ## qc_fastq_screen_RNA
-if snakemake.input.fastq_screen:
+if hasattr(snakemake.input, 'fastq_screen'):
     command = "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -sOutputFile=" + str(snakemake.output.fastq_screen_pdf) + " " + str(snakemake.input.fastq_screen)+" >> "+log_filename+" 2>&1"
     with open(log_filename, 'at') as f:
         f.write("## COMMAND: " + command + "\n")
@@ -43,7 +43,7 @@ else:
 
 
 ## qc_dupradar_RNA
-if snakemake.input.dupraxpbox:
+if hasattr(snakemake.input, 'dupraxpbox'):
     command = "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -sOutputFile=" + str(snakemake.output.dupraxpbox_pdf) + " " + str(snakemake.input.dupraxpbox)+" >> "+log_filename+" 2>&1"
     with open(log_filename, 'at') as f:
         f.write("## COMMAND: " + command + "\n")
@@ -51,7 +51,7 @@ if snakemake.input.dupraxpbox:
 else:
     shell("touch " + snakemake.output.dupraxpbox_pdf)
 
-if snakemake.input.exphist:
+if hasattr(snakemake.input, 'exphist'):
     command = "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -sOutputFile=" + str(snakemake.output.exphist_pdf) + " " + str(snakemake.input.exphist)+" >> "+log_filename+" 2>&1"
     with open(log_filename, 'at') as f:
         f.write("## COMMAND: " + command + "\n")
@@ -59,7 +59,7 @@ if snakemake.input.exphist:
 else:
     shell("touch " + snakemake.output.exphist_pdf)
 
-if snakemake.input.dupraexpden:
+if hasattr(snakemake.input, 'dupraexpden'):
     command = "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -sOutputFile=" + str(snakemake.output.dupraexpden_pdf) + " " + str(snakemake.input.dupraexpden)+" >> "+log_filename+" 2>&1"
     with open(log_filename, 'at') as f:
         f.write("## COMMAND: " + command + "\n")
@@ -67,7 +67,7 @@ if snakemake.input.dupraexpden:
 else:
     shell("touch " + snakemake.output.dupraexpden_pdf)
 
-if snakemake.input.multipergene:
+if hasattr(snakemake.input, 'multipergene'):
     command = "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -sOutputFile=" + str(snakemake.output.multipergene_pdf) + " " + str(snakemake.input.multipergene)+" >> "+log_filename+" 2>&1"
     with open(log_filename, 'at') as f:
         f.write("## COMMAND: " + command + "\n")
@@ -75,7 +75,7 @@ if snakemake.input.multipergene:
 else:
     shell("touch " + snakemake.output.multipergene_pdf)
 
-if snakemake.input.readdist:
+if hasattr(snakemake.input, 'readdist'):
     command = "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -sOutputFile=" + str(snakemake.output.readdist_pdf) + " " + str(snakemake.input.readdist)+" >> "+log_filename+" 2>&1"
     with open(log_filename, 'at') as f:
         f.write("## COMMAND: " + command + "\n")
@@ -103,17 +103,3 @@ if hasattr(snakemake.input, 'phantompeak_dups'):
 else:
     shell("touch " + snakemake.output.phantompeak_dups_pdf)
 
-# 
-# if hasattr(snakemake.output, 'corr_heatmap_all_pdf'):
-#     command = "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -sOutputFile="+snakemake.output.corr_heatmap_all_pdf+" "+snakemake.input.corr_heatmap+" "+snakemake.input.corr_heatmap_dups
-#     f = open(log_filename, 'at')
-#     f.write("## COMMAND: "+command+"\n")
-#     f.close()
-#     shell(command)
-# 
-# if hasattr(snakemake.output, 'fingerprint_all_pdf'):
-#     command = "gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -sOutputFile="+snakemake.output.fingerprint_all_pdf+" "+snakemake.input.fingerprint+" "+snakemake.input.fingerprint_dups
-#     f = open(log_filename, 'at')
-#     f.write("## COMMAND: "+command+"\n")
-#     f.close()
-#     shell(command)

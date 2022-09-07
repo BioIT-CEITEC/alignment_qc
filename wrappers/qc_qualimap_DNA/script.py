@@ -40,10 +40,3 @@ f = open(log_filename, 'at')
 f.write("## COMMAND: "+command+"\n")
 f.close()
 shell(command)
-
-# command = "wkhtmltopdf "+ snakemake.params.html + " " + snakemake.output.pdf + " >> "+log_filename+" 2>&1"
-# f = open(log_filename, 'at')
-# f.write("## COMMAND: "+command+"\n")
-# f.close()
-# shell(command)
-

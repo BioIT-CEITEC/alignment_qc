@@ -18,8 +18,6 @@ f.close()
 
 if os.stat(snakemake.input.snp_bed).st_size != 0:
 
-    #shell.executable("/bin/bash")
-
     if os.stat(snakemake.input.lib_ROI).st_size != 0:
         command = "bedtools intersect -a "+snakemake.input.snp_bed+" -b "+snakemake.input.lib_ROI+" > "+snakemake.params.intersect_bed+" 2>> "+log_filename
     else:
