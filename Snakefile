@@ -1,15 +1,22 @@
-import os
-import pandas as pd
-import json
 from snakemake.utils import min_version
 
-min_version("5.18.0")
+min_version("7.2.1")
+
 configfile: "config.json"
 
-GLOBAL_REF_PATH = "/mnt/references/"
+
+
+module BR:
+    snakefile: gitlab("bioroots/bioroots_utilities",path="bioroots_utilities.smk",branch="kube_dirs")
+    config: config
+
+use rule * from BR as other_ *
+
+# GLOBAL_REF_PATH = "/mnt/references/"
 GLOBAL_TMPD_PATH = "./tmp/"
 
 os.makedirs(GLOBAL_TMPD_PATH, exist_ok=True)
+
 
 # DNA parameteres processing
 #
@@ -32,7 +39,7 @@ if not "feature_count" in config:
 
 if not "RSEM" in config:
     config["RSEM"] = False
-    
+
 # ChIP-seq parameters processing
 #
 if not "effective_genome_size" in config:
@@ -40,57 +47,45 @@ if not "effective_genome_size" in config:
 
 if not "fragment_length" in config:
     config["fragment_length"] = "unk"
-    
+
 if not "summary_correlation_method" in config:
     config["summary_correlation_method"] = "spearman"
-    
+
 if not "bam_quality_cutof" in config:
     config['bam_quality_cutof'] = 20
 
-# Reference processing
-#
-if config["lib_ROI"] != "wgs":
-    # setting reference from lib_ROI
-    f = open(os.path.join(GLOBAL_REF_PATH,"reference_info","lib_ROI.json"))
-    lib_ROI_dict = json.load(f)
-    f.close()
-    config["reference"] = [ref_name for ref_name in lib_ROI_dict.keys() if isinstance(lib_ROI_dict[ref_name],dict) and config["lib_ROI"] in lib_ROI_dict[ref_name].keys()][0]
-
-# setting organism from reference
-f = open(os.path.join(GLOBAL_REF_PATH,"reference_info","reference.json"),)
-reference_dict = json.load(f)
-f.close()
-config["organism"] = [organism_name.lower().replace(" ","_") for organism_name in reference_dict.keys() if isinstance(reference_dict[organism_name],dict) and config["reference"] in reference_dict[organism_name].keys()][0]
-
 ##### Config processing #####
-# Folders
 #
-reference_directory = os.path.join(GLOBAL_REF_PATH,config["organism"],config["reference"])
 
-# Samples
-#
-sample_tab = pd.DataFrame.from_dict(config["samples"],orient="index")
+sample_tab = BR.load_sample()
+read_pair_tags = BR.set_read_pair_tags()
 
-if not config["is_paired"]:
-    read_pair_tags = [""]
-    paired = "SE"
-else:
-    read_pair_tags = ["_R1","_R2"]
-    paired = "PE"
+# ##### Reference processing #####
+# #
+
+BR.load_organism()
+BR.load_release()
+
+reference_directory = BR.reference_directory()
 
 wildcard_constraints:
-     sample = "|".join(sample_tab.sample_name) + "|all_samples",
-     lib_name="[^\.\/]+",
-     read_pair_tag = "(_R.)?"
+    sample="|".join(sample_tab.sample_name) + "|all_samples",
+    lib_name="[^\.\/]+",
+    read_pair_tag="(_R.)?",
+
 
 ##### Target rules #####
 
+
 rule all:
-    input:  "qc_reports/final_alignment_report.html"
+    #input: BR.remote("qc_reports/final_alignment_report.html")
+    input:  BR.remote("qc_reports/final_alignment_report.html")
+    output: BR.remote("completed.txt")
+    shell: "touch {output}"
 
 ##### Modules #####
 
 include: "rules/quality_control.smk"
 include: "rules/cross_sample_correlation.smk"
-include: "rules/chipseq_specific_qc.smk"
+# include: "rules/chipseq_specific_qc.smk"
 include: "rules/sample_report.smk"

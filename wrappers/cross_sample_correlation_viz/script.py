@@ -10,8 +10,10 @@ f = open(log_filename, 'wt')
 f.write("\n##\n## RULE: cross_sample_correlation_viz \n##\n")
 f.close()
 
+output_file = snakemake.input.Rdata_for_viz.replace(".Rdata","")
+
 command = " Rscript  " + os.path.abspath(os.path.dirname(__file__)) + "/cross_sample_correlation_viz.R " \
-                       + " " + snakemake.params.output + " " \
+                       + " " + output_file + " " \
                        + snakemake.input.Rdata_for_viz \
                        + " 2>> " + log_filename
 f = open(log_filename, 'a+')

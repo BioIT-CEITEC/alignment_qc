@@ -25,9 +25,9 @@ Overview report of workflow done for sample `r snakemake@params$sample_name `.
 
 ## Report files:
 `r paste0("* [Main QC summary - (MultiQC)](../../",snakemake@input$multiqc,")  \\")`
-`r if(unique(snakemake@params$paired) == "PE"){paste0("* [Detailed raw fastq QC - (FastQC)](../../",snakemake@input$raw_fastq_R1_report,")  \\")} `
-`r if(unique(snakemake@params$paired) == "PE"){paste0("* [Detailed raw fastq QC - (FastQC)](../../",snakemake@input$raw_fastq_R2_report,")  \\")} `
-`r if(unique(snakemake@params$paired) == "SE"){paste0("* [Detailed raw fastq QC - (FastQC)](../../",snakemake@input$raw_fastq_SE_report,")  \\")} `
+`r if(unique(snakemake@params$paired) == TRUE){paste0("* [Detailed raw fastq QC - (FastQC)](../../",snakemake@input$raw_fastq_R1_report,")  \\")} `
+`r if(unique(snakemake@params$paired) == TRUE){paste0("* [Detailed raw fastq QC - (FastQC)](../../",snakemake@input$raw_fastq_R2_report,")  \\")} `
+`r if(unique(snakemake@params$paired) == FALSE){paste0("* [Detailed raw fastq QC - (FastQC)](../../",snakemake@input$raw_fastq_SE_report,")  \\")} `
 `r if(unique(config_json$qc_qualimap_DNA) == TRUE){paste0("* [Detailed mapping QC - Qualimap bamqc](../../",snakemake@input$qc_qualimap_DNA,")  \\")} `
 `r if(unique(config_json$qc_qualimap_RNA) == TRUE){paste0("* [RNA-Seq metrics - Qualimap rnaseq](../../",snakemake@input$qc_qualimap_RNA,")  \\")} `
 `r if(unique(config_json$qc_picard_RNA) == TRUE){paste0("* [RNA-Seq metrics - Picard](../../",snakemake@input$qc_picard_RNA,")  \\")} `

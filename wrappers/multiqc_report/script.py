@@ -19,13 +19,19 @@ f.write("## CONDA LIST: "+version+"\n")
 f.close()
 
 
-if snakemake.wildcards.sample != "all_samples":
-    multiqc_search_paths = " ./*/"+snakemake.wildcards.sample+"/"
-else:
-    multiqc_search_paths = " ./qc_reports/*/*" + " ./mapped/*"
+multiqc_search_paths = " ".join(snakemake.input)
+
+command = "multiqc -f --config " + str(snakemake.input.multiqc_config) +" -n " + snakemake.output.html + " " + str(multiqc_search_paths) + " >> "+log_filename+" 2>&1 "
 
 
-command = "multiqc -f --config " + snakemake.params.multiqc_config +" -n multiqc -o ./"+ snakemake.params.multiqc_path + multiqc_search_paths + " >> "+log_filename+" 2>&1 "
+
+# if snakemake.wildcards.sample != "all_samples":
+#     multiqc_search_paths = " ./*/"+snakemake.wildcards.sample+"/"
+# else:
+#     multiqc_search_paths = " ./qc_reports/*/*" + " ./mapped/*"
+#
+#
+# command = "multiqc -f --config " + snakemake.params.multiqc_config +" -n multiqc -o ./"+ snakemake.params.multiqc_path + multiqc_search_paths + " >> "+log_filename+" 2>&1 "
 
 f = open(log_filename, 'at')
 f.write("## COMMAND: "+command+"\n")

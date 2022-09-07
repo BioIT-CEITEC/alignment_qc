@@ -16,24 +16,28 @@ f = open(log_filename, 'at')
 f.write("## CONDA: "+version+"\n")
 f.close()
 
+
+intersect_bed = os.path.dirname(snakemake.output.vcf) +"/"+ snakemake.wildcards.sample +".snp_tmp_intersect.bed"
+
+
 if os.stat(snakemake.input.snp_bed).st_size != 0:
 
     if os.stat(snakemake.input.lib_ROI).st_size != 0:
-        command = "bedtools intersect -a "+snakemake.input.snp_bed+" -b "+snakemake.input.lib_ROI+" > "+snakemake.params.intersect_bed+" 2>> "+log_filename
+        command = "bedtools intersect -a "+snakemake.input.snp_bed+" -b "+snakemake.input.lib_ROI+" > "+intersect_bed+" 2>> "+log_filename
     else:
-        command = " ln -s "+snakemake.input.snp_bed+" "+snakemake.params.intersect_bed+" >> "+log_filename+" 2>&1"
+        command = " ln -s "+snakemake.input.snp_bed+" "+intersect_bed+" >> "+log_filename+" 2>&1"
     f = open(log_filename, 'at')
     f.write("## COMMAND: "+command+"\n")
     f.close()
     shell(command)
 
-    command = "samtools mpileup -v -A -u -t AD -f "+snakemake.input.ref+" --positions "+snakemake.params.intersect_bed+" "+snakemake.input.bam+" > "+snakemake.output.vcf+" 2>> "+log_filename
+    command = "samtools mpileup -v -A -u -t AD -f "+snakemake.input.ref+" --positions "+intersect_bed+" "+snakemake.input.bam+" > "+snakemake.output.vcf+" 2>> "+log_filename
     f = open(log_filename, 'at')
     f.write("## COMMAND: "+command+"\n")
     f.close()
     shell(command)
 
-    command = "rm "+snakemake.params.intersect_bed+" >> "+log_filename+" 2>&1"
+    command = "rm "+intersect_bed+" >> "+log_filename+" 2>&1"
     f = open(log_filename, 'at')
     f.write("## COMMAND: "+command+"\n")
     f.close()

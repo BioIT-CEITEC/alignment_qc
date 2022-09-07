@@ -25,7 +25,7 @@ f.close()
 f = open(log_filename, 'at')
 extra_flags_dupradar="single"
 msg = "Running as single end"
-if snakemake.params.paired == "PE":
+if snakemake.params.paired:
   	extra_flags_dupradar="pair"
   	msg = "Running as paired end"
 if snakemake.params.strandness == "fwd":
