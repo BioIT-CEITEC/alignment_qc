@@ -20,30 +20,26 @@ f.write("## CONDA: "+version+"\n")
 f.close()
 
 
-rm_str = snakemake.wildcards.sample + snakemake.wildcards.read_pair_tag +"_screen.png"
-prefix = snakemake.output.fastqscreen.replace(rm_str,"fastq_screen.conf")
-
-
 ### create fastq_screen.conf file
-command = "echo 'THREADS " + str(snakemake.threads) + "' > " + prefix + " 2>> " + log_filename
+command = "echo 'THREADS " + str(snakemake.threads) + "' > " + snakemake.output.prefix + " 2>> " + log_filename
 f = open(log_filename, 'at')
 f.write("## COMMAND: " + command + "\n")
 f.close()
 shell(command)
 
-command = "echo 'DATABASE " + snakemake.params.organism + " " + snakemake.input.general_index + "' >> " + prefix + " 2>> " + log_filename
+command = "echo 'DATABASE " + snakemake.params.organism + " " + " ".join(snakemake.input.general_index) + "' >> " + snakemake.output.prefix + " 2>> " + log_filename
 f = open(log_filename, 'at')
 f.write("## COMMAND: " + command + "\n")
 f.close()
 shell(command)
 
-command = "echo 'DATABASE rRNA " + snakemake.input.rRNA_index + "' >> " + prefix + " 2>> " + log_filename
+command = "echo 'DATABASE rRNA " + " ".join(snakemake.input.rRNA_index) + "' >> " + snakemake.output.prefix + " 2>> " + log_filename
 f = open(log_filename, 'at')
 f.write("## COMMAND: " + command + "\n")
 f.close()
 shell(command)
 
-command = "echo 'DATABASE tRNA " + snakemake.input.tRNA_index + "' >> " + prefix + " 2>> " + log_filename
+command = "echo 'DATABASE tRNA " + " ".join(snakemake.input.tRNA_index) + "' >> " + snakemake.output.prefix + " 2>> " + log_filename
 f = open(log_filename, 'at')
 f.write("## COMMAND: " + command + "\n")
 f.close()
@@ -55,7 +51,7 @@ with open(log_filename, 'at') as f:
   f.write("## COMMAND: " + command + "\n")
 read_count = str(subprocess.Popen(command,shell=True,stdout=subprocess.PIPE).communicate()[0], 'utf-8')
 
-if sum(1 for line in open(prefix)) == 0 or int(read_count) < 20:
+if sum(1 for line in open(snakemake.output.prefix)) == 0 or int(read_count) < 20:
   # there are no data to process so an empty plot is generated
   f = open(log_filename, 'at')
   f.write("## INFO: there are no data to process so a plot with a notice is generated\n")
@@ -98,7 +94,7 @@ else:
 
   # Subset just 500k reads, to use all reads put there 0 2>&1"
   command = "fastq_screen --subset 500000 --outdir "+os.path.dirname(snakemake.output.fastqscreen) +" --threads " + str(snakemake.threads) + \
-  	" --conf " +prefix+ " --nohits --aligner bowtie2 --force " + snakemake.input.fastq + " >> " + log_filename + " 2>&1"
+  	" --conf " +snakemake.output.prefix+ " --nohits --aligner bowtie2 --force " + snakemake.input.fastq + " >> " + log_filename + " 2>&1"
   f = open(log_filename, 'at')
   f.write("## COMMAND: "+command+"\n")
   f.close()

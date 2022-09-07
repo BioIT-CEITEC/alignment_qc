@@ -61,63 +61,63 @@ rule qc_samtools:
 #
 #
 
-# rule qc_qualimap_RNA:
-#     input:  bam = BR.remote("mapped/{sample}.bam"),
-#             # bai = BR.remote("mapped/{sample}.bam.bai"),
-#             gtf = BR.remote(expand("{ref_dir}/annot/{rel}/{ref}.gtf",ref_dir=reference_directory,rel = config["release"],ref=config["reference"])),
-#     output: html = BR.remote("qc_reports/{sample}/qc_qualimap_RNA/{sample}/qualimapReport.html")
-#     log:    BR.remote("logs/{sample}/qc_qualimap_RNA.log")
-#     params: paired = config["is_paired"],
-#             strandness = config["strandness"],
-#             tmpd = GLOBAL_TMPD_PATH,
-#     threads: 10
-#     resources:  mem = 24
-#     conda:  "../wrappers/qc_qualimap_RNA/env.yaml"
-#     script: "../wrappers/qc_qualimap_RNA/script.py"
-#
-#
-# rule qc_picard_RNA:
-#     input:  bam = BR.remote("mapped/{sample}.bam"),
-#             flat = BR.remote(expand("{ref_dir}/tool_data/Picard/{ref}.refFlat",ref_dir=reference_directory,ref=config["reference"])),
-#     output: picard_out = BR.remote("qc_reports/{sample}/qc_picard_RNA/{sample}.RNA.picard.txt"),
-#             picard_out_pdf = BR.remote("qc_reports/{sample}/qc_picard_RNA/{sample}.npc.pdf"),
-#     log:    BR.remote("logs/{sample}/qc_picard_RNA.log")
-#     params: strandness = config["strandness"],
-#     threads: 8
-#     resources: mem=10
-#     conda: "../wrappers/qc_picard_RNA/env.yaml"
-#     script: "../wrappers/qc_picard_RNA/script.py"
-#
-#
-# rule qc_dupradar_RNA:
-#     input:  bam = BR.remote("mapped/{sample}.bam"),
-#             gtf = BR.remote(expand("{ref_dir}/annot/{rel}/{ref}.gtf",ref_dir=reference_directory,rel = config["release"],ref=config["reference"])),
-#     output: dupraxpbox = BR.remote("qc_reports/{sample}/qc_dupradar_RNA/{sample}_duprateExpBoxplot.pdf"),
-#             exphist = BR.remote("qc_reports/{sample}/qc_dupradar_RNA/{sample}_expressionHist.pdf"),
-#             dupraexpden = BR.remote("qc_reports/{sample}/qc_dupradar_RNA/{sample}_duprateExpDens.pdf"),
-#             multipergene = BR.remote("qc_reports/{sample}/qc_dupradar_RNA/{sample}_multimapPerGene.pdf"),
-#             readdist = BR.remote("qc_reports/{sample}/qc_dupradar_RNA/{sample}_readDist.pdf"),
-#             txt = BR.remote("qc_reports/{sample}/qc_dupradar_RNA/{sample}_duprateExpDensCurve.txt")
-#     log:    BR.remote("logs/{sample}/qc_dupradar_RNA.log")
-#     threads: 10
-#     params: paired = config["is_paired"],
-#             strandness = config["strandness"],
-#     conda:  "../wrappers/qc_dupradar_RNA/env.yaml"
-#     script: "../wrappers/qc_dupradar_RNA/script.py"
-#
-#
-# rule qc_biotypes_RNA:
-#     input:  bam = BR.remote("mapped/{sample}.bam"),
-#             gtf = BR.remote(expand("{ref_dir}/annot/{rel}/{ref}.gtf",ref_dir=reference_directory,rel = config["release"],ref=config["reference"])),
-#     output: txt = BR.remote("qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.txt"),
-#             pdf = BR.remote("qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.pdf"),
-#     log:    BR.remote("logs/{sample}/qc_biotypes_RNA.log")
-#     threads: 10
-#     params: paired = config["is_paired"],
-#             strandness=config["strandness"],
-#             count_over=config["count_over"],
-#     conda: "../wrappers/qc_biotypes_RNA/env.yaml"
-#     script: "../wrappers/qc_biotypes_RNA/script.py"
+rule qc_qualimap_RNA:
+    input:  bam = BR.remote("mapped/{sample}.bam"),
+            # bai = BR.remote("mapped/{sample}.bam.bai"),
+            gtf = BR.remote(expand("{ref_dir}/annot/{rel}/{ref}.gtf",ref_dir=reference_directory,rel = config["release"],ref=config["reference"])),
+    output: html = BR.remote("qc_reports/{sample}/qc_qualimap_RNA/{sample}/qualimapReport.html")
+    log:    BR.remote("logs/{sample}/qc_qualimap_RNA.log")
+    params: paired = config["is_paired"],
+            strandness = config["strandness"],
+            tmpd = GLOBAL_TMPD_PATH,
+    threads: 10
+    resources:  mem = 24
+    conda:  "../wrappers/qc_qualimap_RNA/env.yaml"
+    script: "../wrappers/qc_qualimap_RNA/script.py"
+
+
+rule qc_picard_RNA:
+    input:  bam = BR.remote("mapped/{sample}.bam"),
+            flat = BR.remote(expand("{ref_dir}/tool_data/Picard/{ref}.refFlat",ref_dir=reference_directory,ref=config["reference"])),
+    output: picard_out = BR.remote("qc_reports/{sample}/qc_picard_RNA/{sample}.RNA.picard.txt"),
+            picard_out_pdf = BR.remote("qc_reports/{sample}/qc_picard_RNA/{sample}.npc.pdf"),
+    log:    BR.remote("logs/{sample}/qc_picard_RNA.log")
+    params: strandness = config["strandness"],
+    threads: 8
+    resources: mem=10
+    conda: "../wrappers/qc_picard_RNA/env.yaml"
+    script: "../wrappers/qc_picard_RNA/script.py"
+
+
+rule qc_dupradar_RNA:
+    input:  bam = BR.remote("mapped/{sample}.bam"),
+            gtf = BR.remote(expand("{ref_dir}/annot/{rel}/{ref}.gtf",ref_dir=reference_directory,rel = config["release"],ref=config["reference"])),
+    output: dupraxpbox = BR.remote("qc_reports/{sample}/qc_dupradar_RNA/{sample}_duprateExpBoxplot.pdf"),
+            exphist = BR.remote("qc_reports/{sample}/qc_dupradar_RNA/{sample}_expressionHist.pdf"),
+            dupraexpden = BR.remote("qc_reports/{sample}/qc_dupradar_RNA/{sample}_duprateExpDens.pdf"),
+            multipergene = BR.remote("qc_reports/{sample}/qc_dupradar_RNA/{sample}_multimapPerGene.pdf"),
+            readdist = BR.remote("qc_reports/{sample}/qc_dupradar_RNA/{sample}_readDist.pdf"),
+            txt = BR.remote("qc_reports/{sample}/qc_dupradar_RNA/{sample}_duprateExpDensCurve.txt")
+    log:    BR.remote("logs/{sample}/qc_dupradar_RNA.log")
+    threads: 10
+    params: paired = config["is_paired"],
+            strandness = config["strandness"],
+    conda:  "../wrappers/qc_dupradar_RNA/env.yaml"
+    script: "../wrappers/qc_dupradar_RNA/script.py"
+
+
+rule qc_biotypes_RNA:
+    input:  bam = BR.remote("mapped/{sample}.bam"),
+            gtf = BR.remote(expand("{ref_dir}/annot/{rel}/{ref}.gtf",ref_dir=reference_directory,rel = config["release"],ref=config["reference"])),
+    output: txt = BR.remote("qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.txt"),
+            pdf = BR.remote("qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.pdf"),
+    log:    BR.remote("logs/{sample}/qc_biotypes_RNA.log")
+    threads: 10
+    params: paired = config["is_paired"],
+            strandness=config["strandness"],
+            count_over=config["count_over"],
+    conda: "../wrappers/qc_biotypes_RNA/env.yaml"
+    script: "../wrappers/qc_biotypes_RNA/script.py"
 
 
 # rule qc_fastq_screen_RNA_new:
@@ -137,22 +137,22 @@ rule qc_samtools:
 #     script: "../wrappers/qc_fastq_screen_RNA/script.py"
 
 
-#
-# rule qc_fastq_screen_RNA:
-#     input:  fastq=BR.remote("raw_fastq/{sample}{read_pair_tag}.fastq.gz"),
-#             general_index=BR.remote(expand("{ref_dir}/tool_data/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.fna.{end}",ref_dir=reference_directory,ref=config["reference"],end = ["1.bt2","2.bt2","3.bt2","4.bt2"])),
-#             rRNA_index=BR.remote(expand("{ref_dir}/tool_data/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.rRNA.fasta.{end}",ref_dir=reference_directory,ref=config["reference"],end = ["1.bt2","2.bt2","3.bt2","4.bt2"])),
-#             tRNA_index=BR.remote(expand("{ref_dir}/tool_data/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.tRNA.fasta.{end}",ref_dir=reference_directory,ref=config["reference"],end = ["1.bt2","2.bt2","3.bt2","4.bt2"])),
-#     output: fastqscreen = BR.remote("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png"),
-#             fastqscreen_pdf = BR.remote("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.pdf"),
-#             tmp_image = BR.remote("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.txt"),
-#             # prefix = BR.remote("qc_reports/{sample}/qc_fastq_screen_RNA/fastq_screen.conf"),
-#     log:    BR.remote("logs/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}.log")
-#     threads: 10
-#     resources: mem = 10
-#     params: organism = config["organism"],
-#     conda: "../wrappers/qc_fastq_screen_RNA/env.yaml"
-#     script: "../wrappers/qc_fastq_screen_RNA/script.py"
+
+rule qc_fastq_screen_RNA:
+    input:  fastq=BR.remote("raw_fastq/{sample}{read_pair_tag}.fastq.gz"),
+            general_index=BR.remote(expand("{ref_dir}/tool_data/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.fna.{end}",ref_dir=reference_directory,ref=config["reference"],end = ["1.bt2","2.bt2","3.bt2","4.bt2"])),
+            rRNA_index=BR.remote(expand("{ref_dir}/tool_data/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.rRNA.fasta.{end}",ref_dir=reference_directory,ref=config["reference"],end = ["1.bt2","2.bt2","3.bt2","4.bt2"])),
+            tRNA_index=BR.remote(expand("{ref_dir}/tool_data/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.tRNA.fasta.{end}",ref_dir=reference_directory,ref=config["reference"],end = ["1.bt2","2.bt2","3.bt2","4.bt2"])),
+    output: fastqscreen = BR.remote("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png"),
+            fastqscreen_pdf = BR.remote("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.pdf"),
+            tmp_image = BR.remote("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.txt"),
+            prefix = BR.remote("qc_reports/{sample}/qc_fastq_screen_RNA/fastq_screen{read_pair_tag}.conf"),
+    log:    BR.remote("logs/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}.log")
+    threads: 10
+    resources: mem = 10
+    params: organism = config["organism"],
+    conda: "../wrappers/qc_fastq_screen_RNA/env.yaml"
+    script: "../wrappers/qc_fastq_screen_RNA/script.py"
 
 
 
