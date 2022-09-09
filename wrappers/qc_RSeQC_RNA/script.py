@@ -46,8 +46,11 @@ if int(mapped_count) >= 20:
     f.close()
     shell(command)
 
-    if snakemake.params.paired == "PE":
-        command = "inner_distance.py -r "+snakemake.input.bed+" -i "+snakemake.input.bam+" -o "+snakemake.params.prefix+" &>> "+log_filename+" "
+    if snakemake.params.paired:
+
+        prefix = snakemake.output.read_distribution.replace(".read_distribution.txt","")
+
+        command = "inner_distance.py -r "+snakemake.input.bed+" -i "+snakemake.input.bam+" -o "+prefix+" &>> "+log_filename+" "
         f = open(log_filename, 'at')
         f.write("## COMMAND: "+command+"\n")
         f.close()

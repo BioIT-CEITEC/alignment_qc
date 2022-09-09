@@ -79,11 +79,8 @@ wildcard_constraints:
 #BR.remote(expand("qc_reports/{sample}/qc_qualimap_RNA/{sample}/qualimapReport.html",sample=sample_tab.sample_name)),
 
 rule all:
-    input: BR.remote("qc_reports/final_alignment_report.html")
-    # input:  BR.remote(expand("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png",sample=sample_tab.sample_name,read_pair_tag=read_pair_tags)),
-    #         BR.remote(expand("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.pdf",sample=sample_tab.sample_name,read_pair_tag=read_pair_tags)),
-    #         BR.remote(expand("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.txt",sample=sample_tab.sample_name,read_pair_tag=read_pair_tags)),
-    #         BR.remote(expand("qc_reports/{sample}/qc_fastq_screen_RNA/fastq_screen{read_pair_tag}.conf",sample=sample_tab.sample_name,read_pair_tag=read_pair_tags)),
+    # input: BR.remote("qc_reports/final_alignment_report.html")
+    input:  BR.remote(expand("mapped/{sample}.no_dups.bam",sample=sample_tab.sample_name)),
     output: BR.remote("completed.txt")
     shell: "touch {output}"
 
@@ -91,5 +88,5 @@ rule all:
 
 include: "rules/quality_control.smk"
 include: "rules/cross_sample_correlation.smk"
-# include: "rules/chipseq_specific_qc.smk"
+include: "rules/chipseq_specific_qc.smk"
 include: "rules/sample_report.smk"

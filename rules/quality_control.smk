@@ -120,29 +120,12 @@ rule qc_biotypes_RNA:
     script: "../wrappers/qc_biotypes_RNA/script.py"
 
 
-# rule qc_fastq_screen_RNA_new:
-#     input:  fastq = "raw_fastq/{sample}{read_pair_tag}.fastq.gz",
-#     output: fastqscreen = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png",
-#             fastqscreen_pdf = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.pdf",
-#             tmp_image = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.txt"
-#     log:    "logs/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}.log"
-#     threads: 10
-#     resources: mem = 10
-#     params: prefix = "qc_reports/{sample}/qc_fastq_screen_RNA/fastq_screen.conf",
-#             organism = config["organism"],
-#             general_index= expand("{ref_dir}/other/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.fna",ref_dir=reference_directory,ref=config["reference"])[0],
-#             rRNA_index= expand("{ref_dir}/other/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.rRNA.fasta",ref_dir=reference_directory,ref=config["reference"])[0],
-#             tRNA_index= expand("{ref_dir}/other/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.tRNA.fasta",ref_dir=reference_directory,ref=config["reference"])[0]
-#     conda:  "../wrappers/qc_fastq_screen_RNA/env.yaml"
-#     script: "../wrappers/qc_fastq_screen_RNA/script.py"
-
-
-
 rule qc_fastq_screen_RNA:
     input:  fastq=BR.remote("raw_fastq/{sample}{read_pair_tag}.fastq.gz"),
             general_index=BR.remote(expand("{ref_dir}/tool_data/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.fna.{end}",ref_dir=reference_directory,ref=config["reference"],end = ["1.bt2","2.bt2","3.bt2","4.bt2"])),
             rRNA_index=BR.remote(expand("{ref_dir}/tool_data/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.rRNA.fasta.{end}",ref_dir=reference_directory,ref=config["reference"],end = ["1.bt2","2.bt2","3.bt2","4.bt2"])),
             tRNA_index=BR.remote(expand("{ref_dir}/tool_data/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.tRNA.fasta.{end}",ref_dir=reference_directory,ref=config["reference"],end = ["1.bt2","2.bt2","3.bt2","4.bt2"])),
+            index_rev=BR.remote(expand("{ref_dir}/tool_data/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.tRNA.fasta.{end}",ref_dir=reference_directory,ref=config["reference"],end=["1.bt2", "2.bt2", "3.bt2", "4.bt2"])),
     output: fastqscreen = BR.remote("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png"),
             fastqscreen_pdf = BR.remote("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.pdf"),
             tmp_image = BR.remote("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.txt"),
@@ -155,19 +138,18 @@ rule qc_fastq_screen_RNA:
     script: "../wrappers/qc_fastq_screen_RNA/script.py"
 
 
+rule qc_RSeQC_RNA:
+    input:  bam = BR.remote("mapped/{sample}.bam"),
+            bed = BR.remote(expand("{ref_dir}/tool_data/Picard/{ref}.bed12",ref_dir=reference_directory,ref=config["reference"])),
+    output: read_distribution = BR.remote("qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.read_distribution.txt"),
+            infer_experiment = BR.remote("qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.infer_experiment.txt"),
+            inner_distance = BR.remote("qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.inner_distance.txt")
+    log:    BR.remote("logs/{sample}/qc_RSeQC_RNA.log")
+    params: paired = config["is_paired"],
+            #prefix = BR.remote("qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC"),
+    threads: 10
+    resources: mem=10
+    conda: "../wrappers/qc_RSeQC_RNA/env.yaml"
+    script: "../wrappers/qc_RSeQC_RNA/script.py"
 
-# rule qc_RSeQC_RNA:
-#     input:  bam = "mapped/{sample}.bam",
-#             bed = expand("{ref_dir}/other/Picard_data/{ref}.bed12",ref_dir=reference_directory,ref=config["reference"])[0],
-#     output: read_distribution = "qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.read_distribution.txt",
-#             infer_experiment = "qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.infer_experiment.txt",
-#             inner_distance = "qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.inner_distance.txt"
-#     log:    "logs/{sample}/qc_RSeQC_RNA.log"
-#     params: prefix = "qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC",
-#             paired = paired,
-#     threads: 10
-#     resources: mem=10
-#     conda: "../wrappers/qc_RSeQC_RNA/env.yaml"
-#     script: "../wrappers/qc_RSeQC_RNA/script.py"
-#
 

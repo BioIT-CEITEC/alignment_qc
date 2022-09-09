@@ -1,11 +1,7 @@
 #########################################
 # wrapper for rule: multi_bam_summary
 #########################################
-import os
-import sys
-import math
 import subprocess
-import re
 from snakemake.shell import shell
 
 shell.executable("/bin/bash")
@@ -27,7 +23,7 @@ command = "multiBamSummary bins"+\
           " "+ignore_dups+\
           " --smartLabels"+\
           " -p "+str(snakemake.threads)+\
-          " -o "+str(snakemake.params.matrix)+\
+          " -o "+str(snakemake.output.matrix)+\
           " -b "+" ".join(snakemake.input.bam)+\
           " >> "+log_filename+" 2>&1"
 f = open(log_filename, 'at')
@@ -36,7 +32,7 @@ f.close()
 shell(command)
 
 command = "plotCorrelation"+\
-          " -in "+str(snakemake.params.matrix)+\
+          " -in "+str(snakemake.output.matrix)+\
           " --whatToPlot heatmap"+\
           " --corMethod "+snakemake.params.corr_method+\
           " -o "+snakemake.output.plot+\

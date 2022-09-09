@@ -1,11 +1,7 @@
 #########################################
 # wrapper for rule: filter_bam
 #########################################
-import os
-import sys
-import math
 import subprocess
-import re
 from snakemake.shell import shell
 
 shell.executable("/bin/bash")

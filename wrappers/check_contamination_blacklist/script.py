@@ -22,7 +22,7 @@ f.close()
 
 command = "samtools view"+\
           " -@ "+str(snakemake.threads)+\
-          " -L "+snakemake.input.lst[0]+\
+          " -L "+snakemake.input.lst+\
           " -U "+snakemake.output.bam_ok+\
           " -b -h "+snakemake.input.bam+\
           " > "+snakemake.output.bam_fail+\

@@ -32,7 +32,6 @@
     "reference",
     "lib_ROI",
     "trim_adapters",
-    "strandness",
     "biobloom"
   ],
   "gui_params" : {

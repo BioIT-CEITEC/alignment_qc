@@ -27,19 +27,19 @@ f.write("## COMMAND: " + command + "\n")
 f.close()
 shell(command)
 
-command = "echo 'DATABASE " + snakemake.params.organism + " " + " ".join(snakemake.input.general_index) + "' >> " + snakemake.output.prefix + " 2>> " + log_filename
+command = "echo 'DATABASE " + snakemake.params.organism + " " + snakemake.input.general_index[0].replace(".1.bt2","") + "' >> " + snakemake.output.prefix + " 2>> " + log_filename
 f = open(log_filename, 'at')
 f.write("## COMMAND: " + command + "\n")
 f.close()
 shell(command)
 
-command = "echo 'DATABASE rRNA " + " ".join(snakemake.input.rRNA_index) + "' >> " + snakemake.output.prefix + " 2>> " + log_filename
+command = "echo 'DATABASE rRNA " + snakemake.input.rRNA_index[0].replace(".1.bt2","") + "' >> " + snakemake.output.prefix + " 2>> " + log_filename
 f = open(log_filename, 'at')
 f.write("## COMMAND: " + command + "\n")
 f.close()
 shell(command)
 
-command = "echo 'DATABASE tRNA " + " ".join(snakemake.input.tRNA_index) + "' >> " + snakemake.output.prefix + " 2>> " + log_filename
+command = "echo 'DATABASE tRNA " + snakemake.input.tRNA_index[0].replace(".1.bt2","") + "' >> " + snakemake.output.prefix + " 2>> " + log_filename
 f = open(log_filename, 'at')
 f.write("## COMMAND: " + command + "\n")
 f.close()
