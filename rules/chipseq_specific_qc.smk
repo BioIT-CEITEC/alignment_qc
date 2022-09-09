@@ -26,16 +26,7 @@
 #     script:  "../wrappers/phantom_peak_qual/script.py"
 #
 #
-# rule inspect_bam_coverage:
-#     input:  bam = BR.remote("mapped/{sample}.{dups}.bam"),
-#     output: bw =  BR.remote("mapped/{sample}.{dups}.bam.bigWig"),
-#     log:    BR.remote("logs/{sample}/inspect_bam_coverage.{dups}.log"),
-#     threads: 5
-#     params: effective_GS = config["effective_genome_size"],
-#             frag_len = config["fragment_length"],
-#             tmpd = GLOBAL_TMPD_PATH,
-#     conda:  "../wrappers/inspect_bam_coverage/env.yaml"
-#     script:  "../wrappers/inspect_bam_coverage/script.py"
+
 
 
 
@@ -62,16 +53,16 @@ rule filter_bam:
 
 
 # #TODO: add stats and create table with counts so it can be merged over samples in main report
-rule check_contamination_blacklist:
-    input:  bam = BR.remote("mapped/{sample}.bam"),
-            lst = BR.remote(expand("{ref_dir}/DNA_panel/ChIP-seq/blacklist.v2.bed",ref_dir=reference_directory)),
-    output: bam_ok = BR.remote("mapped/{sample}.no_contam.bam"),
-            bam_fail = BR.remote("mapped/{sample}.contam.bam"),
-    log:    BR.remote("logs/{sample}/check_contamination_blacklist.log"),
-    threads: 5
-    conda:  "../wrappers/check_contamination_blacklist/env.yaml"
-    script:  "../wrappers/check_contamination_blacklist/script.py"
-    
+# rule check_contamination_blacklist:
+#     input:  bam = BR.remote("mapped/{sample}.bam"),
+#             lst = BR.remote(expand("{ref_dir}/DNA_panel/ChIP-seq/blacklist.v2.bed",ref_dir=reference_directory)),
+#     output: bam_ok = BR.remote("mapped/{sample}.no_contam.bam"),
+#             bam_fail = BR.remote("mapped/{sample}.contam.bam"),
+#     log:    BR.remote("logs/{sample}/check_contamination_blacklist.log"),
+#     threads: 5
+#     conda:  "../wrappers/check_contamination_blacklist/env.yaml"
+#     script:  "../wrappers/check_contamination_blacklist/script.py"
+#
     
 # def dedup_bam_input(wildcards):
 #     bed = reference_directory+"/intervals/ChIP-seq/blacklist.v2.bed"
@@ -80,25 +71,37 @@ rule check_contamination_blacklist:
 #     else:
 #         return "mapped/{sample}.bam"
 
-rule dedup_bam:
-    # input:  bam = dedup_bam_input,
-    input:  bam = BR.remote("mapped/{sample}.keep_dups.bam")
-    output: bam = BR.remote("mapped/{sample}.no_dups.bam"),
-    log:    BR.remote("logs/{sample}/dedup_bam.log")
-    threads: 5,
-    params: tmpd= GLOBAL_TMPD_PATH,
-    conda:  "../wrappers/dedup_bam/env.yaml"
-    script: "../wrappers/dedup_bam/script.py"
-    
+# rule dedup_bam:
+#     # input:  bam = dedup_bam_input,
+#     input:  bam = BR.remote("mapped/{sample}.keep_dups.bam")
+#     output: bam = BR.remote("mapped/{sample}.no_dups.bam"),
+#     log:    BR.remote("logs/{sample}/dedup_bam.log")
+#     threads: 5,
+#     params: tmpd= GLOBAL_TMPD_PATH,
+#     conda:  "../wrappers/dedup_bam/env.yaml"
+#     script: "../wrappers/dedup_bam/script.py"
+#
 
 rule qc_samtools_extra:
-    input:  bam = BR.remote("mapped/{sample}.{extra}.bam")
-    output: idxstats = BR.remote("qc_reports/{sample}/qc_samtools/{sample}.{extra}.idxstats.tsv"),
-            flagstats = BR.remote("qc_reports/{sample}/qc_samtools/{sample}.{extra}.flagstat.tsv")
-    log:    BR.remote("logs/{sample}/qc_samtools_extra.{extra}.log")
+    input:  bam = BR.remote("mapped/AK1852fuze.keep_dups.bam")
+    output: idxstats = BR.remote("qc_reports/AK1852fuze/qc_samtools/AK1852fuze.keep_dups.idxstats.tsv"),
+            flagstats = BR.remote("qc_reports/AK1852fuze/qc_samtools/AK1852fuze.keep_dups.flagstat.tsv")
+    log:    BR.remote("logs/AK1852fuze/qc_samtools_extra.keep_dups.log")
     threads:    1
     conda: "../wrappers/qc_samtools/env.yaml"
     script: "../wrappers/qc_samtools/script.py"
+
+
+# rule inspect_bam_coverage:
+#     input:  bam = BR.remote("mapped/{sample}.{dups}.bam"),
+#     output: bw =  BR.remote("mapped/{sample}.{dups}.bam.bigWig"),
+#     log:    BR.remote("logs/{sample}/inspect_bam_coverage.{dups}.log"),
+#     threads: 5
+#     params: effective_GS = config["effective_genome_size"],
+#             frag_len = config["fragment_length"],
+#             tmpd = GLOBAL_TMPD_PATH,
+#     conda:  "../wrappers/inspect_bam_coverage/env.yaml"
+#     script:  "../wrappers/inspect_bam_coverage/script.py"
 
 
 # def multi_bam_summary_inputs(wildcards):
