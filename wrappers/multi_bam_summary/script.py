@@ -24,7 +24,7 @@ command = "multiBamSummary bins"+\
           " --smartLabels"+\
           " -p "+str(snakemake.threads)+\
           " -o "+str(snakemake.output.matrix)+\
-          " -b "+" ".join(snakemake.input.bam)+\
+          " -b "+str(snakemake.input.bam)+\
           " >> "+log_filename+" 2>&1"
 f = open(log_filename, 'at')
 f.write("## COMMAND: "+command+"\n")
@@ -51,7 +51,7 @@ command = "plotFingerprint"+\
           " "+ignore_dups+\
           " -p "+str(snakemake.threads)+\
           " -o "+snakemake.output.finger+\
-          " -b "+" ".join(snakemake.input.bam)+\
+          " -b "+str(snakemake.input.bam)+\
           " >> "+log_filename+" 2>&1"
 f = open(log_filename, 'at')
 f.write("## COMMAND: "+command+"\n")

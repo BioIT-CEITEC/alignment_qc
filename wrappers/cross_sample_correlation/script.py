@@ -16,7 +16,7 @@ output_file = snakemake.output.Rdata_for_viz.replace(".Rdata","")
 
 command = " Rscript  " + os.path.abspath(os.path.dirname(__file__)) + "/cross_sample_correlation.R " \
                        + " " + output_file + " " \
-                       + snakemake.input.vcfs \
+                       + str(snakemake.input.vcfs) \
                        + " 2>> " + log_filename
 f = open(log_filename, 'a+')
 f.write("## COMMAND: "+command+"\n")

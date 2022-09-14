@@ -6,11 +6,11 @@
 rule qc_picard_DNA_per_target:
     input:  bam = BR.remote("mapped/{sample}.bam"),
             ref = BR.remote(expand("{ref_dir}/seq/{ref}.fa",ref_dir=reference_directory,ref=config["reference"])),
+            fai = BR.remote(expand("{ref_dir}/seq/{ref}.fa.fai",ref_dir=reference_directory,ref=config["reference"])),
             lib_ROI = BR.remote(expand("{ref_dir}/DNA_panel/{lib_ROI}/{lib_ROI}.interval_list",ref_dir=reference_directory,lib_ROI=config["lib_ROI"]))
     output: table = BR.remote("qc_reports/{sample}/qc_picard_DNA/picard_table.per_target.tsv"),
             metrics = BR.remote("qc_reports/{sample}/qc_picard_DNA/picard.per_target.tsv"),
     log:    BR.remote("logs/{sample}/qc_picard_DNA.log")
-    params: lib_ROI = config["lib_ROI"],
     threads: 1
     resources:  mem = 20
     conda: "../wrappers/qc_picard_DNA_per_target/env.yaml"
@@ -20,10 +20,10 @@ rule qc_picard_DNA_per_target:
 rule qc_picard_DNA_wgs_chart:
     input:  bam = BR.remote("mapped/{sample}.bam"),
             ref = BR.remote(expand("{ref_dir}/seq/{ref}.fa",ref_dir=reference_directory,ref=config["reference"])),
+            fai = BR.remote(expand("{ref_dir}/seq/{ref}.fa.fai",ref_dir=reference_directory,ref=config["reference"])),
     output: table = BR.remote("qc_reports/{sample}/qc_picard_DNA/picard_table.wgs_chart.tsv"),
             metrics = BR.remote("qc_reports/{sample}/qc_picard_DNA/picard.wgs_chart.pdf"),
     log:    BR.remote("logs/{sample}/qc_picard_DNA.log")
-    params: lib_ROI = config["lib_ROI"],
     threads: 1
     resources:  mem = 20
     conda: "../wrappers/qc_picard_DNA_wgs_chart/env.yaml"
