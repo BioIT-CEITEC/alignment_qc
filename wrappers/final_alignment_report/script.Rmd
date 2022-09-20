@@ -15,7 +15,6 @@ library(jsonlite)
 
 ```{r, include=FALSE}
 config_json = as.data.table(fromJSON(snakemake@params$config))
-
 ```
 ## Main report:
 `r paste0("* [Multi-sample main QC summary (MultiQC)](../",snakemake@input$all_sample_multiqc,") \\")`
@@ -42,9 +41,10 @@ for (i in snakemake@params$sample_name){
   #cat(paste0(" * [Sample ", i, " report](",i,".final_sample_report.html)\n"))
   cat(paste0(" * [Sample ", i, " report](./",i,"/single_sample_alignment_report.html)\n"))
   cat('\n')
+
 }
 ```
-
+Working directory path:  `r paste0(getwd()) `.
 
 
 
