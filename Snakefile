@@ -32,6 +32,15 @@ if not "feature_count" in config:
 
 if not "RSEM" in config:
     config["RSEM"] = False
+
+if not "kallisto" in config:
+    config["kallisto"] = False
+
+if not "salmon_align" in config:
+    config["salmon_align"] = False
+
+if not "salmon_map" in config:
+    config["salmon_map"] = False
     
 # ChIP-seq parameters processing
 #

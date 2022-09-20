@@ -32,66 +32,16 @@
     "reference",
     "lib_ROI",
     "trim_adapters",
-    "biobloom"
+    "biobloom",
+    "feature_count",
+    "RSEM",
+    "salmon_align",
+    "salmon_map",
+    "kallisto"
   ],
   "gui_params" : {
-    "primary": {
-      "lib_ROI": {
-        "label": "Regions of interest",
-        "type": "enum",
-        "default": "wgs",
-        "list": ##INCLUDE:reference_info/lib_ROI.json##
-      }
-    },
+    "primary": {},
     "detailed": {
-      "feature_count": {
-        "label": "Feature count",
-        "type": "bool",
-        "default": true
-      },
-      "RSEM": {
-        "label": "RSEM",
-        "type": "bool",
-        "default": false
-      },
-      "salmon": {
-        "label": "Salmon",
-        "type": "bool",
-        "default": false
-      },
-      "salmon_align": {
-        "label": "Salmon quantification BAM-based",
-        "type": "bool",
-        "default": false,
-        "conditions": {
-          "relevance": {
-            "operand": "equal",
-            "negation": false,
-            "values": {
-              "salmon": true
-            }
-          }
-        }
-      },
-      "salmon_map": {
-        "label": "Salmon quantification fastq-based",
-        "type": "bool",
-        "default": false,
-        "conditions": {
-          "relevance": {
-            "operand": "equal",
-            "negation": false,
-            "values": {
-              "salmon": true
-            }
-          }
-        }
-      },
-      "kallisto": {
-        "label": "Kallisto",
-        "type": "bool",
-        "default": false
-      },
       "qc_samtools": {
         "label": "QC samtools",
         "type": "bool",
