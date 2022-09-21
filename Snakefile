@@ -6,7 +6,7 @@ configfile: "config.json"
 
 
 module BR:
-    snakefile: gitlab("bioroots/bioroots_utilities",path="bioroots_utilities.smk",branch="main")
+    snakefile: gitlab("bioroots/bioroots_utilities",path="bioroots_utilities.smk",branch="kube_dirs")
     config: config
 
 use rule * from BR as other_ *
