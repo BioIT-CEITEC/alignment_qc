@@ -44,7 +44,7 @@ for (i in snakemake@params$sample_name){
 
 }
 ```
-Working directory path:  `r paste0(getwd()) `.
+
 
 
 
