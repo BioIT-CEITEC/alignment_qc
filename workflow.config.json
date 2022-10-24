@@ -15,10 +15,8 @@
     ],
     "report_index": "qc_reports/final_alignment_report.html",
     "reports":[
-      "qc_reports/*.html",
-      "qc_reports/*.pdf",
-      "qc_reports/*.png",
-      "qc_reports/*.csv"
+      "qc_reports/all_samples/*.html",
+      "qc_reports/all_samples/*.pdf"
     ]
   },
   "general_params": [
