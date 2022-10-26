@@ -16,6 +16,7 @@
     ],
     "report_index": "qc_reports/final_alignment_report.html",
     "reports":[
+      "qc_reports/final_alignment_report.html",
       "qc_reports/all_samples/*.html",
       "qc_reports/all_samples/*.pdf"
     ]
