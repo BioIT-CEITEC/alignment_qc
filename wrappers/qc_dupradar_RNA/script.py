@@ -58,7 +58,7 @@ if int(mapped_count) >= reads_thr:
     f.close()
     shell(command)
     
-    command = "Rscript "+ DUP_RADAR+\
+    command = "export TMPDIR=TMP=TEMP="+snakemake.params.tmpd+" && Rscript "+ DUP_RADAR+\
               " "+snakemake.input.bam+\
               " "+snakemake.input.gtf+\
               " "+extra_flags_dupradar+\

@@ -85,6 +85,7 @@ rule qc_dupradar_RNA:
             dupraexpden_pdf = "qc_reports/all_samples/qc_dupradar_RNA/dupraexpden.pdf",
             multipergene_pdf = "qc_reports/all_samples/qc_dupradar_RNA/multipergene.pdf",
             readdist_pdf = "qc_reports/all_samples/qc_dupradar_RNA/readdist.pdf",
+            tmpd = GLOBAL_TMPD_PATH,
     conda:  "../wrappers/qc_dupradar_RNA/env.yaml"
     script: "../wrappers/qc_dupradar_RNA/script.py"
 
