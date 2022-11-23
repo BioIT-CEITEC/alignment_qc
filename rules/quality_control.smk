@@ -99,6 +99,7 @@ rule qc_biotypes_RNA:
             paired = paired,
             strandness=config["strandness"],
             count_over=config["count_over"],
+            tmpd = GLOBAL_TMPD_PATH,
     conda: "../wrappers/qc_biotypes_RNA/env.yaml"
     script: "../wrappers/qc_biotypes_RNA/script.py"
 
