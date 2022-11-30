@@ -5,21 +5,20 @@
     "label":"Alignment QC",
     "type":"alignment_qc",
     "inputs":[
-      "qc_reports/{sample}/raw_fastqc/*",
-      "qc_reports/{sample}/*/trim_stats*.log",
+      "qc_reports/*",
       "mapped/*",
       "*/{sample}*fastq.gz"
     ],
     "outputs":[
       "qc_reports/*",
-      "mapped/*.bam*"
+      "mapped/*.bam*",
+      "logs/*"
     ],
     "report_index": "qc_reports/final_alignment_report.html",
     "reports":[
-      "qc_reports/*.html",
-      "qc_reports/*.pdf",
-      "qc_reports/*.png",
-      "qc_reports/*.csv"
+      "qc_reports/final_alignment_report.html",
+      "qc_reports/all_samples/*.html",
+      "qc_reports/all_samples/*.pdf"
     ]
   },
   "general_params": [
@@ -33,51 +32,16 @@
     "reference",
     "lib_ROI",
     "trim_adapters",
-    "strandness"
+    "biobloom",
+    "feature_count",
+    "RSEM",
+    "salmon_align",
+    "salmon_map",
+    "kallisto"
   ],
   "gui_params" : {
-    "primary": {
-      "lib_ROI": {
-        "label": "Regions of interest",
-        "type": "enum",
-        "default": "wgs",
-        "list": ##INCLUDE:reference_info/lib_ROI.json##
-      }
-    },
+    "primary": {},
     "detailed": {
-      "count_over": {
-        "label": "Count over",
-        "type": "enum",
-        "default": "exon",
-        "list": {
-          "exon": "Exon",
-          "gene": "Gene",
-          "transcript": "Transcript",
-          "mRNA": "mRNA",
-          "three_prime_utr": "Three prime UTR",
-          "five_prime_utr": "Five prime UTR"
-        }
-      },
-      "feature_count": {
-        "label": "Feature count",
-        "type": "bool",
-        "default": true
-      },
-      "RSEM": {
-        "label": "RSEM",
-        "type": "bool",
-        "default": false
-      },
-      "salmon": {
-        "label": "Salmon",
-        "type": "bool",
-        "default": false
-      },
-      "kallisto": {
-        "label": "Kallisto",
-        "type": "bool",
-        "default": false
-      },
       "qc_samtools": {
         "label": "QC samtools",
         "type": "bool",
@@ -128,71 +92,10 @@
         "type": "bool",
         "default": true
       },
-      "biobloom": {
-        "label": "Biobloom tools",
-        "type": "bool",
-        "default": false
-      },
-      "max_mapped_reads_to_run_biobloom": {
-        "label": "Biobloom - max mapped ratio",
-        "type": "int",
-        "default": 100,
-        "conditions": {
-          "relevance": {
-            "operand": "equal",
-            "negation": false,
-            "values": {
-              "biobloom": true
-            }
-          }
-        }
-      },
       "chip_extra_qc": {
         "label": "ChIP-seq additional QC",
         "type": "bool",
         "default": false
-      },
-      "lib_type": {
-        "label": "Salmon library type",
-        "type": "string",
-        "default": "A",
-        "conditions": {
-          "relevance": {
-            "operand": "equal",
-            "negation": false,
-            "values": {
-              "salmon": true
-            }
-          }
-        }
-      },
-      "gcbias": {
-        "label": "Salmon GC bias",
-        "type": "bool",
-        "default": true,
-        "conditions": {
-          "relevance": {
-            "operand": "equal",
-            "negation": false,
-            "values": {
-              "salmon": true
-            }
-          }
-        }
-      },
-      "numGibbsSamples": {
-        "label": "Salmon number of Gibbs Samples",
-        "type": "string",
-        "default": "20",
-        "conditions": {
-          "relevance": {
-            "operand": "equal",
-            "negation": false,
-            "values": {
-              "salmon": true
-            }
-          }
-        }
       }
     }
   }

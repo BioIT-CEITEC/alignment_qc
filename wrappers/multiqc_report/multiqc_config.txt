@@ -14,8 +14,50 @@ qualimap_config:
        - 10
        - 100
        - 500
+custom_data:
+  salmon_aln:
+    format: "tsv"
+    parent_id: "salmon/extra"
+    parent_name: "Salmon additional plots"
+    section_name: "Salmon alignment"
+    description: "Additional Salmon plot"
+    plot_type: "bargraph"
+    categories:
+      mapped:
+        name: "Mapped"
+        color: "#437bb1"
+      unmapped:
+        name: "Unmapped"
+        color: "#b1084c"
+    pconfig:
+      id: "salmon_aln_plot"
+      title: "Salmon: alignment Scores (alignment mode)"
+      ylab: "# Reads"
+  salmon_map:
+    format: "tsv"
+    parent_id: "salmon/extra"
+    parent_name: "Salmon additional plots"
+    section_name: "Salmon mapping"
+    description: "Additional Salmon plot"
+    plot_type: "bargraph"
+    categories:
+      mapped:
+        name: "Mapped"
+        color: "#437bb1"
+      unmapped:
+        name: "Unmapped"
+        color: "#b1084c"
+    pconfig:
+      id: "salmon_map_plot"
+      title: "Salmon: alignment Scores (mapping mode)"
+      ylab: "# Reads"
 sp:
    phantompeakqualtools/out:
       fn: '*.phantom_peak_calling_stats.tsv'
    jellyfish:
       fn: '*.histo'
+   salmon_aln:
+        fn: '*_aln.tsv'
+   salmon_map:
+        fn: '*_map.tsv'
+

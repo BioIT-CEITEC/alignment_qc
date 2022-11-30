@@ -39,7 +39,6 @@ rule qc_qualimap_DNA:
     conda: "../wrappers/qc_qualimap_DNA/env.yaml"
     script: "../wrappers/qc_qualimap_DNA/script.py"
 
-
 rule qc_samtools:
     input:  bam = "mapped/{sample}.bam"
     output: idxstats = "qc_reports/{sample}/qc_samtools/{sample}.idxstats.tsv",
@@ -68,7 +67,6 @@ rule qc_qualimap_RNA:
     conda:  "../wrappers/qc_qualimap_RNA/env.yaml"
     script: "../wrappers/qc_qualimap_RNA/script.py"
 
-
 rule qc_dupradar_RNA:
     input:  bam = "mapped/{sample}.bam",
             gtf = expand("{ref_dir}/annot/{ref}.gtf",ref_dir=reference_directory,ref=config["reference"])[0],
@@ -87,9 +85,9 @@ rule qc_dupradar_RNA:
             dupraexpden_pdf = "qc_reports/all_samples/qc_dupradar_RNA/dupraexpden.pdf",
             multipergene_pdf = "qc_reports/all_samples/qc_dupradar_RNA/multipergene.pdf",
             readdist_pdf = "qc_reports/all_samples/qc_dupradar_RNA/readdist.pdf",
+            tmpd = GLOBAL_TMPD_PATH,
     conda:  "../wrappers/qc_dupradar_RNA/env.yaml"
     script: "../wrappers/qc_dupradar_RNA/script.py"
-
 
 rule qc_biotypes_RNA:
     input:  bam = "mapped/{sample}.bam",
@@ -102,9 +100,9 @@ rule qc_biotypes_RNA:
             paired = paired,
             strandness=config["strandness"],
             count_over=config["count_over"],
+            tmpd = GLOBAL_TMPD_PATH,
     conda: "../wrappers/qc_biotypes_RNA/env.yaml"
     script: "../wrappers/qc_biotypes_RNA/script.py"
-
 
 rule qc_fastq_screen_RNA:
     input:  fastq = "raw_fastq/{sample}{read_pair_tag}.fastq.gz",
@@ -122,7 +120,6 @@ rule qc_fastq_screen_RNA:
     conda:  "../wrappers/qc_fastq_screen_RNA/env.yaml"
     script: "../wrappers/qc_fastq_screen_RNA/script.py"
 
-
 rule qc_RSeQC_RNA:
     input:  bam = "mapped/{sample}.bam",
             bed = expand("{ref_dir}/other/Picard_data/{ref}.bed12",ref_dir=reference_directory,ref=config["reference"])[0],
@@ -137,7 +134,6 @@ rule qc_RSeQC_RNA:
     conda: "../wrappers/qc_RSeQC_RNA/env.yaml"
     script: "../wrappers/qc_RSeQC_RNA/script.py"
 
-
 rule qc_picard_RNA:
     input:  bam = "mapped/{sample}.bam",
             flat = expand("{ref_dir}/other/Picard_data/{ref}.refFlat",ref_dir=reference_directory,ref=config["reference"])[0],
@@ -149,119 +145,3 @@ rule qc_picard_RNA:
     resources: mem=10
     conda: "../wrappers/qc_picard_RNA/env.yaml"
     script: "../wrappers/qc_picard_RNA/script.py"
-
-
-rule feature_count:
-     input:  bam = "mapped/{sample}.bam",
-             gtf = expand("{ref_dir}/annot/{ref}.gtf",ref_dir=reference_directory,ref=config["reference"])[0],
-     output: feature_count = "qc_reports/{sample}/feature_count/{sample}.feature_count.tsv"
-     log:    "logs/{sample}/feature_count.log"
-     threads: 10
-     resources:  mem = 10
-     params: count_over = config["count_over"],
-             paired = paired,
-             strandness = config["strandness"],
-     conda:  "../wrappers/feature_count/env.yaml"
-     script: "../wrappers/feature_count/script.py"
-
-
-rule RSEM:
-    input:  bam = "mapped/{sample}.bam",
-            transcriptome = "mapped/transcriptome/{sample}.not_markDups.transcriptome.bam",
-            rsem_index = expand("{ref_dir}/index/RSEM/{ref}.idx.fa",ref_dir=reference_directory,ref=config["reference"])[0],
-    output: rsem_out = "qc_reports/{sample}/RSEM/{sample}.genes.results"
-    log:    "logs/{sample}/RSEM.log"
-    threads: 5
-    resources:  mem = 10
-    params: paired = paired,
-            strandness = config["strandness"],
-    conda:  "../wrappers/RSEM/env.yaml"
-    script: "../wrappers/RSEM/script.py"
-
-
-def salmon_kallisto_input(wildcards):
-    preprocessed = "cleaned_fastq"
-    input = {}
-    if not config["is_paired"]:
-        input['r1'] = os.path.join(preprocessed,"{sample}.fastq.gz")
-    else:
-        input['r1'] = os.path.join(preprocessed,"{sample}_R1.fastq.gz")
-        input['r2'] = os.path.join(preprocessed,"{sample}_R2.fastq.gz")
-    return input
-
-rule Salmon:
-    input:  unpack(salmon_kallisto_input),
-            index = expand("{ref_dir}/index/Salmon",ref_dir=reference_directory,ref=config["reference"])
-    output: sf = "qc_reports/{sample}/salmon/{sample}.salmon.sf",
-    log:    "logs/{sample}/salmon.log"
-    threads: 40
-    resources:  mem = 34
-    params: prefix = "qc_reports/{sample}/salmon/{sample}",
-            lib_type = config["lib_type"],
-            gcbias = config["gcbias"],
-            numGibbsSamples = config["numGibbsSamples"],
-            paired = paired,
-    conda: "../wrappers/Salmon/env.yaml"
-    script: "../wrappers/Salmon/script.py"
-
-rule Kallisto:
-    input:  unpack(salmon_kallisto_input),
-            index = expand("{ref_dir}/index/Kallisto",ref_dir=reference_directory,ref=config["reference"])
-    output: h5 = "qc_reports/{sample}/kallisto/{sample}.kallisto.h5",
-            tsv = "qc_reports/{sample}/kallisto/{sample}.kallisto.tsv"
-    log:    "logs/{sample}/kallisto.log"
-    threads: 40
-    resources:  mem = 34
-    params: prefix = "qc_reports/{sample}/kallisto",
-            samplelog = "qc_reports/{sample}/kallisto/{sample}.kallisto.log",
-            paired = paired,
-    conda: "../wrappers/Kallisto/env.yaml"
-    script: "../wrappers/Kallisto/script.py"
-
-
-def biobloom_input(wildcards):
-    # if config["trim_adapters"] == True or config["trim_quality"] == True:
-    #     preprocessed = "cleaned_fastq"
-    # else:
-    #     preprocessed = "raw_fastq"
-    preprocessed = "cleaned_fastq"
-    input = {}
-    input['flagstats'] = "qc_reports/{sample}/qc_samtools/{sample}.flagstat.tsv"
-    if not config["is_paired"]:
-        input['r1'] = os.path.join(preprocessed,"{sample}.fastq.gz")
-    else:
-        input['r1'] = os.path.join(preprocessed,"{sample}_R1.fastq.gz")
-        input['r2'] = os.path.join(preprocessed,"{sample}_R2.fastq.gz")
-    return  input
-
-rule biobloom:
-    input:  unpack(biobloom_input)
-    output: table = "qc_reports/{sample}/biobloom/{sample}.biobloom_summary.tsv",
-    log:    "logs/{sample}/biobloom.log",
-    threads: 8
-    resources: mem=30
-    params: prefix = "qc_reports/{sample}/biobloom/{sample}.biobloom",
-            filters = "all",
-            ref_dir = GLOBAL_REF_PATH,
-            paired = paired,
-            max_mapped_reads_to_run = config["max_mapped_reads_to_run_biobloom"]
-    conda: "../wrappers/biobloom/env.yaml"
-    script: "../wrappers/biobloom/script.py"
-
-# "biobloom": {
-#     "label": "Biobloom - contamination",
-#     "type": "enum",
-#     "default": "all",
-#     "list": {
-#         "all": "All",
-#         "human": "Human",
-#         "mouse": "Mouse",
-#         "rat": "Rat",
-#         "yeast": "Yeast",
-#         "fly": "Fly",
-#         "dog": "Dog",
-#         "arabidopsis": "Arabidopsis",
-#         "brassica": "Brassica",
-#         "c_elegans": "C_elegans"
-#     }
-# }
