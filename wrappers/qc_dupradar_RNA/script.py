@@ -4,7 +4,7 @@
 import os
 import subprocess
 from snakemake.shell import shell
-import pdfkit
+#import pdfkit
 shell.executable("/bin/bash")
 log_filename = str(snakemake.log)
 
