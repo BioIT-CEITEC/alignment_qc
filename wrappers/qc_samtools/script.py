@@ -10,19 +10,19 @@ f = open(log_filename, 'wt')
 f.write("\n##\n## RULE: qc_samtools \n##\n")
 f.close()
 
-version = str(subprocess.Popen("conda list ", shell=True, stdout=subprocess.PIPE).communicate()[0], 'utf-8')
+version = str(subprocess.Popen("conda list 2>&1", shell=True, stdout=subprocess.PIPE).communicate()[0], 'utf-8')
 f = open(log_filename, 'at')
-f.write("## CONDA: "+version+"\n")
+f.write("## CONDA:\n"+version+"\n")
 f.close()
 
 
-command = "samtools idxstats "+snakemake.input.bam+" > "+snakemake.output.idxstats+" 2>> "+log_filename+" "
+command = "$(which time) samtools idxstats "+snakemake.input.bam+" > "+snakemake.output.idxstats+" 2>> "+log_filename+" "
 f = open(log_filename, 'at')
 f.write("## COMMAND: "+command+"\n")
 f.close()
 shell(command)
 
-command ="samtools flagstat "+snakemake.input.bam+" > "+snakemake.output.flagstats+" 2>> "+log_filename+" "
+command ="$(which time) samtools flagstat "+snakemake.input.bam+" > "+snakemake.output.flagstats+" 2>> "+log_filename+" "
 f = open(log_filename, 'at')
 f.write("## COMMAND: "+command+"\n")
 f.close()

@@ -55,6 +55,9 @@ if not "summary_correlation_method" in config:
     
 if not "bam_quality_cutof" in config:
     config['bam_quality_cutof'] = 20
+    
+if not 'bam_remove_blacklisted' in config:
+    config['bam_remove_blacklisted'] = True
 
 # Reference processing
 #

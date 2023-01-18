@@ -20,41 +20,41 @@ if str(snakemake.params.qc_cutof) == "nan":
 
 version = str(subprocess.Popen("conda list 2>&1", shell=True, stdout=subprocess.PIPE).communicate()[0], 'utf-8')
 f = open(log_filename, 'at')
-f.write("## CONDA: "+version+"\n")
+f.write("## CONDA:\n"+version+"\n")
 f.close()
 
 bad_tags = 772 # combination of read_unmapped, not_primary_alignment and read_fails_platform/vendor_quality_checks
 
 if hasattr(snakemake.input, 'bed'):
-  command = "(time samtools view"+\
+  command = "$(which time) samtools view"+\
             " -@ "+str(snakemake.threads)+\
             " -q "+str(snakemake.params.qc_cutof)+\
             " -F "+str(bad_tags)+\
             " -b -h "+snakemake.input.bam+\
             " 2>> "+log_filename+\
-            ") | "+\
-            "(time samtools view"+\
+            " | "+\
+            "$(which time) samtools view"+\
             " -@ "+str(snakemake.threads)+\
             " -L "+snakemake.input.bed+\
             " -U "+snakemake.output.bam+\
             " -b -h -"+\
-            ") > "+snakemake.output.bam_fail+\
+            " > "+snakemake.output.bam_fail+\
             " 2>> "+log_filename
 else:
-  command = "(time samtools view"+\
+  command = "$(which time) samtools view"+\
             " -@ "+str(snakemake.threads)+\
             " -q "+str(snakemake.params.qc_cutof)+\
             " -F "+str(bad_tags)+\
             " -U "+snakemake.output.bam_fail+\
             " -b -h "+snakemake.input.bam+\
-            ") > "+snakemake.output.bam+\
+            " > "+snakemake.output.bam+\
             " 2>> "+log_filename
 f = open(log_filename, 'at')
 f.write("## COMMAND: "+command+"\n")
 f.close()
 shell(command)
 
-command = "(time samtools index -@ "+str(snakemake.threads)+" "+snakemake.output.bam+") >> "+log_filename+" 2>&1"
+command = "$(which time) samtools index -@ "+str(snakemake.threads)+" "+snakemake.output.bam+" >> "+log_filename+" 2>&1"
 f = open(log_filename, 'at')
 f.write("## COMMAND: "+command+"\n")
 f.close()
