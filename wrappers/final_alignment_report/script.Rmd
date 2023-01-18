@@ -14,7 +14,7 @@ library(jsonlite)
 
 
 ```{r, include=FALSE}
-config_json = as.data.table(fromJSON(snakemake@params$config))
+config_json <- as.data.table(fromJSON(snakemake@params$config))
 
 ```
 ## Main report:
@@ -34,20 +34,6 @@ config_json = as.data.table(fromJSON(snakemake@params$config))
 `r if(unique(config_json$chip_extra_qc) == TRUE){paste0("* [All samples fingerprint plot by Deeptools (no duplicates)](../",snakemake@input$fingerprint, ") \\")} `
 `r if(unique(config_json$chip_extra_qc) == TRUE){paste0("* [All samples fingerprint plot by Deeptools (with duplicates)](../",snakemake@input$fingerprint_dups, ") \\")} `
 ----------------------------------------------------------
-
-## Individual samples reports:
-```{r, results='asis', echo=FALSE}
-for (i in snakemake@params$sample_name){
-  cat('\n')
-  #cat(paste0(" * [Sample ", i, " report](",i,".final_sample_report.html)\n"))
-  cat(paste0(" * [Sample ", i, " report](./",i,"/single_sample_alignment_report.html)\n"))
-  cat('\n')
-}
-```
-
-
-
-
 
 ---
 

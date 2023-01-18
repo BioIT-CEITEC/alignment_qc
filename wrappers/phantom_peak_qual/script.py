@@ -17,10 +17,10 @@ f.close()
 
 version = str(subprocess.Popen("conda list", shell=True, stdout=subprocess.PIPE).communicate()[0], 'utf-8')
 f = open(log_filename, 'at')
-f.write("## CONDA: "+version+"\n")
+f.write("## CONDA:\n"+version+"\n")
 f.close()
 
-command = "run_spp.R"+\
+command = "$(which time) run_spp.R"+\
           " -c="+snakemake.input.bam+\
           " -savp="+snakemake.output.plot+\
           " -out="+snakemake.output.stat+\

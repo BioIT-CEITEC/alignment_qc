@@ -85,6 +85,7 @@ rule qc_dupradar_RNA:
             dupraexpden_pdf = "qc_reports/all_samples/qc_dupradar_RNA/dupraexpden.pdf",
             multipergene_pdf = "qc_reports/all_samples/qc_dupradar_RNA/multipergene.pdf",
             readdist_pdf = "qc_reports/all_samples/qc_dupradar_RNA/readdist.pdf",
+            tmpd = GLOBAL_TMPD_PATH,
     conda:  "../wrappers/qc_dupradar_RNA/env.yaml"
     script: "../wrappers/qc_dupradar_RNA/script.py"
 
@@ -99,6 +100,7 @@ rule qc_biotypes_RNA:
             paired = paired,
             strandness=config["strandness"],
             count_over=config["count_over"],
+            tmpd = GLOBAL_TMPD_PATH,
     conda: "../wrappers/qc_biotypes_RNA/env.yaml"
     script: "../wrappers/qc_biotypes_RNA/script.py"
 

@@ -6,8 +6,8 @@ from snakemake.utils import min_version
 min_version("5.18.0")
 configfile: "config.json"
 
-GLOBAL_REF_PATH = "/mnt/references/"
-GLOBAL_TMPD_PATH = "./tmp/"
+GLOBAL_REF_PATH = config["globalResources"]
+GLOBAL_TMPD_PATH = config["globalTmpdPath"]
 
 os.makedirs(GLOBAL_TMPD_PATH, exist_ok=True)
 
@@ -32,6 +32,15 @@ if not "feature_count" in config:
 
 if not "RSEM" in config:
     config["RSEM"] = False
+
+if not "kallisto" in config:
+    config["kallisto"] = False
+
+if not "salmon_align" in config:
+    config["salmon_align"] = False
+
+if not "salmon_map" in config:
+    config["salmon_map"] = False
     
 # ChIP-seq parameters processing
 #
@@ -49,7 +58,7 @@ if not "bam_quality_cutof" in config:
 
 # Reference processing
 #
-if config["lib_ROI"] != "wgs":
+if config["lib_ROI"] != "wgs" and config["lib_ROI"] != "rna":
     # setting reference from lib_ROI
     f = open(os.path.join(GLOBAL_REF_PATH,"reference_info","lib_ROI.json"))
     lib_ROI_dict = json.load(f)

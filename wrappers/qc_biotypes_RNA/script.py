@@ -93,7 +93,7 @@ else:
     shell(command)
     
   else:
-    command = "featureCounts -t "+featuretype+" -g "+biotype+" -O -M --fraction "+extra_flags_feature+" -T "+str(snakemake.threads)+" -a "+snakemake.input.gtf+" -o "+snakemake.params.prefix+" "+snakemake.input.bam+" >> "+log_filename+" 2>&1 "
+    command = "featureCounts -t "+featuretype+" -g "+biotype+" -O -M --tmpDir "+snakemake.params.tmpd+" --fraction "+extra_flags_feature+" -T "+str(snakemake.threads)+" -a "+snakemake.input.gtf+" -o "+snakemake.params.prefix+" "+snakemake.input.bam+" >> "+log_filename+" 2>&1 "
     f = open(log_filename, 'at')
     f.write("## COMMAND: "+command+"\n")
     f.close()
@@ -108,7 +108,7 @@ else:
 
 if os.stat(snakemake.output.txt).st_size != 0:
     # there are no data to process so an empty plot is generated
-    command = "Rscript " + os.path.dirname(__file__) + "/biotypes.r" + " " + snakemake.output.pdf + " " + str(snakemake.output.txt)
+    command = "export TMPDIR=TMP=TEMP="+snakemake.params.tmpd+" && Rscript " + os.path.dirname(__file__) + "/biotypes.r" + " " + snakemake.output.pdf + " " + str(snakemake.output.txt)
     with open(log_filename, 'at') as f:
         f.write("## COMMAND: " + command + "\n")
     shell(command)
