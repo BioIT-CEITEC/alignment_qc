@@ -44,11 +44,11 @@ if not "salmon_map" in config:
     
 # ChIP-seq parameters processing
 #
-if not "effective_genome_size" in config:
-    config["effective_genome_size"] = "unk"
-
-if not "fragment_length" in config:
-    config["fragment_length"] = "unk"
+# if not "effective_genome_size" in config:
+#     config["effective_genome_size"] = "unk"
+# 
+# if not "fragment_length" in config:
+#     config["fragment_length"] = "unk"
     
 if not "summary_correlation_method" in config:
     config["summary_correlation_method"] = "spearman"
