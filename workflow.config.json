@@ -106,7 +106,7 @@
             "operand": "equal",
             "negation": false,
             "values": {
-              "chip_extra_qc": "true"
+              "chip_extra_qc": true
             }
           }
         }
@@ -120,7 +120,7 @@
             "operand": "equal",
             "negation": false,
             "values": {
-              "chip_extra_qc": "true"
+              "chip_extra_qc": true
             }
           }
         }
