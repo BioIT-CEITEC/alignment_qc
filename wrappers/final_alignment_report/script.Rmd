@@ -33,7 +33,6 @@ config_json <- as.data.table(fromJSON(snakemake@params$config))
 `r if(unique(config_json$chip_extra_qc) == TRUE){paste0("* [All samples correlation heatmap by Deeptools (with duplicates)](../",snakemake@input$corr_heatmap_dups, ") \\")} `
 `r if(unique(config_json$chip_extra_qc) == TRUE){paste0("* [All samples fingerprint plot by Deeptools (no duplicates)](../",snakemake@input$fingerprint, ") \\")} `
 `r if(unique(config_json$chip_extra_qc) == TRUE){paste0("* [All samples fingerprint plot by Deeptools (with duplicates)](../",snakemake@input$fingerprint_dups, ") \\")} `
-----------------------------------------------------------
 
 ---
 
