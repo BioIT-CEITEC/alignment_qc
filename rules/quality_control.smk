@@ -120,6 +120,7 @@ rule qc_fastq_screen_RNA:
     conda:  "../wrappers/qc_fastq_screen_RNA/env.yaml"
     script: "../wrappers/qc_fastq_screen_RNA/script.py"
 
+
 rule qc_RSeQC_RNA:
     input:  bam = "mapped/{sample}.bam",
             bed = expand("{ref_dir}/other/Picard_data/{ref}.bed12",ref_dir=reference_directory,ref=config["reference"])[0],
