@@ -27,8 +27,20 @@ if not "count_over" in config:
 if not "max_mapped_reads_to_run_biobloom" in config:
     config["max_mapped_reads_to_run_biobloom"] = 100
 
-if not "feature_count" in config:
-    config["feature_count"] = False
+if not "featureCount_exon" in config:
+    config["featureCount_exon"] = False
+
+if not "featureCount_gene" in config:
+    config["featureCount_gene"] = False
+
+if not "featureCount_transcript" in config:
+    config["featureCount_transcript"] = False
+
+if not "featureCount_3pUTR" in config:
+    config["featureCount_3pUTR"] = False
+
+if not "featureCount_5pUTR" in config:
+    config["featureCount_5pUTR"] = False
 
 if not "RSEM" in config:
     config["RSEM"] = False

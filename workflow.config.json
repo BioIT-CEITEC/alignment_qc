@@ -1,7 +1,7 @@
 {
   "workflow_description": {
     "name":"alignment_qc",
-    "version": 1.0,
+    "version": 1.7,
     "label":"Alignment QC",
     "type":"alignment_qc",
     "inputs":[
@@ -33,7 +33,11 @@
     "lib_ROI",
     "trim_adapters",
     "biobloom",
-    "feature_count",
+    "featureCount_exon",
+    "featureCount_gene",
+    "featureCount_transcript",
+    "featureCount_3pUTR",
+    "featureCount_5pUTR",
     "RSEM",
     "salmon_align",
     "salmon_map",
@@ -45,7 +49,7 @@
       "qc_samtools": {
         "label": "QC samtools",
         "type": "bool",
-        "default": true
+        "default": false
       },
       "qc_qualimap_DNA": {
         "label": "QC qualimap DNA",
