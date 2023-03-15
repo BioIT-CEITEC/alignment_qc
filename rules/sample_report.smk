@@ -25,16 +25,8 @@ def multiqc_report_input(wildcards):
             input['qc_qualimap_RNA'] = "qc_reports/{sample}/qc_qualimap_RNA/{sample}/qualimapReport.html"
         if config["qc_picard_RNA"]:
             input['qc_picard_RNA'] = "qc_reports/{sample}/qc_picard_RNA/{sample}.npc.pdf"
-        if config["featureCount_exon"]:
-            input['featureCount_exon'] = "qc_reports/{sample}/featureCount_exon/{sample}.featureCount_exon.tsv"
-        if config["featureCount_gene"]:
-            input['featureCount_gene'] = "qc_reports/{sample}/featureCount_gene/{sample}.featureCount_gene.tsv"
-        if config["featureCount_transcript"]:
-            input['featureCount_transcript'] = "qc_reports/{sample}/featureCount_transcript/{sample}.featureCount_transcript.tsv"
-        if config["featureCount_3pUTR"]:
-            input['featureCount_3pUTR'] = "qc_reports/{sample}/featureCount_3pUTR/{sample}.featureCount_3pUTR.tsv"
-        if config["featureCount_5pUTR"]:
-            input['featureCount_5pUTR'] = "qc_reports/{sample}/featureCount_5pUTR/{sample}.featureCount_5pUTR.tsv"
+        if config["featureCount"]:
+            input['featureCount'] = "qc_reports/{sample}/featureCount_exon/{sample}.featureCount_{count_over}.tsv"
         if config["qc_fastq_screen_RNA"]:
             input['qc_fastq_screen_RNA'] = expand("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png",sample=sample_tab.sample_name,read_pair_tag=read_pair_tags)
         if config["biobloom"]:
@@ -126,16 +118,8 @@ def per_sample_alignment_report_input(wildcards):
         input['qc_picard_RNA'] = "qc_reports/{sample}/qc_picard_RNA/{sample}.npc.pdf"
     if config["qc_qualimap_RNA"]:
         input['qc_qualimap_RNA'] = "qc_reports/{sample}/qc_qualimap_RNA/{sample}/qualimapReport.html"
-    if config["featureCount_exon"]:
-        input['featureCount_exon'] = "qc_reports/{sample}/featureCount_exon/{sample}.featureCount_exon.tsv"
-    if config["featureCount_gene"]:
-        input['featureCount_gene'] = "qc_reports/{sample}/featureCount_gene/{sample}.featureCount_gene.tsv"
-    if config["featureCount_transcript"]:
-        input['featureCount_transcript'] = "qc_reports/{sample}/featureCount_transcript/{sample}.featureCount_transcript.tsv"
-    if config["featureCount_3pUTR"]:
-        input['featureCount_3pUTR'] = "qc_reports/{sample}/featureCount_3pUTR/{sample}.featureCount_3pUTR.tsv"
-    if config["featureCount_5pUTR"]:
-        input['featureCount_5pUTR'] = "qc_reports/{sample}/featureCount_5pUTR/{sample}.featureCount_5pUTR.tsv"
+    if config["featureCount"]:
+        input['featureCount'] = "qc_reports/{sample}/featureCount_exon/{sample}.featureCount_{count_over}.tsv"
     if config["qc_fastq_screen_RNA"]:
         input['qc_fastq_screen_RNA'] = expand("qc_reports/" + wildcards.sample + "/qc_fastq_screen_RNA/" + wildcards.sample + "{read_pair_tag}_screen.png",read_pair_tag=read_pair_tags)
     if config["biobloom"]:

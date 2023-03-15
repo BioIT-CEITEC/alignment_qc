@@ -15,7 +15,7 @@ library(jsonlite)
 
 
 ```{r, include=FALSE}
-config_json = as.data.table(fromJSON(snakemake@params$config))
+config_json <- as.data.table(fromJSON(snakemake@params$config))
 
 ```
 Overview report of workflow done for sample `r snakemake@params$sample_name `.
@@ -34,11 +34,7 @@ Overview report of workflow done for sample `r snakemake@params$sample_name `.
 `r if(unique(config_json$qc_fastq_screen_RNA) == TRUE){paste0("* [RNA-Seq metrics - Fastq_screen](../../",snakemake@input$qc_fastq_screen_RNA,")  \\")} `
 `r if(unique(config_json$qc_biotypes_RNA) == TRUE){paste0("* [RNA-Seq metrics - Biotypes](../../",snakemake@input$qc_biotypes_RNA,")  \\")} `
 `r if(unique(config_json$qc_RSeQC_RNA) == TRUE){paste0("* [RNA-Seq metrics - RSeQC RNA](../../",snakemake@input$qc_RSeQC_RNA,")  \\")} `
-`r if(unique(config_json$featureCount_exon) == TRUE){paste0("* [RNA-Seq metrics - featureCount exon](../../",snakemake@input$featureCount_exon,")  \\")} `
-`r if(unique(config_json$featureCount_gene) == TRUE){paste0("* [RNA-Seq metrics - featureCount gene](../../",snakemake@input$featureCount_gene,")  \\")} `
-`r if(unique(config_json$featureCount_transcript) == TRUE){paste0("* [RNA-Seq metrics - featureCount transcript](../../",snakemake@input$featureCount_transcript,")  \\")} `
-`r if(unique(config_json$featureCount_3pUTR) == TRUE){paste0("* [RNA-Seq metrics - featureCount 3 prime UTR](../../",snakemake@input$featureCount_3pUTR,")  \\")} `
-`r if(unique(config_json$featureCount_5pUTR) == TRUE){paste0("* [RNA-Seq metrics - featureCount 5 prime UTR](../../",snakemake@input$featureCount_5pUTR,")  \\")} `
+`r if(unique(config_json$featureCount) == TRUE){paste0("* [RNA-Seq metrics - featureCount](../../",snakemake@input$featureCount,")  \\")} `
 `r if(unique(config_json$RSEM) == TRUE){paste0("* [RNA-Seq metrics - RSEM](../../",snakemake@input$RSEM,")  \\")} `
 `r if(unique(config_json$chip_extra_qc) == TRUE){paste0("* [ChIP-Seq metrics - Phantompeakqualtools (no duplicates)](../",snakemake@input$phantompeak, ") \\")} `
 `r if(unique(config_json$chip_extra_qc) == TRUE){paste0("* [ChIP-Seq metrics - Phantompeakqualtools (with duplicates)](../",snakemake@input$phantompeak_dups, ") \\")} `
