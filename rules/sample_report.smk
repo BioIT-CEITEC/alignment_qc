@@ -26,7 +26,7 @@ def multiqc_report_input(wildcards):
         if config["qc_picard_RNA"]:
             input['qc_picard_RNA'] = "qc_reports/{sample}/qc_picard_RNA/{sample}.npc.pdf"
         if config["featureCount"]:
-            input['featureCount'] = "qc_reports/{sample}/featureCount_exon/{sample}.featureCount_{count_over}.tsv"
+            input['featureCount'] = expand("qc_reports/{sample}/featureCount_exon/{sample}.featureCount_{count_over}.tsv",sample=sample_tab.sample_name,count_over=count_over_list)
         if config["qc_fastq_screen_RNA"]:
             input['qc_fastq_screen_RNA'] = expand("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png",sample=sample_tab.sample_name,read_pair_tag=read_pair_tags)
         if config["biobloom"]:
@@ -119,7 +119,7 @@ def per_sample_alignment_report_input(wildcards):
     if config["qc_qualimap_RNA"]:
         input['qc_qualimap_RNA'] = "qc_reports/{sample}/qc_qualimap_RNA/{sample}/qualimapReport.html"
     if config["featureCount"]:
-        input['featureCount'] = "qc_reports/{sample}/featureCount_exon/{sample}.featureCount_{count_over}.tsv"
+        input['featureCount'] = expand("qc_reports/{sample}/featureCount_exon/{sample}.featureCount_{count_over}.tsv",sample=sample_tab.sample_name,count_over=count_over_list)
     if config["qc_fastq_screen_RNA"]:
         input['qc_fastq_screen_RNA'] = expand("qc_reports/" + wildcards.sample + "/qc_fastq_screen_RNA/" + wildcards.sample + "{read_pair_tag}_screen.png",read_pair_tag=read_pair_tags)
     if config["biobloom"]:
