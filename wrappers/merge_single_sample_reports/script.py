@@ -22,8 +22,10 @@ f.close()
 #### from all samples, into one sample report
 
 ## qc_biotypes_RNA
+biotype = []
 if hasattr(snakemake.input, 'biotype'):
     biotype = [file for file in snakemake.input.biotype if os.stat(file).st_size != 0]
+if len(biotype) > 0:
     command = "Rscript " + os.path.dirname(__file__) + "/biotypes.r" + " " + snakemake.output.biotype_pdf + " " +  " ".join(biotype)+" >> "+log_filename+" 2>&1"
     with open(log_filename, 'at') as f:
         f.write("## COMMAND: " + command + "\n")
