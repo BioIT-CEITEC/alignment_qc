@@ -60,4 +60,12 @@ sp:
         fn: '*_aln.tsv'
    salmon_map:
         fn: '*_map.tsv'
-
+top_modules:
+  - moduleName:
+      name: "Raw fastQC"
+      path_filters_exclude:
+        - "*_trim_fastqc.zip"
+  - moduleName:
+      name: "Cleaned fastQC"
+      path_filters:
+        - "*_trim_fastqc.zip"

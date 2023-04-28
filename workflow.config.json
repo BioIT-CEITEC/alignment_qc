@@ -7,7 +7,7 @@
     "inputs":[
       "qc_reports/*",
       "mapped/*",
-      "*/{sample}*fastq.gz"
+      "raw_fastq/{sample}*fastq.gz"
     ],
     "outputs":[
       "qc_reports/*",
@@ -33,6 +33,7 @@
     "lib_ROI",
     "trim_adapters",
     "biobloom",
+    "species_detector",
     "featureCount",
     "count_over",
     "RSEM",
