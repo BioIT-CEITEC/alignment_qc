@@ -1,7 +1,7 @@
 {
   "workflow_description": {
     "name":"alignment_qc",
-    "version": 1.7,
+    "version": 1.8,
     "label":"Alignment QC",
     "type":"alignment_qc",
     "inputs":[
