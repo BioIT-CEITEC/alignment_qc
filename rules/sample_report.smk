@@ -50,7 +50,7 @@ def multiqc_report_input(wildcards):
             input['qc_biotypes_RNA'] = "qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.txt"
         # if it's DNA or RNA
         if config["lib_ROI"] == "rna":
-            input['trim'] = expand("qc_reports/{sample}/cutadapt/{sample}_preprocessing.log",sample=sample_tab.sample_name,read_pair_tag=read_pair_tags)
+            input['trim'] = expand("qc_reports/{sample}/cutadapt/{sample}_preprocessing.log",sample=sample_tab.sample_name)
         else:
             input['trim'] = expand("qc_reports/{sample}/trim_galore/trim_stats{read_pair_tag}.log",sample=sample_tab.sample_name,read_pair_tag=read_pair_tags)
     else:
