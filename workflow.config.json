@@ -98,6 +98,11 @@
         "label": "ChIP-seq additional QC",
         "type": "bool",
         "default": false
+      },
+      "is_mirna": {
+        "label": "miRNA samples",
+        "type": "bool",
+        "default": false
       }
     }
   }
