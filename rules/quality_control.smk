@@ -99,7 +99,7 @@ rule qc_biotypes_RNA:
     params: prefix="qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype",
             paired = paired,
             strandness=config["strandness"],
-            count_over=config["count_over"],
+            count_over=count_over_list[0],
             tmpd = GLOBAL_TMPD_PATH,
     conda: "../wrappers/qc_biotypes_RNA/env.yaml"
     script: "../wrappers/qc_biotypes_RNA/script.py"
@@ -119,6 +119,7 @@ rule qc_fastq_screen_RNA:
             tRNA_index= expand("{ref_dir}/other/BOWTIE2/fastq_screen_RNA_indexes/{ref}.ncbi.tRNA.fasta",ref_dir=reference_directory,ref=config["reference"])[0]
     conda:  "../wrappers/qc_fastq_screen_RNA/env.yaml"
     script: "../wrappers/qc_fastq_screen_RNA/script.py"
+
 
 rule qc_RSeQC_RNA:
     input:  bam = "mapped/{sample}.bam",

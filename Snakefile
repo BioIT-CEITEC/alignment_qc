@@ -27,8 +27,8 @@ if not "count_over" in config:
 if not "max_mapped_reads_to_run_biobloom" in config:
     config["max_mapped_reads_to_run_biobloom"] = 100
 
-if not "feature_count" in config:
-    config["feature_count"] = False
+if not "featureCount" in config:
+    config["featureCount"] = False
 
 if not "RSEM" in config:
     config["RSEM"] = False
@@ -41,7 +41,13 @@ if not "salmon_align" in config:
 
 if not "salmon_map" in config:
     config["salmon_map"] = False
-    
+
+## featureCount count_over option
+if not "count_over" in config:
+    config["count_over"] = "exon"
+
+count_over_list = config['count_over'].split(",")
+
 # ChIP-seq parameters processing
 #
 if not "effective_genome_size" in config:
@@ -94,7 +100,8 @@ else:
 wildcard_constraints:
      sample = "|".join(sample_tab.sample_name) + "|all_samples",
      lib_name="[^\.\/]+",
-     read_pair_tag = "(_R.)?"
+     read_pair_tag = "(_R.)?",
+     count_over_list = "exon|gene|transcript|three_prime_UTR|five_prime_UTR"
 
 ##### Target rules #####
 
