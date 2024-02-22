@@ -100,7 +100,7 @@ rule dedup_bam:
     
 def filter_bam_input(wc):
     inputs = {'bam': "mapped/{sample}.bam"}
-    bed = reference_directory+"/intervals/ChIP-seq/blacklist.v2.bed"
+    bed = config["reference_dir"] + "/intervals/ChIP-seq/blacklist.v2.bed"
     if os.path.isfile(bed):
         inputs['bed'] = bed
     return inputs
