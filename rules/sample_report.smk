@@ -9,12 +9,12 @@ def multiqc_report_input(wildcards):
             input['raw_fastq_R1_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/R1_fastqc.zip"
             input['raw_fastq_R2_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/R2_fastqc.zip"
             if config["lib_ROI"] == "rna":
-                input['cleaned_fastq_R1_report'] = "qc_reports/" + wildcards.sample + "/cleaned_fastqc/R1_trim_fastqc.zip"
-                input['cleaned_fastq_R2_report'] = "qc_reports/" + wildcards.sample + "/cleaned_fastqc/R2_trim_fastqc.zip"
+                input['cleaned_fastq_R1_report'] = "qc_reports/" + wildcards.sample + "/processed_fastqc/R1_trim_fastqc.zip"
+                input['cleaned_fastq_R2_report'] = "qc_reports/" + wildcards.sample + "/processed_fastqc/R2_trim_fastqc.zip"
         else:
             input['raw_fastq_SE_report'] = "qc_reports/" + wildcards.sample + "/raw_fastqc/SE_fastqc.zip"
             if config["lib_ROI"] == "rna":
-                input['cleaned_fastq_SE_report'] = "qc_reports/" + wildcards.sample + "/cleaned_fastqc/SE_trim_fastqc.zip"
+                input['cleaned_fastq_SE_report'] = "qc_reports/" + wildcards.sample + "/processed_fastqc/SE_trim_fastqc.zip"
         if config["qc_qualimap_DNA"]:
             input['qc_qualimap_DNA'] = "qc_reports/{sample}/qc_qualimap_DNA/{sample}/qualimapReport.html"
         if config["qc_samtools"]:
@@ -49,10 +49,7 @@ def multiqc_report_input(wildcards):
         if config["qc_biotypes_RNA"]:
             input['qc_biotypes_RNA'] = "qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.txt"
         # if it's DNA or RNA
-        if config["lib_ROI"] == "rna":
-            input['trim'] = expand("qc_reports/{sample}/cutadapt/{sample}{read_pair_tag}_preprocessing.log",sample=sample_tab.sample_name,read_pair_tag=read_pair_tags)
-        else:
-            input['trim'] = expand("qc_reports/{sample}/trim_galore/trim_stats{read_pair_tag}.log",sample=sample_tab.sample_name,read_pair_tag=read_pair_tags)
+        input['trim'] = expand("qc_reports/{sample}/cutadapt/{sample}_preprocessing.log",sample=sample_tab.sample_name)
     else:
         input['per_sample_reports'] = expand("qc_reports/{sample}/single_sample_alignment_report.html",sample=sample_tab.sample_name)
     return input
@@ -108,12 +105,12 @@ def per_sample_alignment_report_input(wildcards):
         input['raw_fastq_R1_report'] = "qc_reports/{sample}/raw_fastqc/R1_fastqc.html"
         input['raw_fastq_R2_report'] = "qc_reports/{sample}/raw_fastqc/R2_fastqc.html"
         if config["lib_ROI"] == "rna":
-            input['cleaned_fastq_R1_report'] = "qc_reports/{sample}/cleaned_fastqc/R1_trim_fastqc.html"
-            input['cleaned_fastq_R2_report'] = "qc_reports/{sample}/cleaned_fastqc/R2_trim_fastqc.html"
+            input['cleaned_fastq_R1_report'] = "qc_reports/{sample}/processed_fastqc/R1_trim_fastqc.html"
+            input['cleaned_fastq_R2_report'] = "qc_reports/{sample}/processed_fastqc/R2_trim_fastqc.html"
     else:
         input['raw_fastq_SE_report'] = "qc_reports/{sample}/raw_fastqc/SE_fastqc.html"
         if config["lib_ROI"] == "rna":
-            input['cleaned_fastq_SE_report'] = "qc_reports/{sample}/cleaned_fastqc/SE_trim_fastqc.html"
+            input['cleaned_fastq_SE_report'] = "qc_reports/{sample}/processed_fastqc/SE_trim_fastqc.html"
     if config["qc_qualimap_DNA"]:
         input['qc_qualimap_DNA'] = "qc_reports/{sample}/qc_qualimap_DNA/{sample}/qualimapReport.html"
     if config["qc_picard_RNA"]:
