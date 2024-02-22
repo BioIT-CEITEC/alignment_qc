@@ -5,7 +5,7 @@
 def qc_picard_DNA_input(wildcards):
     input = {}
     input["bam"] = "mapped/{sample}.bam"
-    input["ref"] = expand("{ref_dir}/seq/{ref}.fa",ref_dir=reference_directory,ref=config["reference"])[0]
+    input["ref"] = config["organism_fasta"]
     if "lib_ROI" in config and config["lib_ROI"] != "wgs":
         input['lib_ROI'] = expand("{ref_dir}/intervals/{lib_ROI}/{lib_ROI}.interval_list",ref_dir=reference_directory,lib_ROI=config["lib_ROI"])[0]
     return input
