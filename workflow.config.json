@@ -6,8 +6,13 @@
     "type":"alignment_qc",
     "inputs":[
       "qc_reports/*",
-      "mapped/*",
+      "mapped/{sample}.bam*",
       "raw_fastq/{sample}*fastq.gz"
+    ],
+    "inputs_optional": [
+      "mapped/{sample}.*.bam*",
+      "mapped/{sample}.keep_dups.bam.bigWig",
+      "mapped/{sample}.no_dups.bam.bigWig"
     ],
     "outputs":[
       "qc_reports/{sample}/multiqc.html",
