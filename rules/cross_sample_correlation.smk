@@ -28,8 +28,8 @@ rule cross_sample_correlation:
 rule snp_vaf_compute:
     input:  bam = "mapped/{sample}.bam",
             ref = config["organism_fasta"],
-            snp_bed = expand(config["reference_dir"] + "/other/snp/{ref}.snp.bed",ref = config["reference"])[0],
-            lib_ROI = expand(config["reference_dir"] + "/intervals/{lib_ROI}/{lib_ROI}.bed",lib_ROI=config["lib_ROI"])[0]
+            snp_bed = config["snp_bed"],
+            lib_ROI = config["dna_panel"]
     output: vcf = "qc_reports/all_samples/cross_sample_correlation/{sample}.snp.vcf",
     log:    "logs/cross_sample_correlation/{sample}_snp_vaf_compute.log"
     params: intersect_bed = "qc_reports/all_samples/cross_sample_correlation/{sample}.snp_tmp_intersect.bed"

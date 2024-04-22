@@ -6,8 +6,7 @@ def qc_picard_DNA_input(wildcards):
     input = {}
     input["bam"] = "mapped/{sample}.bam"
     input["ref"] = config["organism_fasta"]
-    if "lib_ROI" in config and config["lib_ROI"] != "wgs":
-        input['lib_ROI'] = expand(config["reference_dir"] + "/intervals/{lib_ROI}/{lib_ROI}.interval_list",ref_dir=reference_directory,lib_ROI=config["lib_ROI"])[0]
+    input["lib_ROI"] = config["dna_panel"]
     return input
 
 rule qc_picard_DNA:
@@ -25,8 +24,7 @@ rule qc_picard_DNA:
 def qc_qualimap_DNA_input(wildcards):
     input = {}
     input["bam"] = "mapped/{sample}.bam"
-    if "lib_ROI" in config and config["lib_ROI"] != "wgs":
-        input['lib_ROI'] = expand("{ref_dir}/intervals/{lib_ROI}/{lib_ROI}.bed",ref_dir=reference_directory,lib_ROI=config["lib_ROI"])[0]
+    input["lib_ROI"] = config["dna_panel"]
     return input
 
 rule qc_qualimap_DNA:

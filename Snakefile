@@ -76,15 +76,9 @@ if not "summary_correlation_method" in config:
 if not "bam_quality_cutof" in config:
     config['bam_quality_cutof'] = 20
 
-# Reference processing
-#
-if config["lib_ROI"] != "wgs" and config["lib_ROI"] != "rna":
-    # setting reference from lib_ROI
-    f = open(os.path.join(GLOBAL_REF_PATH,"reference_info","lib_ROI.json"))
-    lib_ROI_dict = json.load(f)
-    f.close()
-    config["reference"] = [ref_name for ref_name in lib_ROI_dict.keys() if isinstance(lib_ROI_dict[ref_name],dict) and config["lib_ROI"] in lib_ROI_dict[ref_name].keys()][0]
+# Regions of interest processing
 
+references = BR.load_ROI()
 
 wildcard_constraints:
      sample = "|".join(sample_tab.sample_name) + "|all_samples",
