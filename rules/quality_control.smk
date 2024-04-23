@@ -6,7 +6,7 @@ def qc_picard_DNA_input(wildcards):
     input = {}
     input["bam"] = "mapped/{sample}.bam"
     input["ref"] = config["organism_fasta"]
-    input["lib_ROI"] = config["dna_panel"]
+    input["lib_ROI"] = config["interval_list"]
     return input
 
 rule qc_picard_DNA:
