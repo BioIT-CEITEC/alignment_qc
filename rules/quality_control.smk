@@ -31,7 +31,7 @@ rule qc_qualimap_DNA:
     input:  unpack(qc_qualimap_DNA_input)
     output: html = "qc_reports/{sample}/qc_qualimap_DNA/{sample}/qualimapReport.html"
     log:    "logs/{sample}/qc_qualimap_DNA.log"
-    params: lib_ROI = config["folder_name"] #defined in bioroots utilities
+    params: lib_ROI = config["lib_ROI"] #defined in bioroots utilities
     threads: 4
     resources:  mem = 16
     conda: "../wrappers/qc_qualimap_DNA/env.yaml"
