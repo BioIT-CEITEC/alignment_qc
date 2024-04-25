@@ -15,7 +15,7 @@ rule qc_picard_DNA:
     log:    "logs/{sample}/qc_picard_DNA.log"
     params: per_target = "qc_reports/{sample}/qc_picard_DNA/picard.per_target.tsv",
             wgs_chart = "qc_reports/{sample}/qc_picard_DNA/picard.wgs_chart.pdf",
-            lib_ROI = config["folder_name"]
+            lib_ROI = config["lib_ROI"]
     threads: 1
     resources:  mem = 20
     conda: "../wrappers/qc_picard_DNA/env.yaml"
