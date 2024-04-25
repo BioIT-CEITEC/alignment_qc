@@ -5,7 +5,7 @@
 def qc_picard_DNA_input(wildcards):
     input = {}
     input["bam"] = "mapped/{sample}.bam"
-    input["ref"] = config["organism_fasta"]
+    input["ref"] = config["fasta_vc"]
     input["lib_ROI"] = config["interval_list"]
     return input
 
@@ -15,7 +15,7 @@ rule qc_picard_DNA:
     log:    "logs/{sample}/qc_picard_DNA.log"
     params: per_target = "qc_reports/{sample}/qc_picard_DNA/picard.per_target.tsv",
             wgs_chart = "qc_reports/{sample}/qc_picard_DNA/picard.wgs_chart.pdf",
-            lib_ROI = config["lib_ROI"]
+            lib_ROI = config["folder_name"]
     threads: 1
     resources:  mem = 20
     conda: "../wrappers/qc_picard_DNA/env.yaml"
@@ -31,7 +31,7 @@ rule qc_qualimap_DNA:
     input:  unpack(qc_qualimap_DNA_input)
     output: html = "qc_reports/{sample}/qc_qualimap_DNA/{sample}/qualimapReport.html"
     log:    "logs/{sample}/qc_qualimap_DNA.log"
-    params: lib_ROI = config["lib_ROI"]
+    params: lib_ROI = config["folder_name"] #defined in bioroots utilities
     threads: 4
     resources:  mem = 16
     conda: "../wrappers/qc_qualimap_DNA/env.yaml"
