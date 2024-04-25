@@ -26,7 +26,7 @@ f.write("## COMMAND: " + command + "\n")
 f.close()
 shell(command)
 
-command = "echo 'DATABASE " + snakemake.params.organism + " " + snakemake.params.general_index + "' >> " + snakemake.params.prefix + " 2>> " + log_filename
+command = "echo 'DATABASE " + str(snakemake.params.organism) + " " + str(snakemake.params.general_index) + "' >> " + str(snakemake.params.prefix) + " 2>> " + log_filename
 f = open(log_filename, 'at')
 f.write("## COMMAND: " + command + "\n")
 f.close()
