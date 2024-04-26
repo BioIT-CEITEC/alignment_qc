@@ -27,8 +27,8 @@ rule cross_sample_correlation:
 
 rule snp_vaf_compute:
     input:  bam = "mapped/{sample}.bam",
-            ref = config["organism_fasta"] if config["lib_ROI"] != "wgs" else config["fasta_vc"],
-            snp_bed = config["organism_snp_bed"] if config["lib_ROI"] != "wgs" else config["snp_bed_vc"],
+            ref = config["organism_fasta"],
+            snp_bed = config["organism_snp_bed"],
             lib_ROI = config["organism_dna_panel"]
     output: vcf = "qc_reports/all_samples/cross_sample_correlation/{sample}.snp.vcf",
     log:    "logs/cross_sample_correlation/{sample}_snp_vaf_compute.log"
