@@ -5,7 +5,7 @@
 def qc_picard_DNA_input(wildcards):
     input = {}
     input["bam"] = "mapped/{sample}.bam"
-    input["ref"] = config["fasta_vc"]
+    input["ref"] = config["organism_fasta"]
     input["lib_ROI"] = config["organism_interval_list"]
     return input
 
