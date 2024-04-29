@@ -93,3 +93,10 @@ include: "rules/quality_control.smk"
 include: "rules/cross_sample_correlation.smk"
 include: "rules/chipseq_specific_qc.smk"
 include: "rules/sample_report.smk"
+
+##### BioRoot utilities - prepare reference #####
+module PR:
+    snakefile: gitlab("bioroots/bioroots_utilities", path="prepare_reference.smk",branch="master")
+    config: config
+
+use rule * from PR as other_*
