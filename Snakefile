@@ -25,6 +25,9 @@ paired = BR.set_paired_tags() # "SE" / "PE"
 
 config = BR.load_organism()
 
+# TODO: fix cross_sample_correlation - now turn off
+config["cross_sample_correlation"] = False
+
 # DNA parameter processing
 #
 if not "lib_ROI" in config:
