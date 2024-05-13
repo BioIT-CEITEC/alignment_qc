@@ -6,7 +6,7 @@ def qc_picard_DNA_input(wildcards):
     input = {}
     input["bam"] = "mapped/{sample}.bam"
     input["ref"] = config["organism_fasta"]
-    input["lib_ROI"] = config["dna_panel"]
+    input["lib_ROI"] = config["organism_interval_list"]
     return input
 
 rule qc_picard_DNA:
@@ -24,14 +24,14 @@ rule qc_picard_DNA:
 def qc_qualimap_DNA_input(wildcards):
     input = {}
     input["bam"] = "mapped/{sample}.bam"
-    input["lib_ROI"] = config["dna_panel"]
+    input["lib_ROI"] = config["organism_dna_panel"]
     return input
 
 rule qc_qualimap_DNA:
     input:  unpack(qc_qualimap_DNA_input)
     output: html = "qc_reports/{sample}/qc_qualimap_DNA/{sample}/qualimapReport.html"
     log:    "logs/{sample}/qc_qualimap_DNA.log"
-    params: lib_ROI = config["lib_ROI"]
+    params: lib_ROI = config["lib_ROI"] #defined in bioroots utilities
     threads: 4
     resources:  mem = 16
     conda: "../wrappers/qc_qualimap_DNA/env.yaml"

@@ -23,8 +23,6 @@ sample_tab = BR.load_sample()
 pair_tag = BR.set_read_pair_tags() # [""] / ["_R1", "_R2"]
 paired = BR.set_paired_tags() # "SE" / "PE"
 
-config = BR.load_organism()
-
 # TODO: fix cross_sample_correlation - now turn off
 config["cross_sample_correlation"] = False
 
@@ -32,6 +30,8 @@ config["cross_sample_correlation"] = False
 #
 if not "lib_ROI" in config:
     config["lib_ROI"] = "wgs"
+
+config = BR.load_organism()
 
 # RNA parameteres processing
 #
@@ -79,10 +79,6 @@ if not "summary_correlation_method" in config:
 if not "bam_quality_cutof" in config:
     config['bam_quality_cutof'] = 20
 
-# Regions of interest processing
-
-references = BR.load_ROI()
-
 wildcard_constraints:
      sample = "|".join(sample_tab.sample_name) + "|all_samples",
      lib_name="[^\.\/]+",
@@ -100,3 +96,10 @@ include: "rules/quality_control.smk"
 include: "rules/cross_sample_correlation.smk"
 include: "rules/chipseq_specific_qc.smk"
 include: "rules/sample_report.smk"
+
+##### BioRoot utilities - prepare reference #####
+module PR:
+    snakefile: gitlab("bioroots/bioroots_utilities", path="prepare_reference.smk",branch="master")
+    config: config
+
+use rule * from PR as other_*
