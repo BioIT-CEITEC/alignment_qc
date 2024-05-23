@@ -51,7 +51,7 @@ def multiqc_report_input(wildcards):
         if config["qc_biotypes_RNA"]:
             input['qc_biotypes_RNA'] = "qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.txt"
         if config['species_detector']:
-            inputs['sp_det'] = "qc_reports/species_detector_summary_mqc.tsv"
+            input['sp_det'] = "qc_reports/species_detector_summary_mqc.tsv"
         # if it's DNA or RNA
         input['trim'] = expand("qc_reports/{sample}/cutadapt/{sample}_preprocessing.log",sample=sample_tab.sample_name)
     else:
