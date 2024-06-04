@@ -5,11 +5,22 @@
     "label":"Alignment QC",
     "type":"alignment_qc",
     "inputs":[
-      "qc_reports/*",
+      "qc_reports/{sample}/cutadapt/*",
+      "qc_reports/{sample}/raw_fastqc/*",
+      "qc_reports/{sample}/processed_fastqc/*",
       "mapped/{sample}.bam*",
       "raw_fastq/{sample}*fastq.gz"
     ],
     "inputs_optional": [
+      "qc_reports/{sample}/featureCount*/*",
+      "qc_reports/{sample}/HTSeqCount*/*",
+      "qc_reports/{sample}/RSEM/*",
+      "qc_reports/{sample}/kallisto/*",
+      "qc_reports/{sample}/salmon_aln/*",
+      "qc_reports/{sample}/salmon_map/*",
+      "qc_reports/{sample}/raw_fastq_minion/*",
+      "qc_reports/{sample}/species_detector/*",
+      "qc_reports/{sample}/MarkDuplicates/*",
       "mapped/{sample}.*.bam*",
       "mapped/{sample}.keep_dups.bam.bigWig",
       "mapped/{sample}.no_dups.bam.bigWig"

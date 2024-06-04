@@ -47,6 +47,9 @@ if not "max_mapped_reads_to_run_biobloom" in config:
 if not "featureCount" in config:
     config["featureCount"] = False
 
+if not "HTSeqCount" in config:
+    config["HTSeqCount"] = False
+
 if not "RSEM" in config:
     config["RSEM"] = False
 

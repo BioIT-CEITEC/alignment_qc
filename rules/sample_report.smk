@@ -27,6 +27,8 @@ def multiqc_report_input(wildcards):
             input['qc_picard_RNA'] = "qc_reports/{sample}/qc_picard_RNA/{sample}.npc.pdf"
         if config["featureCount"]:
             input['featureCount'] = expand("qc_reports/{sample}/featureCount_{count_over}/{sample}.featureCount_{count_over}.tsv",sample=sample_tab.sample_name,count_over=count_over_list)
+        if config["HTSeqCount"]:
+            input['HTSeqCount'] = expand("qc_reports/{sample}/HTSeqCount_{count_over}/{sample}.HTSeqCount_{count_over}.tsv",sample=sample_tab.sample_name,count_over=count_over_list)
         if config["qc_fastq_screen_RNA"]:
             input['qc_fastq_screen_RNA'] = expand("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png",sample=sample_tab.sample_name,read_pair_tag=pair_tag)
         if config["biobloom"]:
@@ -48,6 +50,8 @@ def multiqc_report_input(wildcards):
             input['qc_RSeQC_RNA'] = "qc_reports/{sample}/qc_RSeQC_RNA/{sample}.RSeQC.read_distribution.txt"
         if config["qc_biotypes_RNA"]:
             input['qc_biotypes_RNA'] = "qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.txt"
+        if config['species_detector']:
+            input['sp_det'] = "qc_reports/species_detector_summary_mqc.tsv"
         # if it's DNA or RNA
         input['trim'] = expand("qc_reports/{sample}/cutadapt/{sample}_preprocessing.log",sample=sample_tab.sample_name)
     else:
@@ -119,6 +123,8 @@ def per_sample_alignment_report_input(wildcards):
         input['qc_qualimap_RNA'] = "qc_reports/{sample}/qc_qualimap_RNA/{sample}/qualimapReport.html"
     if config["featureCount"]:
         input['featureCount'] = expand("qc_reports/{sample}/featureCount_{count_over}/{sample}.featureCount_{count_over}.tsv",sample=sample_tab.sample_name,count_over=count_over_list)
+    if config["HTSeqCount"]:
+        input['HTSeqCount'] = expand("qc_reports/{sample}/HTSeqCount_{count_over}/{sample}.HTSeqCount_{count_over}.tsv",sample=sample_tab.sample_name,count_over=count_over_list)
     if config["qc_fastq_screen_RNA"]:
         input['qc_fastq_screen_RNA'] = expand("qc_reports/" + wildcards.sample + "/qc_fastq_screen_RNA/" + wildcards.sample + "{read_pair_tag}_screen.png",read_pair_tag=pair_tag)
     if config["biobloom"]:
