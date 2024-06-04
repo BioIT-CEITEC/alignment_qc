@@ -24,7 +24,8 @@ rule qc_picard_DNA:
 def qc_qualimap_DNA_input(wildcards):
     input = {}
     input["bam"] = "mapped/{sample}.bam"
-    input["lib_ROI"] = config["organism_dna_panel"]
+    if config["lib_ROI"] != "wgs":
+        input["lib_ROI"] = config["organism_dna_panel"]
     return input
 
 rule qc_qualimap_DNA:
