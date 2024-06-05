@@ -5,6 +5,7 @@
     "label":"Alignment QC",
     "type":"alignment_qc",
     "inputs":[
+      "qc_reports/all_samples/*",
       "qc_reports/{sample}/cutadapt/*",
       "qc_reports/{sample}/raw_fastqc/*",
       "qc_reports/{sample}/processed_fastqc/*",
@@ -12,6 +13,7 @@
       "raw_fastq/{sample}*fastq.gz"
     ],
     "inputs_optional": [
+      "qc_reports/species_detector_summary_mqc.tsv",
       "qc_reports/{sample}/featureCount*/*",
       "qc_reports/{sample}/HTSeqCount*/*",
       "qc_reports/{sample}/RSEM/*",
