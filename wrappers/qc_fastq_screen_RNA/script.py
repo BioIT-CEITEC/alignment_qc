@@ -26,7 +26,7 @@ f.write("## COMMAND: " + command + "\n")
 f.close()
 shell(command)
 
-command = "echo 'DATABASE " + snakemake.params.organism + " " + snakemake.params.general_index + "' >> " + snakemake.params.prefix + " 2>> " + log_filename
+command = "echo 'DATABASE " + str(snakemake.params.organism) + " " + str(snakemake.params.general_index) + "' >> " + str(snakemake.params.prefix) + " 2>> " + log_filename
 f = open(log_filename, 'at')
 f.write("## COMMAND: " + command + "\n")
 f.close()
@@ -92,8 +92,22 @@ else:
   shell(command)
 
   # Subset just 500k reads, to use all reads put there 0 2>&1"
-  command = "fastq_screen --subset 500000 --outdir "+os.path.dirname(snakemake.output.fastqscreen) +" --threads " + str(snakemake.threads) + \
+  command = "fastq_screen --subset 500000 --threads " + str(snakemake.threads) + \
   	" --conf " +snakemake.params.prefix+ " --nohits --aligner bowtie2 --force " + snakemake.input.fastq + " >> " + log_filename + " 2>&1"
+  f = open(log_filename, 'at')
+  f.write("## COMMAND: "+command+"\n")
+  f.close()
+  shell(command)
+
+  # mv results to output directory"
+  command = "mv "+ os.path.basename(snakemake.input.fastq).replace(".fastq.gz","_screen*")+" "+  os.path.dirname(snakemake.output.fastqscreen) +"/"
+  f = open(log_filename, 'at')
+  f.write("## COMMAND: "+command+"\n")
+  f.close()
+  shell(command)
+
+  # rm tmp files"
+  command = "rm "+ os.path.basename(snakemake.input.fastq).replace(".fastq.gz",".tagged*")
   f = open(log_filename, 'at')
   f.write("## COMMAND: "+command+"\n")
   f.close()
