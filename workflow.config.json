@@ -24,6 +24,7 @@
       "qc_reports/{sample}/species_detector/*",
       "qc_reports/{sample}/MarkDuplicates/*",
       "mapped/{sample}.*.bam*",
+      "mapped/{sample}/*",
       "mapped/{sample}.keep_dups.bam.bigWig",
       "mapped/{sample}.no_dups.bam.bigWig"
     ],
