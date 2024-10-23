@@ -30,7 +30,7 @@ def multiqc_report_input(wildcards):
         if config["HTSeqCount"]:
             input['HTSeqCount'] = expand("qc_reports/{sample}/HTSeqCount_{count_over}/{sample}.HTSeqCount_{count_over}.tsv",sample=sample_tab.sample_name,count_over=count_over_list)
         if config["qc_fastq_screen_RNA"]:
-            input['qc_fastq_screen_RNA'] = expand("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png",sample=sample_tab.sample_name,read_pair_tag=pair_tag)
+            input['qc_fastq_screen_RNA'] = expand("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_dmtex_tag}_screen.png",sample=sample_tab.sample_name,read_pair_dmtex_tag=pair_dmtex_tag)
         if config["biobloom"]:
             input['biobloom'] = "qc_reports/{sample}/biobloom/{sample}.biobloom_summary.tsv"
         if config['species_detector']:
@@ -53,7 +53,7 @@ def multiqc_report_input(wildcards):
         if config['species_detector']:
             input['sp_det'] = "qc_reports/species_detector_summary_mqc.tsv"
         if config["lib_ROI"] == "UNK":
-            input['STAR'] = True
+            input['STAR'] = "mapped/{sample}/{sample}Log.final.out"
         # if it's DNA or RNA
         input['trim'] = expand("qc_reports/{sample}/cutadapt/{sample}_preprocessing.log",sample=sample_tab.sample_name)
     else:
@@ -76,7 +76,7 @@ def merge_single_sample_reports_input(wildcards):
     if config["qc_biotypes_RNA"]:
         input['biotype'] = expand("qc_reports/{sample}/qc_biotypes_RNA/{sample}.biotype_counts.txt",sample=sample_tab.sample_name)
     if config["qc_fastq_screen_RNA"]:
-        input['fastq_screen'] = expand("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.pdf",sample=sample_tab.sample_name,read_pair_tag=pair_tag)
+        input['fastq_screen'] = expand("qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_dmtex_tag}_screen.pdf",sample=sample_tab.sample_name,read_pair_dmtex_tag=pair_dmtex_tag)
     if config["qc_dupradar_RNA"]:
         input['dupraxpbox'] = expand("qc_reports/{sample}/qc_dupradar_RNA/{sample}_duprateExpBoxplot.pdf",sample=sample_tab.sample_name)
         input['exphist'] = expand("qc_reports/{sample}/qc_dupradar_RNA/{sample}_expressionHist.pdf",sample=sample_tab.sample_name)
@@ -128,7 +128,7 @@ def per_sample_alignment_report_input(wildcards):
     if config["HTSeqCount"]:
         input['HTSeqCount'] = expand("qc_reports/{sample}/HTSeqCount_{count_over}/{sample}.HTSeqCount_{count_over}.tsv",sample=sample_tab.sample_name,count_over=count_over_list)
     if config["qc_fastq_screen_RNA"]:
-        input['qc_fastq_screen_RNA'] = expand("qc_reports/" + wildcards.sample + "/qc_fastq_screen_RNA/" + wildcards.sample + "{read_pair_tag}_screen.png",read_pair_tag=pair_tag)
+        input['qc_fastq_screen_RNA'] = expand("qc_reports/" + wildcards.sample + "/qc_fastq_screen_RNA/" + wildcards.sample + "{read_pair_dmtex_tag}_screen.png",read_pair_dmtex_tag=pair_dmtex_tag)
     if config["biobloom"]:
         input['biobloom'] = "qc_reports/{sample}/biobloom/{sample}.biobloom_summary.tsv"
     if config["qc_biotypes_RNA"]:

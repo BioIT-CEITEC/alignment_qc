@@ -30,12 +30,12 @@ else:
 f.close()
 
 command = "picard CollectRnaSeqMetrics -Xmx"+str(snakemake.resources.mem)+"g " \
-        " I=" +snakemake.input.bam+ \
-        " O=" +snakemake.output.picard_out+ \
-        " REF_FLAT=" + snakemake.input.flat+ \
-        " STRAND="+extra_flags_picard+ \
-        " CHART="+snakemake.output.picard_out_pdf+ \
-        " VALIDATION_STRINGENCY=LENIENT >> "+log_filename+" 2>&1"
+        " -I " +snakemake.input.bam+ \
+        " -O " +snakemake.output.picard_out+ \
+        " -REF_FLAT " + snakemake.input.flat+ \
+        " -STRAND "+extra_flags_picard+ \
+        " -CHART "+snakemake.output.picard_out_pdf+ \
+        " -VALIDATION_STRINGENCY LENIENT >> "+log_filename+" 2>&1"
 f = open(log_filename, 'at')
 f.write("## COMMAND: "+command+"\n")
 f.close()

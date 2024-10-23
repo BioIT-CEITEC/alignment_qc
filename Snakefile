@@ -21,6 +21,7 @@ use rule * from BR as other_*
 sample_tab = BR.load_sample()
 
 pair_tag = BR.set_read_pair_tags() # [""] / ["_R1", "_R2"]
+pair_dmtex_tag = BR.set_read_pair_dmtex_tags() # ["_R1"] / ["_R1", "_R2"]
 paired = BR.set_paired_tags() # "SE" / "PE"
 
 # TODO: fix cross_sample_correlation - now turn off
@@ -86,6 +87,7 @@ wildcard_constraints:
      sample = "|".join(sample_tab.sample_name) + "|all_samples",
      lib_name="[^\.\/]+",
      read_pair_tag = "(_R.)?",
+     read_pair_dmtex_tag = "(_R.)?",
      count_over_list = "exon|gene|transcript|three_prime_UTR|five_prime_UTR"
 
 ##### Target rules #####

@@ -104,11 +104,11 @@ rule qc_biotypes_RNA:
     script: "../wrappers/qc_biotypes_RNA/script.py"
 
 rule qc_fastq_screen_RNA:
-    input:  fastq = "raw_fastq/{sample}{read_pair_tag}.fastq.gz",
-    output: fastqscreen = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.png",
-            fastqscreen_pdf = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.pdf",
-            tmp_image = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}_screen.txt"
-    log:    "logs/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_tag}.log"
+    input:  fastq = "raw_fastq/{sample}{read_pair_dmtex_tag}.fastq.gz",
+    output: fastqscreen = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_dmtex_tag}_screen.png",
+            fastqscreen_pdf = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_dmtex_tag}_screen.pdf",
+            tmp_image = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_dmtex_tag}_screen.txt"
+    log:    "logs/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_dmtex_tag}.log"
     threads: 10
     resources: mem = 10
     params: prefix = "qc_reports/{sample}/qc_fastq_screen_RNA/fastq_screen.conf",
