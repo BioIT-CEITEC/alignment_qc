@@ -18,7 +18,9 @@ f = open(log_filename, 'at')
 f.write("## CONDA LIST: "+version+"\n")
 f.close()
 
-if snakemake.input.STAR:
+# write python code to check if the string "Log.final.out" is in snakemake.input
+
+if snakemake.input[0].find("Log.final.out") != -1:
     star_aln = " ./mapped/*/*_STARgenome/*"
 else:
     star_aln = ""
