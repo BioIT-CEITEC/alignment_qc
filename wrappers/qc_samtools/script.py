@@ -27,3 +27,9 @@ f = open(log_filename, 'at')
 f.write("## COMMAND: "+command+"\n")
 f.close()
 shell(command)
+
+command ="$(which time) samtools stats "+snakemake.input.bam+" > "+snakemake.output.stats+" 2>> "+log_filename+" "
+f = open(log_filename, 'at')
+f.write("## COMMAND: "+command+"\n")
+f.close()
+shell(command)

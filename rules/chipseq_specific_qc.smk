@@ -48,6 +48,7 @@ rule qc_samtools_extra:
     input:  bam = "mapped/{sample}.{extra}.bam"
     output: idxstats = "qc_reports/{sample}/qc_samtools/{sample}.{extra}.idxstats.tsv",
             flagstats = "qc_reports/{sample}/qc_samtools/{sample}.{extra}.flagstat.tsv"
+            stats = "qc_reports/{sample}/qc_samtools/{sample}.{extra}.stats.txt"
     log:    "logs/{sample}/qc_samtools_extra.{extra}.log"
     threads:    1
     conda: "../wrappers/qc_samtools/env.yaml"
