@@ -18,11 +18,17 @@ f = open(log_filename, 'at')
 f.write("## CONDA LIST: "+version+"\n")
 f.close()
 
+# write python code to check if the string "Log.final.out" is in snakemake.input
+
+if snakemake.input[0].find("Log.final.out") != -1:
+    star_aln = " ./mapped/*/*_STARgenome/*"
+else:
+    star_aln = ""
 
 if snakemake.wildcards.sample != "all_samples":
     multiqc_search_paths = " ./*/"+snakemake.wildcards.sample+"/"
 else:
-    multiqc_search_paths = " ./qc_reports/*/*" + " ./mapped/*"
+    multiqc_search_paths = star_aln + " ./qc_reports/*/*" + " ./mapped/*"
 
 
 command = "multiqc -f --config " + snakemake.params.multiqc_config +" -n multiqc -o ./"+ snakemake.params.multiqc_path + multiqc_search_paths + " >> "+log_filename+" 2>&1 "

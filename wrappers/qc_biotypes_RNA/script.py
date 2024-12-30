@@ -105,6 +105,12 @@ else:
     f.close()
     shell(command)
 
+    command = "mv " + snakemake.params.prefix + ".summary " + snakemake.params.prefix + ".summary.txt"
+    f = open(log_filename, 'at')
+    f.write("## COMMAND: " + command + "\n")
+    f.close()
+    shell(command)
+
 
 if os.stat(snakemake.output.txt).st_size != 0:
     # there are no data to process so an empty plot is generated

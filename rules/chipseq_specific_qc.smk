@@ -23,8 +23,6 @@ rule inspect_bam_coverage:
     log:    "logs/{sample}/inspect_bam_coverage.{dups}.log",
     threads: 5
     params: tmpd = GLOBAL_TMPD_PATH,
-            #effective_GS = config["effective_genome_size"],
-            #frag_len = config["fragment_length"],
     conda:  "../wrappers/inspect_bam_coverage/env.yaml"
     script:  "../wrappers/inspect_bam_coverage/script.py"
 
@@ -67,7 +65,7 @@ rule dedup_bam:
     
 def filter_bam_input(wc):
     inputs = {'bam': "mapped/{sample}.bam"}
-    bed = reference_directory+"/intervals/ChIP-seq/blacklist.v2.bed"
+    bed = config["reference_dir"] + "/intervals/ChIP-seq/blacklist.v2.bed"
     if config['bam_remove_blacklisted'] and os.path.isfile(bed):
         inputs['bed'] = bed
     return inputs

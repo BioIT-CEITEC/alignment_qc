@@ -70,4 +70,9 @@ else:
     f.write("## COMMAND: "+command+"\n")
     f.close()
     shell(command)
+    command = "touch " + snakemake.output.inner_distance
+    f = open(log_filename, 'at')
+    f.write("## COMMAND: " + command + "\n")
+    f.close()
+    shell(command)
 
