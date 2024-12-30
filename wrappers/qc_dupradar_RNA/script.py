@@ -63,7 +63,7 @@ if int(mapped_count) >= reads_thr:
               " "+snakemake.input.gtf+\
               " "+extra_flags_dupradar+\
               " "+os.path.dirname(snakemake.output.dupraxpbox)+\
-			        " "+str(snakemake.threads)+\
+	      " "+str(snakemake.threads)+\
               " >> "+log_filename+" 2>&1"
     f = open(log_filename, 'at')
     f.write("## COMMAND: "+command+"\n")
