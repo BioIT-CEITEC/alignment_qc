@@ -15,21 +15,21 @@ f = open(log_filename, 'a+')
 f.write("\n##\n## RULE: dedup_bam \n##\n")
 f.close()
 
-version = str(subprocess.Popen("conda list", shell=True, stdout=subprocess.PIPE).communicate()[0], 'utf-8')
+version = str(subprocess.Popen("conda list 2>&1", shell=True, stdout=subprocess.PIPE).communicate()[0], 'utf-8')
 f = open(log_filename, 'at')
-f.write("## CONDA: "+version+"\n")
+f.write("## CONDA:\n"+version+"\n")
 f.close()
 
 
-command = "(time samtools view -b -h -F 1024"+\
+command = "$(which time) samtools view -b -h -F 1024"+\
           " -@ "+str(snakemake.threads)+\
           " "+snakemake.input.bam+\
-          ") > "+snakemake.output.bam+\
+          " > "+snakemake.output.bam+\
           " 2>> "+log_filename+\
-          " && (time samtools index"+\
+          " && $(which time) samtools index"+\
           " -@ "+str(snakemake.threads)+\
           " "+snakemake.output.bam+\
-          ") >> "+log_filename+" 2>&1"
+          " >> "+log_filename+" 2>&1"
 f = open(log_filename, 'at')
 f.write("## COMMAND: "+command+"\n")
 f.close()

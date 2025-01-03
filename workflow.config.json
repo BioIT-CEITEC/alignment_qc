@@ -1,7 +1,7 @@
 {
   "workflow_description": {
     "name":"alignment_qc",
-    "version": 2.0,
+    "version": 2.1,
     "label":"Alignment QC",
     "type":"alignment_qc",
     "inputs":[
@@ -168,6 +168,34 @@
         "label": "ChIP-seq additional QC",
         "type": "bool",
         "default": false
+      },
+      "bam_quality_cutof": {
+        "label": "Alignment quality cutof",
+        "type": "int",
+        "default": 30,
+        "conditions": {
+          "relevance": {
+            "operand": "equal",
+            "negation": false,
+            "values": {
+              "chip_extra_qc": true
+            }
+          }
+        }
+      },
+      "bam_remove_blacklisted": {
+        "label": "Filter blacklist regions",
+        "type": "bool",
+        "default": true,
+        "conditions": {
+          "relevance": {
+            "operand": "equal",
+            "negation": false,
+            "values": {
+              "chip_extra_qc": true
+            }
+          }
+        }
       }
     }
   }

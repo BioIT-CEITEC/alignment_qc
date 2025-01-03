@@ -15,14 +15,14 @@ f = open(log_filename, 'a+')
 f.write("\n##\n## RULE: multi_bam_summary \n##\n")
 f.close()
 
-version = str(subprocess.Popen("conda list", shell=True, stdout=subprocess.PIPE).communicate()[0], 'utf-8')
+version = str(subprocess.Popen("conda list 2>&1", shell=True, stdout=subprocess.PIPE).communicate()[0], 'utf-8')
 f = open(log_filename, 'at')
-f.write("## CONDA: "+version+"\n")
+f.write("## CONDA:\n"+version+"\n")
 f.close()
 
 ignore_dups = ""
 
-command = "multiBamSummary bins"+\
+command = "$(which time) multiBamSummary bins"+\
           " -bs 10000"+\
           " "+ignore_dups+\
           " --smartLabels"+\
@@ -35,7 +35,7 @@ f.write("## COMMAND: "+command+"\n")
 f.close()
 shell(command)
 
-command = "plotCorrelation"+\
+command = "$(which time) plotCorrelation"+\
           " -in "+str(snakemake.params.matrix)+\
           " --whatToPlot heatmap"+\
           " --corMethod "+snakemake.params.corr_method+\
@@ -48,7 +48,7 @@ f.write("## COMMAND: "+command+"\n")
 f.close()
 shell(command)
 
-command = "plotFingerprint"+\
+command = "$(which time) plotFingerprint"+\
           " --outQualityMetrics "+snakemake.output.quality+\
           " --outRawCounts "+snakemake.output.counts+\
           " --smartLabels"+\

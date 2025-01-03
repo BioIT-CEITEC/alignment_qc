@@ -69,19 +69,16 @@ if not "count_over" in config:
 
 count_over_list = config['count_over'].split(",")
 
-# ChIP-seq parameters processing
+## ChIP-seq parameters processing
 #
-if not "effective_genome_size" in config:
-    config["effective_genome_size"] = "unk"
-
-if not "fragment_length" in config:
-    config["fragment_length"] = "unk"
-    
 if not "summary_correlation_method" in config:
     config["summary_correlation_method"] = "spearman"
     
 if not "bam_quality_cutof" in config:
     config['bam_quality_cutof'] = 20
+    
+if not 'bam_remove_blacklisted' in config:
+    config['bam_remove_blacklisted'] = True
 
 wildcard_constraints:
      sample = "|".join(sample_tab.sample_name) + "|all_samples",
