@@ -22,6 +22,7 @@
       "qc_reports/{sample}/salmon_map/*",
       "qc_reports/{sample}/raw_fastq_minion/*",
       "qc_reports/{sample}/species_detector/*",
+      "qc_reports/{sample}/biobloom/*",
       "qc_reports/{sample}/MarkDuplicates/*",
       "mapped/{sample}.*.bam*",
       "mapped/{sample}/*",
