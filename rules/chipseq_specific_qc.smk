@@ -28,7 +28,7 @@ rule inspect_bam_coverage:
 
 
 rule multi_bam_summary:
-    input:  bam = expand("mapped/{sample}.{{dups}}.bam", sample=sample_tab.sample_name)
+    input:  bam = expand("mapped/{sample}.{{dups}}.bam", sample=sample_tab.sample_name),
     output: plot = "qc_reports/all_samples/deeptools/correlation_heatmap.{dups}.pdf",
             table= "qc_reports/all_samples/deeptools/correlation_heatmap.{dups}.tsv",
             finger = "qc_reports/all_samples/deeptools/fingerprint.{dups}.pdf",
@@ -45,9 +45,9 @@ rule multi_bam_summary:
 rule qc_samtools_extra:
     input:  bam = "mapped/{sample}.{extra}.bam"
     output: idxstats = "qc_reports/{sample}/qc_samtools/{sample}.{extra}.idxstats.tsv",
-            flagstats = "qc_reports/{sample}/qc_samtools/{sample}.{extra}.flagstat.tsv"
-            stats = "qc_reports/{sample}/qc_samtools/{sample}.{extra}.stats.txt"
-    log:    "logs/{sample}/qc_samtools_extra.{extra}.log"
+            flagstats = "qc_reports/{sample}/qc_samtools/{sample}.{extra}.flagstat.tsv",
+            stats = "qc_reports/{sample}/qc_samtools/{sample}.{extra}.stats.txt",
+    log:    "logs/{sample}/qc_samtools_extra.{extra}.log",
     threads:    1
     conda: "../wrappers/qc_samtools/env.yaml"
     script: "../wrappers/qc_samtools/script.py"
