@@ -17,8 +17,17 @@ rule phantom_peak_qual:
     script:  "../wrappers/phantom_peak_qual/script.py"
 
 
+def inspect_bam_coverage_inputs(wcs):
+    inputs = {'bam': "mapped/{sample}.{dups}.bam"}
+    # DEMON: This is a hack to force the workflow create mapped/{sample}.no_dups.spike.bam and mapped/{sample}.keep_dups.spike.bam files 
+    # because there isn't config parameter spikein from alignment_chip workflow. These files are not needed in this workflow.
+    if os.path.isfile("mapped/{sample}.spike.bam"):
+      inputs['sbam'] = "mapped/{sample}.{dups}.spike.bam"
+    return inputs
+
 rule inspect_bam_coverage:
-    input:  bam = "mapped/{sample}.{dups}.bam",
+    # input:  bam = "mapped/{sample}.{dups}.bam",
+    input:  unpack(inspect_bam_coverage_inputs),
     output: bw =  "mapped/{sample}.{dups}.bam.bigWig",
     log:    "logs/{sample}/inspect_bam_coverage.{dups}.log",
     threads: 5
@@ -54,9 +63,9 @@ rule qc_samtools_extra:
 
 
 rule dedup_bam:
-    input:  bam = "mapped/{sample}.keep_dups.bam"
-    output: bam = "mapped/{sample}.no_dups.bam",
-    log:    "logs/{sample}/dedup_bam.log"
+    input:  bam = "mapped/{sample}.keep_dups{extra}.bam"
+    output: bam = "mapped/{sample}.no_dups{extra}.bam",
+    log:    "logs/{sample}/dedup_bam{extra}.log"
     threads: 5,
     params: tmpd= GLOBAL_TMPD_PATH,
     conda:  "../wrappers/dedup_bam/env.yaml"
@@ -64,7 +73,7 @@ rule dedup_bam:
     
     
 def filter_bam_input(wc):
-    inputs = {'bam': "mapped/{sample}.bam"}
+    inputs = {'bam': "mapped/{sample}{extra}.bam"}
     bed = config["reference_dir"] + "/intervals/ChIP-seq/blacklist.v2.bed"
     if config['bam_remove_blacklisted'] and os.path.isfile(bed):
         inputs['bed'] = bed
@@ -72,9 +81,9 @@ def filter_bam_input(wc):
 
 rule filter_bam:
     input:  unpack(filter_bam_input)
-    output: bam = "mapped/{sample}.keep_dups.bam",
-            bam_fail = "mapped/{sample}.filt_out.bam",
-    log:    "logs/{sample}/filter_bam.log"
+    output: bam = "mapped/{sample}.keep_dups{extra}.bam",
+            bam_fail = "mapped/{sample}{extra}.filt_out.bam",
+    log:    "logs/{sample}/filter_bam{extra}.log"
     threads:5
     params: qc_cutof = config['bam_quality_cutof'],
             tmpd = GLOBAL_TMPD_PATH,
