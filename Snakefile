@@ -81,6 +81,8 @@ if not 'bam_remove_blacklisted' in config:
     config['bam_remove_blacklisted'] = True
 
 wildcard_constraints:
+     dups = "no_dups|keep_dups",
+     extra = "|.spike",
      sample = "|".join(sample_tab.sample_name) + "|all_samples",
      lib_name="[^\.\/]+",
      read_pair_tag = "(_R.)?",

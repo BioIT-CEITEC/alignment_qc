@@ -21,7 +21,7 @@ def inspect_bam_coverage_inputs(wcs):
     inputs = {'bam': "mapped/{sample}.{dups}.bam"}
     # DEMON: This is a hack to force the workflow create mapped/{sample}.no_dups.spike.bam and mapped/{sample}.keep_dups.spike.bam files 
     # because there isn't config parameter spikein from alignment_chip workflow. These files are not needed in this workflow.
-    if os.path.isfile("mapped/{sample}.spike.bam"):
+    if os.path.isfile(f"mapped/{wcs.sample}.spike.bam"):
       inputs['sbam'] = "mapped/{sample}.{dups}.spike.bam"
     return inputs
 
@@ -52,11 +52,11 @@ rule multi_bam_summary:
     
 
 rule qc_samtools_extra:
-    input:  bam = "mapped/{sample}.{extra}.bam"
-    output: idxstats = "qc_reports/{sample}/qc_samtools/{sample}.{extra}.idxstats.tsv",
-            flagstats = "qc_reports/{sample}/qc_samtools/{sample}.{extra}.flagstat.tsv",
-            stats = "qc_reports/{sample}/qc_samtools/{sample}.{extra}.stats.txt",
-    log:    "logs/{sample}/qc_samtools_extra.{extra}.log",
+    input:  bam = "mapped/{sample}.{dups}.bam"
+    output: idxstats = "qc_reports/{sample}/qc_samtools/{sample}.{dups}.idxstats.tsv",
+            flagstats = "qc_reports/{sample}/qc_samtools/{sample}.{dups}.flagstat.tsv",
+            stats = "qc_reports/{sample}/qc_samtools/{sample}.{dups}.stats.txt",
+    log:    "logs/{sample}/qc_samtools_extra.{dups}.log",
     threads:    1
     conda: "../wrappers/qc_samtools/env.yaml"
     script: "../wrappers/qc_samtools/script.py"
