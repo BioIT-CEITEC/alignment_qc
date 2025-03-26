@@ -29,7 +29,8 @@
       "mapped/{sample}.no_dups.bam.bigWig"
     ],
     "outputs":[
-      "qc_reports/all_samples/*.html",
+      "qc_reports/all_samples/multiqc.html",
+      "qc_reports/all_samples/multiqc_data/*",
       "qc_reports/{sample}/multiqc.html",
       "logs/{sample}/multiqc.log",
       "qc_reports/{sample}/single_sample_alignment_report.html",
