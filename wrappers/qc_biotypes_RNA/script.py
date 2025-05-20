@@ -79,7 +79,7 @@ else:
       else:
         featuretype = "gene"
     else:
-      featuretype = ""
+      featuretype = "gene"
 
   f = open(log_filename, 'at')
   f.write("## BIOTYPE FEATURE:"+featuretype+"\n")
