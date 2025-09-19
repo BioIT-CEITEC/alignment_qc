@@ -70,16 +70,16 @@ else:
   featuretype = snakemake.params.count_over
   if not featuretype in featuretype_list:
     if featuretype == "exon":
-      featuretype = ""
+      featuretype = "gene"
     elif featuretype == "gene": 
       if "transcript" in featuretype_list:
         featuretype = "transcript"
       elif "mRNA" in featuretype_list:
         featuretype = "mRNA"
       else:
-        featuretype = ""
+        featuretype = "gene"
     else:
-      featuretype = ""
+      featuretype = "gene"
 
   f = open(log_filename, 'at')
   f.write("## BIOTYPE FEATURE:"+featuretype+"\n")
