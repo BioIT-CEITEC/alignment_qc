@@ -15,20 +15,20 @@ f = open(log_filename, 'a+')
 f.write("\n##\n## RULE: inspect_bam_coverage \n##\n")
 f.close()
 
-version = str(subprocess.Popen("conda list", shell=True, stdout=subprocess.PIPE).communicate()[0], 'utf-8')
+version = str(subprocess.Popen("conda list 2>&1", shell=True, stdout=subprocess.PIPE).communicate()[0], 'utf-8')
 f = open(log_filename, 'at')
-f.write("## CONDA: "+version+"\n")
+f.write("## CONDA:\n"+version+"\n")
 f.close()
 
 extra = ""
-if str(snakemake.params.effective_GS) != "unk":
-  extra = "--effectiveGenomeSize "+str(snakemake.params.effective_GS)
-
-if str(snakemake.params.frag_len) != "unk":
-  extra = extra+" --extendReads "+str(snakemake.params.frag_len)
+# if str(snakemake.params.effective_GS) != "unk":
+#   extra = "--effectiveGenomeSize "+str(snakemake.params.effective_GS)
+# 
+# if str(snakemake.params.frag_len) != "unk":
+#   extra = extra+" --extendReads "+str(snakemake.params.frag_len)
 
 command = "export TMPDIR="+snakemake.params.tmpd+";"+\
-          "bamCoverage"+\
+          "$(which time) bamCoverage"+\
           " -b "+snakemake.input.bam+\
           " -bs 5"+\
           " -o "+snakemake.output.bw+\

@@ -1,7 +1,7 @@
 {
   "workflow_description": {
     "name":"alignment_qc",
-    "version": 2.0,
+    "version": 2.1,
     "label":"Alignment QC",
     "type":"alignment_qc",
     "inputs":[
@@ -22,6 +22,7 @@
       "qc_reports/{sample}/salmon_map/*",
       "qc_reports/{sample}/raw_fastq_minion/*",
       "qc_reports/{sample}/species_detector/*",
+      "qc_reports/{sample}/biobloom/*",
       "qc_reports/{sample}/MarkDuplicates/*",
       "mapped/{sample}.*.bam*",
       "mapped/{sample}/*",
@@ -70,8 +71,9 @@
       "qc_reports/all_samples/deeptools/*",
       "logs/all_samples/multi_bam_summary.*.log",
       "mapped/{sample}.no_dups.bam",
-      "logs/{sample}/dedup_bam.log",
       "mapped/{sample}.keep_dups.bam",
+      "mapped/{sample}.*spike.bam*",
+      "logs/{sample}/dedup_bam.log",
       "mapped/{sample}.failed.bam",
       "logs/{sample}/filter_bam.log",
       "qc_reports/all_samples/qc_biotype_RNA/biotype.pdf",
@@ -171,6 +173,34 @@
         "label": "ChIP-seq additional QC",
         "type": "bool",
         "default": false
+      },
+      "bam_quality_cutof": {
+        "label": "Alignment quality cutof",
+        "type": "int",
+        "default": 30,
+        "conditions": {
+          "relevance": {
+            "operand": "equal",
+            "negation": false,
+            "values": {
+              "chip_extra_qc": true
+            }
+          }
+        }
+      },
+      "bam_remove_blacklisted": {
+        "label": "Filter blacklist regions",
+        "type": "bool",
+        "default": true,
+        "conditions": {
+          "relevance": {
+            "operand": "equal",
+            "negation": false,
+            "values": {
+              "chip_extra_qc": true
+            }
+          }
+        }
       }
     }
   }
