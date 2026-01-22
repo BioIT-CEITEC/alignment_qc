@@ -105,6 +105,7 @@ rule qc_biotypes_RNA:
 
 rule qc_fastq_screen_RNA:
     input:  fastq = "raw_fastq/{sample}{read_pair_dmtex_tag}.fastq.gz",
+            fs_conf = config["organism_ncbi_fs_conf"],
     output: fastqscreen = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_dmtex_tag}_screen.png",
             fastqscreen_pdf = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_dmtex_tag}_screen.pdf",
             tmp_image = "qc_reports/{sample}/qc_fastq_screen_RNA/{sample}{read_pair_dmtex_tag}_screen.txt"
