@@ -174,20 +174,6 @@
         "type": "bool",
         "default": false
       },
-      "bam_quality_cutof": {
-        "label": "Alignment quality cutof",
-        "type": "int",
-        "default": 30,
-        "conditions": {
-          "relevance": {
-            "operand": "equal",
-            "negation": false,
-            "values": {
-              "chip_extra_qc": true
-            }
-          }
-        }
-      },
       "bam_remove_blacklisted": {
         "label": "Filter blacklist regions",
         "type": "bool",
