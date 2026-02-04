@@ -20,48 +20,12 @@ f = open(log_filename, 'at')
 f.write("## CONDA:\n"+version+"\n")
 f.close()
 
-bad_tags = 4 # read_unmapped
-command = "$(which time) samtools stats"+\
-            " -@ "+str(snakemake.threads)+\
-            " -F "+str(bad_tags)+\
-            " "+snakemake.input.bam+\
-            " > "+snakemake.params.prefix+".f1_unmap.stats"+\
-            " 2>> "+log_filename
-f = open(log_filename, 'at')
-f.write("## COMMAND: "+command+"\n")
-f.close()
-shell(command)
-
-bad_tags = 260 # read_unmapped + not_primary_alignment
-command = "$(which time) samtools stats"+\
-            " -@ "+str(snakemake.threads)+\
-            " -F "+str(bad_tags)+\
-            " "+snakemake.input.bam+\
-            " > "+snakemake.params.prefix+".f2_second.stats"+\
-            " 2>> "+log_filename
-f = open(log_filename, 'at')
-f.write("## COMMAND: "+command+"\n")
-f.close()
-shell(command)
-
-bad_tags = 772 # read_unmapped + not_primary_alignment + read_fails_platform/vendor_quality_checks
-command = "$(which time) samtools stats"+\
-            " -@ "+str(snakemake.threads)+\
-            " -F "+str(bad_tags)+\
-            " "+snakemake.input.bam+\
-            " > "+snakemake.params.prefix+".f3_failqc.stats"+\
-            " 2>> "+log_filename
-f = open(log_filename, 'at')
-f.write("## COMMAND: "+command+"\n")
-f.close()
-shell(command)
-
 bad_tags = 2820 # read_unmapped + not_primary_alignment + read_fails_platform/vendor_quality_checks + supplementary_alignment
 command = "$(which time) samtools stats"+\
             " -@ "+str(snakemake.threads)+\
             " -F "+str(bad_tags)+\
             " "+snakemake.input.bam+\
-            " > "+snakemake.params.prefix+".f4_suppl.stats"+\
+            " > "+snakemake.params.prefix+".filt_bad_flags.stats"+\
             " 2>> "+log_filename
 f = open(log_filename, 'at')
 f.write("## COMMAND: "+command+"\n")
@@ -91,7 +55,7 @@ if hasattr(snakemake.input, 'bed'):
   command = "$(which time) samtools stats"+\
             " -@ "+str(snakemake.threads)+\
             " "+snakemake.output.bam+\
-            " > "+snakemake.params.prefix+".f5_blcklst.stats"+\
+            " > "+snakemake.params.prefix+".filt_blacklist.stats"+\
             " 2>> "+log_filename
   f = open(log_filename, 'at')
   f.write("## COMMAND: "+command+"\n")
