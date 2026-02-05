@@ -82,3 +82,21 @@ f.close()
 shell(command)
 
 ## samtools view mapped/1_Input.bam | cut -f 5 | sort -n | uniq -c | awk '{print $2,$1}' OFS='\t'
+command = "$(which time) samtools view "+snakemake.output.bam+\
+          " | cut -f 5 | sort -n | uniq -c | awk '{{print $2,$1}}' OFS='\\t'"+\
+          " > "+snakemake.params.prefix+"_mapq.tsv"+\
+          " 2>> "+log_filename
+f = open(log_filename, 'at')
+f.write("## COMMAND: "+command+"\n")
+f.close()
+shell(command)
+
+command = "$(which time) samtools view "+snakemake.output.bam+\
+          " | awk '$9 >= 0 {{print $9}}' | sort -n | uniq -c | awk '{{print $2,$1}}' OFS='\\t'"+\
+          " > "+snakemake.params.prefix+"_tlen.tsv"+\
+          " 2>> "+log_filename
+f = open(log_filename, 'at')
+f.write("## COMMAND: "+command+"\n")
+f.close()
+shell(command)
+

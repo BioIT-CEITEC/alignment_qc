@@ -51,15 +51,41 @@ custom_data:
       id: "salmon_map_plot"
       title: "Salmon: alignment Scores (mapping mode)"
       ylab: "# Reads"
+  reads_mapq_plot:
+    file_format: "tsv"
+    section_name: "Reads mapping quality histogram"
+    description: "This plot shows the reads mapping quality frequencies from 5th column of BAM files."
+    plot_type: "linegraph"
+    pconfig:
+      id: "reads_mapq_histogram"
+      title: "Number of reads with particular mapping quality"
+      ylab: "Number of reads"
+      xlab: "Mapping quality (MAPQ)"
+      ymin: 0
+  reads_tlen_plot:
+    file_format: "tsv"
+    section_name: "Reads template length histogram"
+    description: "This plot shows the reads/fragments mapping template length frequencies from 9th column of BAM files."
+    plot_type: "linegraph"
+    pconfig:
+      id: "reads_tlen_histogram"
+      title: "Number of reads/fragments with particular template length"
+      ylab: "Number of reads"
+      xlab: "Mapped template length (TLEN)"
+      ymin: 0
 sp:
-   phantompeakqualtools/out:
-      fn: '*.phantom_peak_calling_stats.tsv'
-   jellyfish:
-      fn: '*.histo'
-   salmon_aln:
-        fn: '*_aln.tsv'
-   salmon_map:
-        fn: '*_map.tsv'
+  reads_mapq_plot:
+    fn: "*_mapq.tsv"
+  reads_tlen_plot:
+    fn: "*_tlen.tsv"
+  phantompeakqualtools/out:
+    fn: '*.phantom_peak_calling_stats.tsv'
+  jellyfish:
+    fn: '*.histo'
+  salmon_aln:
+    fn: '*_aln.tsv'
+  salmon_map:
+    fn: '*_map.tsv'
 module_order:
     - fastqc:
         name: "Raw fastQC"
