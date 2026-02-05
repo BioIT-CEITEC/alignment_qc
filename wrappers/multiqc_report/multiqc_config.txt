@@ -53,6 +53,8 @@ custom_data:
       ylab: "# Reads"
   reads_mapq_plot:
     file_format: "tsv"
+    parent_id: "chipseq_extra"
+    parent_name: "ChIP/CnR extra plots"
     section_name: "Reads mapping quality histogram"
     description: "This plot shows the reads mapping quality frequencies from 5th column of BAM files."
     plot_type: "linegraph"
@@ -62,8 +64,11 @@ custom_data:
       ylab: "Number of reads"
       xlab: "Mapping quality (MAPQ)"
       ymin: 0
+      logswitch: True
   reads_tlen_plot:
     file_format: "tsv"
+    parent_id: "chipseq_extra"
+    parent_name: "ChIP/CnR extra plots"
     section_name: "Reads template length histogram"
     description: "This plot shows the reads/fragments mapping template length frequencies from 9th column of BAM files."
     plot_type: "linegraph"
@@ -73,6 +78,7 @@ custom_data:
       ylab: "Number of reads"
       xlab: "Mapped template length (TLEN)"
       ymin: 0
+      logswitch: True
 sp:
   reads_mapq_plot:
     fn: "*_mapq.tsv"
