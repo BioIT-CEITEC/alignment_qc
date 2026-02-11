@@ -20,7 +20,10 @@ f = open(log_filename, 'at')
 f.write("## CONDA:\n"+version+"\n")
 f.close()
 
-bad_tags = 2820 # read_unmapped + not_primary_alignment + read_fails_platform/vendor_quality_checks + supplementary_alignment
+## This might be needed for stats files. As they are not outputs snakemake is not responsible for creating the necessary folders
+os.makedirs(os.path.dirname(snakemake.params.prefix), exist_ok=True)
+
+bad_tags = 2828 # read_unmapped + mate_unmapped + not_primary_alignment + read_fails_platform/vendor_quality_checks + supplementary_alignment
 command = "$(which time) samtools stats"+\
             " -@ "+str(snakemake.threads)+\
             " -F "+str(bad_tags)+\
@@ -37,6 +40,7 @@ if hasattr(snakemake.input, 'bed'):
   command = "$(which time) samtools view"+\
             " -@ "+str(snakemake.threads)+\
             " -F "+str(bad_tags)+\
+            " -U "+snakemake.output.bam_fail+\
             " -b -h "+snakemake.input.bam+\
             " 2>> "+log_filename+\
             " | "+\
@@ -45,7 +49,7 @@ if hasattr(snakemake.input, 'bed'):
             " -L "+snakemake.input.bed+\
             " -U "+snakemake.output.bam+\
             " -b -h -"+\
-            " > "+snakemake.output.bam_fail+\
+            " >> "+snakemake.output.bam_fail+\
             " 2>> "+log_filename
   f = open(log_filename, 'at')
   f.write("## COMMAND: "+command+"\n")
@@ -81,7 +85,6 @@ f.write("## COMMAND: "+command+"\n")
 f.close()
 shell(command)
 
-## samtools view mapped/1_Input.bam | cut -f 5 | sort -n | uniq -c | awk '{print $2,$1}' OFS='\t'
 command = "$(which time) samtools view "+snakemake.output.bam+\
           " | cut -f 5 | sort -n | uniq -c | awk '{{print $2,$1}}' OFS='\\t'"+\
           " > "+snakemake.params.prefix+"_mapq.tsv"+\
