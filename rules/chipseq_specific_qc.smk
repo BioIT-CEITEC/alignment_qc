@@ -75,7 +75,7 @@ rule dedup_bam:
 def filter_bam_input(wc):
     inputs = {'bam': "mapped/{sample}{extra}.bam"}
     bed = config["reference_dir"] + "/others/ChIP-seq/blacklist.v2.bed"
-    if config['bam_remove_blacklisted'] and os.path.isfile(bed):
+    if os.path.isfile(bed):
         inputs['bed'] = bed
         print("## INFO: Using ChIP-seq blacklist: "+bed)
     else:
