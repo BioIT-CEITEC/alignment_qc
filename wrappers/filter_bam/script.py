@@ -15,21 +15,32 @@ f = open(log_filename, 'a+')
 f.write("\n##\n## RULE: filter_bam \n##\n")
 f.close()
 
-if str(snakemake.params.qc_cutof) == "nan":
-  raise Exception("quality_cutoff is wrongly set")
-
 version = str(subprocess.Popen("conda list 2>&1", shell=True, stdout=subprocess.PIPE).communicate()[0], 'utf-8')
 f = open(log_filename, 'at')
 f.write("## CONDA:\n"+version+"\n")
 f.close()
 
-bad_tags = 772 # combination of read_unmapped, not_primary_alignment and read_fails_platform/vendor_quality_checks
+## This might be needed for stats files. As they are not outputs snakemake is not responsible for creating the necessary folders
+os.makedirs(os.path.dirname(snakemake.params.prefix), exist_ok=True)
+
+bad_tags = 2828 # read_unmapped + mate_unmapped + not_primary_alignment + read_fails_platform/vendor_quality_checks + supplementary_alignment
+command = "$(which time) samtools stats"+\
+            " -@ "+str(snakemake.threads)+\
+            " -F "+str(bad_tags)+\
+            " "+snakemake.input.bam+\
+            " > "+snakemake.params.prefix+".filt_bad_flags.stats"+\
+            " 2>> "+log_filename
+f = open(log_filename, 'at')
+f.write("## COMMAND: "+command+"\n")
+f.close()
+shell(command)
+
 
 if hasattr(snakemake.input, 'bed'):
   command = "$(which time) samtools view"+\
             " -@ "+str(snakemake.threads)+\
-            " -q "+str(snakemake.params.qc_cutof)+\
             " -F "+str(bad_tags)+\
+            " -U "+snakemake.output.bam_fail+\
             " -b -h "+snakemake.input.bam+\
             " 2>> "+log_filename+\
             " | "+\
@@ -38,24 +49,57 @@ if hasattr(snakemake.input, 'bed'):
             " -L "+snakemake.input.bed+\
             " -U "+snakemake.output.bam+\
             " -b -h -"+\
-            " > "+snakemake.output.bam_fail+\
+            " >> "+snakemake.output.bam_fail+\
             " 2>> "+log_filename
+  f = open(log_filename, 'at')
+  f.write("## COMMAND: "+command+"\n")
+  f.close()
+  shell(command)
+
+  command = "$(which time) samtools stats"+\
+            " -@ "+str(snakemake.threads)+\
+            " "+snakemake.output.bam+\
+            " > "+snakemake.params.prefix+".filt_blacklist.stats"+\
+            " 2>> "+log_filename
+  f = open(log_filename, 'at')
+  f.write("## COMMAND: "+command+"\n")
+  f.close()
+  shell(command)
+
 else:
   command = "$(which time) samtools view"+\
             " -@ "+str(snakemake.threads)+\
-            " -q "+str(snakemake.params.qc_cutof)+\
             " -F "+str(bad_tags)+\
             " -U "+snakemake.output.bam_fail+\
             " -b -h "+snakemake.input.bam+\
             " > "+snakemake.output.bam+\
             " 2>> "+log_filename
-f = open(log_filename, 'at')
-f.write("## COMMAND: "+command+"\n")
-f.close()
-shell(command)
+  f = open(log_filename, 'at')
+  f.write("## COMMAND: "+command+"\n")
+  f.close()
+  shell(command)
 
 command = "$(which time) samtools index -@ "+str(snakemake.threads)+" "+snakemake.output.bam+" >> "+log_filename+" 2>&1"
 f = open(log_filename, 'at')
 f.write("## COMMAND: "+command+"\n")
 f.close()
 shell(command)
+
+command = "$(which time) samtools view "+snakemake.output.bam+\
+          " | cut -f 5 | sort -n | uniq -c | awk '{{print $2,$1}}' OFS='\\t'"+\
+          " > "+snakemake.params.prefix+"_mapq.tsv"+\
+          " 2>> "+log_filename
+f = open(log_filename, 'at')
+f.write("## COMMAND: "+command+"\n")
+f.close()
+shell(command)
+
+command = "$(which time) samtools view "+snakemake.output.bam+\
+          " | awk '$9 >= 0 {{print $9}}' | sort -n | uniq -c | awk '{{print $2,$1}}' OFS='\\t'"+\
+          " > "+snakemake.params.prefix+"_tlen.tsv"+\
+          " 2>> "+log_filename
+f = open(log_filename, 'at')
+f.write("## COMMAND: "+command+"\n")
+f.close()
+shell(command)
+

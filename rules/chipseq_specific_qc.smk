@@ -75,7 +75,7 @@ rule dedup_bam:
 def filter_bam_input(wc):
     inputs = {'bam': "mapped/{sample}{extra}.bam"}
     bed = config["reference_dir"] + "/others/ChIP-seq/blacklist.v2.bed"
-    if config['bam_remove_blacklisted'] and os.path.isfile(bed):
+    if os.path.isfile(bed):
         inputs['bed'] = bed
         print("## INFO: Using ChIP-seq blacklist: "+bed)
     else:
@@ -88,7 +88,7 @@ rule filter_bam:
             bam_fail = "mapped/{sample}{extra}.filt_out.bam",
     log:    "logs/{sample}/filter_bam{extra}.log"
     threads:5
-    params: qc_cutof = config['bam_quality_cutof'],
+    params: prefix = "qc_reports/{sample}/qc_samtools/{sample}{extra}",
             tmpd = GLOBAL_TMPD_PATH,
     conda:  "../wrappers/filter_bam/env.yaml"
     script:  "../wrappers/filter_bam/script.py"

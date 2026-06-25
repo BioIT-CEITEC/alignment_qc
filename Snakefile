@@ -74,12 +74,6 @@ count_over_list = config['count_over'].split(",")
 if not "summary_correlation_method" in config:
     config["summary_correlation_method"] = "spearman"
     
-if not "bam_quality_cutof" in config:
-    config['bam_quality_cutof'] = 20
-    
-if not 'bam_remove_blacklisted' in config:
-    config['bam_remove_blacklisted'] = True
-
 wildcard_constraints:
      dups = "no_dups|keep_dups",
      extra = "|.spike",
