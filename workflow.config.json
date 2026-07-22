@@ -91,7 +91,8 @@
     "reports":[
       "qc_reports/final_alignment_report.html",
       "qc_reports/all_samples/*.html",
-      "qc_reports/all_samples/*.pdf"
+      "qc_reports/all_samples/*.pdf",
+      "logs/*"
     ]
   },
   "general_params": [
