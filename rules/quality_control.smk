@@ -53,6 +53,35 @@ rule qc_samtools:
 #
 #
 
+rule qc_rustqc_RNA:
+    input:  bam = "mapped/{sample}.bam",
+            bai = "mapped/{sample}.bam.bai",
+            gtf = config["organism_gtf"],
+    output: featureCount = "qc_reports/{sample}/qc_rustqc_RNA/featurecounts/{sample}.featureCounts.tsv",
+            dupraxpbox = "qc_reports/{sample}/qc_rustqc_RNA/dupradar/{sample}_duprateExpBoxplot.svg",
+            exphist = "qc_reports/{sample}/qc_rustqc_RNA/dupradar/{sample}_expressionHist.svg",
+            dupraexpden = "qc_reports/{sample}/qc_rustqc_RNA/dupradar/{sample}_duprateExpDens.svg",
+            # multipergene = "qc_reports/{sample}/qc_rustqc_RNA/dupradar/{sample}_multimapPerGene.pdf",
+            # readdist = "qc_reports/{sample}/qc_rustqc_RNA/dupradar/{sample}_readDist.pdf",
+            txt = "qc_reports/{sample}/qc_rustqc_RNA/dupradar/{sample}_duprateExpDensCurve_mqc.txt",
+            qualimap_html = "qc_reports/{sample}/qc_rustqc_RNA/qualimap/qualimapReport.html",
+            samtools_flagstat = "qc_reports/{sample}/qc_rustqc_RNA/samtools/{sample}.flagstat",
+            samtools_idx = "qc_reports/{sample}/qc_rustqc_RNA/samtools/{sample}.idxstats",
+            samtools_stat = "qc_reports/{sample}/qc_rustqc_RNA/samtools/{sample}.stats",
+            read_distribution = "qc_reports/{sample}/qc_rustqc_RNA/rseqc/read_distribution/{sample}.read_distribution.txt",
+            infer_experiment = "qc_reports/{sample}/qc_rustqc_RNA/rseqc/infer_experiment/{sample}.infer_experiment.txt",
+            inner_distance = "qc_reports/{sample}/qc_rustqc_RNA/rseqc/inner_distance/{sample}.inner_distance.txt",
+            preseq = "qc_reports/{sample}/qc_rustqc_RNA/preseq/{sample}.lc_extrap.txt"
+
+    log:    "logs/{sample}/qc_qualimap_RNA.log"
+    params: paired = paired,
+            strandness = config["strandness"],
+            tmpd = GLOBAL_TMPD_PATH,
+    threads: 10
+    resources:  mem = 24
+    conda:  "../wrappers/qc_qualimap_RNA/env.yaml"
+    script: "../wrappers/qc_qualimap_RNA/script.py"
+
 rule qc_qualimap_RNA:
     input:  bam = "mapped/{sample}.bam",
             bai = "mapped/{sample}.bam.bai",

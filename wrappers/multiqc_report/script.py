@@ -25,13 +25,21 @@ if snakemake.input[0].find("Log.final.out") != -1:
 else:
     star_aln = ""
 
+search_path = " ".join([dirname(fastqc_html) for fastqc_html in snakemake.input.html]) + " ./qc_reports/*/cutadapt/*"
+if hasattr(snakemake.input, 'biobloom'):
+    search_path += " "+" ".join([dirname(biobloom_tsv) for biobloom_tsv in snakemake.input.biobloom])
+if hasattr(snakemake.input, 'sp_det'):
+    search_path += " "+dirname(snakemake.input.sp_det)
+
 if snakemake.wildcards.sample != "all_samples":
     multiqc_search_paths = " ./*/"+snakemake.wildcards.sample+"/"
 else:
     multiqc_search_paths = star_aln + " ./qc_reports/*/*" + " ./mapped/*"
 
 
-command = "multiqc -f --config " + snakemake.params.multiqc_config +" -n multiqc -o ./"+ snakemake.params.multiqc_path + multiqc_search_paths + " >> "+log_filename+" 2>&1 "
+command = "multiqc -f --config " + snakemake.params.multiqc_config + \
+          " -n multiqc -o ./"+ snakemake.params.multiqc_path + multiqc_search_paths + search_path + \ 
+          " >> "+log_filename+" 2>&1 "
 
 f = open(log_filename, 'at')
 f.write("## COMMAND: "+command+"\n")

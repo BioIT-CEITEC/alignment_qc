@@ -1,0 +1,16 @@
+# demo files and directories
+.snakemake/
+.vscode/
+ref/
+tmp/
+mapped/
+qc_reports/
+raw_fastq/
+logs/
+config_demo.json
+Snakefile_demo
+ref.zip
+mapped.zip
+qc_reports.zip
+raw_fastq.zip
+
